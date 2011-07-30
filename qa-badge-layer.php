@@ -7,7 +7,6 @@
 		function head_css()
 		{
 			qa_html_theme_base::head_css();
-				
 			$this->output('
 			<style>
 				.notify-container {

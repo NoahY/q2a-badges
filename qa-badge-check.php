@@ -106,7 +106,7 @@
 			
 			// nice question: 2 upvotes
 						
-			if($votes >= 0) {  // 1, because we can't count this upvote
+			if($votes >= 1) {  // 1, because we can't count this upvote
 				$badge_slug = 'nice_question';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -163,7 +163,7 @@
 			$userid = $post['userid'];
 			// nice answer: 2 upvotes
 						
-			if($votes >= 0) {  // 1, because we can't count this upvote
+			if($votes >= 1) {  // 1, because we can't count this upvote
 				$badge_slug = 'nice_answer';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
