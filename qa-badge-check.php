@@ -45,10 +45,13 @@
 				// when an answer is converted into a comment, with more details in $params.
 					break;
 				case 'q_vote_up':
-					$this->event_vote($event,$userid,$params);
+					$this->question_vote_up($event,$userid,$params);
+					break;
+				case 'a_vote_up':
+					$this->answer_vote_up($event,$userid,$params);
+					break;
 				case 'q_vote_down':
 				case 'q_vote_nil':
-				case 'a_vote_up':
 				case 'a_vote_down':
 				case 'a_vote_nil':
 				// when a question or answer is upvoted, downvoted or unvoted by a user. The ID of the post is in $params['postid'].
@@ -91,50 +94,135 @@
 			}
 		}
 
-	// event processing functions
-
-		function event_vote($event,$userid,$params) {
-			$post = $this->get_post_data($params['postid']);
-			$post_type = $post['type'];
-			switch ($post_type) {
-				case 'Q':
-					$this->check_question($post);
-					break;
-				}
-		}
-		
 	// badge checking functions
+	
+		// check question status for new badge on upvote
 		
-		function check_question($post) {
-			$id = $post['postid'];
+		function question_vote_up($event,$event_user,$params) {
+			$id = $params['postid'];
+			$post = $this->get_post_data($id);
 			$votes = $post['netvotes'];
 			$userid = $post['userid'];
-			if($votes >= 0) {
-				$badge_id = $this->get_badge_id('nice_question');
+			
+			// nice question: 2 upvotes
+						
+			if($votes >= 0) {  // 1, because we can't count this upvote
+				$badge_slug = 'nice_question';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
-						'SELECT badge_id FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_id=#',
-						$userid, $id, $badge_id
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
 					),
 					true
 				);
-				if (!$result) {
-					$this->award_badge($id, $userid, 'Q', $badge_id);
+				if (!$result) { // not already awarded for this question
+					$this->award_badge($id, $userid, $badge_slug);
 				}
 			}
+
+			// good question: 3 upvotes
+						
+			if($votes >= 2) {
+				$badge_slug = 'good_question';
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
+					),
+					true
+				);
+				if (!$result) { // not already awarded for this question
+					$this->award_badge($id, $userid, $badge_slug);
+				}
+			}
+
+			// great question: 5 upvotes
+						
+			if($votes >= 4) {
+				$badge_slug = 'great_question';
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
+					),
+					true
+				);
+				if (!$result) { // not already awarded for this question
+					$this->award_badge($id, $userid, $badge_slug);
+				}
+			}
+
+		}
+		
+		// check answer status for new badge on upvote
+		
+		function answer_vote_up($event,$event_user,$params) {
+			$id = $params['postid'];
+			$post = $this->get_post_data($id);
+			$votes = $post['netvotes'];
+			$userid = $post['userid'];
+			// nice answer: 2 upvotes
+						
+			if($votes >= 0) {  // 1, because we can't count this upvote
+				$badge_slug = 'nice_answer';
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
+					),
+					true
+				);
+				if (!$result) { // not already awarded for this answer
+					$this->award_badge($id, $userid, $badge_slug);
+				}
+			}
+
+			// good answer: 3 upvotes
+						
+			if($votes >= 2) {
+				$badge_slug = 'good_answer';
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
+					),
+					true
+				);
+				if (!$result) { // not already awarded for this answer
+					$this->award_badge($id, $userid, $badge_slug);
+				}
+			}
+
+			// great answer: 5 upvotes
+						
+			if($votes >= 4) {
+				$badge_slug = 'great_answer';
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+						$userid, $id, $badge_slug
+					),
+					true
+				);
+				if (!$result) { // not already awarded for this answer
+					$this->award_badge($id, $userid, $badge_slug);
+				}
+			}
+
+						
 		}
 		
 
 	// worker functions
 		
-		function award_badge($object_id, $user_id, $object_type, $badge_id) {
+		function award_badge($object_id, $user_id, $badge_slug) {
 			
 			// add badge to userbadges
 			
 			qa_db_query_sub(
-				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, object_type, badge_id, id) '.
-				'VALUES (NOW(), 1, #, #, $, #, 0)',
-				$object_id, $user_id, $object_type, $badge_id
+				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+				'VALUES (NOW(), 1, #, #, #, 0)',
+				$object_id, $user_id, $badge_slug
 			);
 		}
 		
@@ -148,16 +236,4 @@
 			);
 			return $result;
 		}
-		
-		function get_badge_id($slug) {
-			$result = qa_db_read_one_value(
-				qa_db_query_sub(
-					'SELECT badge_id FROM ^badges WHERE badge_slug=$',
-					$slug
-				),
-				true
-			);
-			return $result;
-		}
-
 	}
