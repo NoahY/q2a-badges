@@ -10,12 +10,13 @@ This is a plugin for *Question2Answer* that provides basic badge functionality.
 Features
 --------
 - currently 22 badges implemented
-- badge specification modifiable via admin page
-- badge notification system triggers when awardee accesses the site
-- public badge page displays earnable badges
-- earned badges are shown in individual profile pages
-- badges can be deactivated
 - badges are categorized into types (e.g. gold, silver, bronze)
+- badge requirements modifiable via admin page
+- badge notification system triggers jquery notice when awardee accesses the site
+- public badge page displays awardable badges
+- awarded badges are shown in individual profile pages
+- badge system can be deactivated
+- full translation table available
 
 ------------
 Installation
@@ -26,6 +27,11 @@ Installation
 3. Place the files in this repository in that folder.
 4. navigate to your site and check your database to make sure the tables were created (^badges and ^userbadges)
 5. Go to *Admin -> Plugins* on your q2a install and select the '*Activate badges*' option, then '*Save Changes*'.
+
+-----------
+Translation
+-----------
+The translation file is *qa-lang-badges.php*.  The simplest solution is to just translate this file into your own language for your own site.  I'm not too clear how multiple languages work yet.  
 
 ----------
 Disclaimer

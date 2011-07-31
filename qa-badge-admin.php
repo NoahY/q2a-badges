@@ -16,16 +16,16 @@
 			$badges = qa_get_badge_list();
 			if (qa_clicked('badge_rebuild_button')) {
 				qa_import_badge_list(true);
-				$ok = 'Badge list rebuilt.';
+				$ok = qa_lang('badges/list_rebuilt');
 			}
 			else if(qa_clicked('badge_save_settings')) {
 				foreach ($badges as $slug => $info) {
-					if($info['var'] && qa_post_text('badge_'.$slug.'_var')) {
+					if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
 						qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
 					}
 				}
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
-				$ok = 'Options saved.';
+				$ok = qa_lang('badges/badge_admin_saved');
 			}
 			
 		//	Create the form for display
@@ -34,7 +34,7 @@
 			$fields = array();
 			
 			$fields[] = array(
-				'label' => 'Activate badges',
+				'label' => qa_lang('badges/badge_admin_activate'),
 				'tags' => 'NAME="badge_active_check"',
 				'value' => qa_opt('badge_active'),
 				'type' => 'checkbox',
@@ -43,13 +43,13 @@
 			if(qa_opt('badge_active')) {
 
 				$fields[] = array(
-						'label' => 'Active Badges:',
+						'label' => qa_lang('badges/active_badges').':',
 						'type' => 'static',
 				);
 
 
 				foreach ($badges as $slug => $info) {
-					if($info['var']) {
+					if(isset($info['var'])) {
 						$desc = str_replace('#',qa_opt('badge_'.$slug.'_var'),$info['desc']);
 						$fields[] = array(
 								'type' => 'number',
@@ -75,12 +75,12 @@
 				
 				'buttons' => array(
 					array(
-						'label' => 'Recreate Badge List',
+						'label' => qa_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
 						'note' => '<br/><em>DELETE and rebuild list</em><br/><br/>',
 					),
 					array(
-						'label' => 'Save Changes',
+						'label' => qa_lang('badges/save_changes'),
 						'tags' => 'NAME="badge_save_settings"',
 					),
 				),

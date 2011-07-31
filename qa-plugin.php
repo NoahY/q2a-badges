@@ -1,30 +1,6 @@
 <?php
 
 /*
-	Question2Answer 1.4.1 (c) 2011, Gideon Greenspan
-
-	http://www.question2answer.org/
-
-	
-	File: qa-plugin/event-logger/qa-plugin.php
-	Version: 1.4.1
-	Date: 2011-07-10 06:58:57 GMT
-	Description: Initiates event logger plugin
-
-
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-	
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-<?php
-
-/*
         Plugin Name: Badges
         Plugin URI: 
         Plugin Description: Awards Badges on events
@@ -124,35 +100,35 @@
 		
 		$badges = array();
 		
-		$badges['nice_question'] = array('name'=>'Nice Question','desc'=>'Question received +# upvote', 'var'=>2, 'type'=>0);
-		$badges['good_question'] = array('name'=>'Good Question','desc'=>'Question received +# upvote', 'var'=>3, 'type'=>1);
-		$badges['great_question'] = array('name'=>'Great Question','desc'=>'Question received +# upvote', 'var'=>5, 'type'=>2);
+		$badges['nice_question'] = array('name'=>qa_lang('badges/nice_question'),'desc'=>qa_lang('badges/nice_question_desc'),'var'=>2, 'type'=>0);
+		$badges['good_question'] = array('name'=>qa_lang('badges/good_question'),'desc'=>qa_lang('badges/good_question_desc'),'var'=>3, 'type'=>1);
+		$badges['great_question'] = array('name'=>qa_lang('badges/great_question'),'desc'=>qa_lang('badges/great_question_desc'),'var'=>5, 'type'=>2);
 
-		$badges['nice_answer'] = array('name'=>'Nice Answer','desc'=>'Answer received +# upvote', 'var'=>2, 'type'=>0);
-		$badges['good_answer'] = array('name'=>'Good Answer','desc'=>'Answer received +# upvote', 'var'=>3, 'type'=>1);
-		$badges['great_answer'] = array('name'=>'Great Answer','desc'=>'Answer received +# upvote', 'var'=>5, 'type'=>2);
+		$badges['nice_answer'] = array('name'=>qa_lang('badges/nice_answer'),'desc'=>qa_lang('badges/nice_answer_desc'),'var'=>2, 'type'=>0);
+		$badges['good_answer'] = array('name'=>qa_lang('badges/good_answer'),'desc'=>qa_lang('badges/good_answer_desc'),'var'=>3, 'type'=>1);
+		$badges['great_answer'] = array('name'=>qa_lang('badges/great_answer'),'desc'=>qa_lang('badges/great_answer_desc'),'var'=>5, 'type'=>2);
 		
-		$badges['verified'] = array('name'=>'Verified Human','desc'=>'Successfully verified email address', 'type'=>0);
+		$badges['verified'] = array('name'=>qa_lang('badges/verified'),'desc'=>qa_lang('badges/verified_desc'), 'type'=>0);
 		
-		$badges['voter'] = array('name'=>'Voter','desc'=>'Voted # times', 'var'=>10, 'type'=>0);
-		$badges['avid_voter'] = array('name'=>'Avid Voter','desc'=>'Voted # times', 'var'=>25, 'type'=>1);
-		$badges['devoted_voter'] = array('name'=>'Devoted Voter','desc'=>'Voted # times', 'var'=>50, 'type'=>2);
+		$badges['voter'] = array('name'=>qa_lang('badges/voter'),'desc'=>qa_lang('badges/voter_desc'),'var'=>10, 'type'=>0);
+		$badges['avid_voter'] = array('name'=>qa_lang('badges/avid_voter'),'desc'=>qa_lang('badges/avid_voter_desc'),'var'=>25, 'type'=>1);
+		$badges['devoted_voter'] = array('name'=>qa_lang('badges/devoted_voter'),'desc'=>qa_lang('badges/devoted_voter_desc'),'var'=>50, 'type'=>2);
 
-		$badges['asker'] = array('name'=>'Asker','desc'=>'Asked # questions', 'var'=>10, 'type'=>0);
-		$badges['questioner'] = array('name'=>'Questioner','desc'=>'Asked # questions', 'var'=>25, 'type'=>1);
-		$badges['inquisitor'] = array('name'=>'Inquisitor','desc'=>'Asked # questions', 'var'=>50, 'type'=>2);
+		$badges['asker'] = array('name'=>qa_lang('badges/asker'),'desc'=>qa_lang('badges/asker_desc'),'var'=>10, 'type'=>0);
+		$badges['questioner'] = array('name'=>qa_lang('badges/questioner'),'desc'=>qa_lang('badges/questioner_desc'),'var'=>25, 'type'=>1);
+		$badges['inquisitor'] = array('name'=>qa_lang('badges/inquisitor'),'desc'=>qa_lang('badges/inquisitor_desc'),'var'=>50, 'type'=>2);
 
-		$badges['answerer'] = array('name'=>'Answerer','desc'=>'Posted # answers', 'var'=>10, 'type'=>0);
-		$badges['lecturer'] = array('name'=>'Lecturer','desc'=>'Posted # answers', 'var'=>25, 'type'=>1);
-		$badges['preacher'] = array('name'=>'Preacher','desc'=>'Posted # answers', 'var'=>50, 'type'=>2);
+		$badges['answerer'] = array('name'=>qa_lang('badges/answerer'),'desc'=>qa_lang('badges/answerer_desc'),'var'=>10, 'type'=>0);
+		$badges['lecturer'] = array('name'=>qa_lang('badges/lecturer'),'desc'=>qa_lang('badges/lecturer_desc'),'var'=>25, 'type'=>1);
+		$badges['preacher'] = array('name'=>qa_lang('badges/preacher'),'desc'=>qa_lang('badges/preacher_desc'),'var'=>50, 'type'=>2);
 
-		$badges['commenter'] = array('name'=>'Commenter','desc'=>'Posted # comments', 'var'=>10, 'type'=>0);
-		$badges['commentator'] = array('name'=>'Commentator','desc'=>'Posted # comments', 'var'=>25, 'type'=>1);
-		$badges['annotator'] = array('name'=>'Annotator','desc'=>'Posted # comments', 'var'=>50, 'type'=>2);
+		$badges['commenter'] = array('name'=>qa_lang('badges/commenter'),'desc'=>qa_lang('badges/commenter_desc'),'var'=>10, 'type'=>0);
+		$badges['commentator'] = array('name'=>qa_lang('badges/commentator'),'desc'=>qa_lang('badges/commentator_desc'),'var'=>25, 'type'=>1);
+		$badges['annotator'] = array('name'=>qa_lang('badges/annotator'),'desc'=>qa_lang('badges/annotator_desc'),'var'=>50, 'type'=>2);
 
-		$badges['learner'] = array('name'=>'Learner','desc'=>'Accepted answers to # questions', 'var'=>1, 'type'=>0);
-		$badges['student'] = array('name'=>'Student','desc'=>'Accepted answers to # questions', 'var'=>5, 'type'=>1);
-		$badges['scholar'] = array('name'=>'Scholar','desc'=>'Accepted answers to # questions', 'var'=>15, 'type'=>2);
+		$badges['learner'] = array('name'=>qa_lang('badges/learner'),'desc'=>qa_lang('badges/learner_desc'),'var'=>1, 'type'=>0);
+		$badges['student'] = array('name'=>qa_lang('badges/student'),'desc'=>qa_lang('badges/student_desc'),'var'=>5, 'type'=>1);
+		$badges['scholar'] = array('name'=>qa_lang('badges/scholar'),'desc'=>qa_lang('badges/scholar_desc'),'var'=>15, 'type'=>2);
 
 		return $badges;
 	}
@@ -163,9 +139,9 @@
 		
 		$badge_types = array();
 		
-		$badge_types[] = array('slug'=>'bronze','name'=>'Bronze');
-		$badge_types[] = array('slug'=>'silver','name'=>'Silver');
-		$badge_types[] = array('slug'=>'gold','name'=>'Gold');
+		$badge_types[] = array('slug'=>'bronze','name'=>qa_lang('badges/bronze'));
+		$badge_types[] = array('slug'=>'silver','name'=>qa_lang('badges/silver'));
+		$badge_types[] = array('slug'=>'gold','name'=>qa_lang('badges/gold'));
 		
 		return $badge_types[$id];
 		
@@ -178,9 +154,9 @@
 		qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
 	}
 	
-	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
+	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', qa_lang('badges/badge_admin'));
 
-	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
+	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', qa_lang('badges/badges'));
 
 
 /*
