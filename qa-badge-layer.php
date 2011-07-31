@@ -43,9 +43,11 @@
 				.badge-table {
 				}
 				.badge-bronze,.badge-silver, .badge-gold {
+				  font-weight:bold;
 				  text-align:center;
 				  border-radius:4px;
-				  padding:1px 4px;
+				  width:120px;
+				  display: inline-block;
 				}
 				.badge-bronze {
 				  background-color: #CB9114;

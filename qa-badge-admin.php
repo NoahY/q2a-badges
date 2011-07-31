@@ -49,20 +49,19 @@
 
 
 				foreach ($badges as $slug => $info) {
+					$type = qa_get_badge_type($info['type']);
+					$types = $type['slug'];
 					if(isset($info['var'])) {
-						$desc = str_replace('#',qa_opt('badge_'.$slug.'_var'),$info['desc']);
+						$htmlout = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$info['desc']);
 						$fields[] = array(
-								'type' => 'number',
-								'label' => $info['name'],
-								'tags' => 'NAME="badge_'.$slug.'_var"',
-								'value' => qa_opt('badge_'.$slug.'_var'),
-								'note' => '<em>currently: '.$desc.'</em>'
+								'type' => 'static',
+								'note' => '<span class="badge-'.$types.'">'.$info['name'].'</span> - '.$htmlout
 						);
 					}
 					else {
 						$fields[] = array(
 								'type' => 'static',
-								'note' => '<b>'.$info['name'].':</b> '.$info['desc'],
+								'note' => '<span class="badge-'.$types.'">'.$info['name'].'</span> - '.$info['desc']
 						);
 					}
 				}

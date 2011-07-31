@@ -101,6 +101,8 @@
 		// badges - add to this list to add a new badge, it will be imported when you run this function.  Don't change existing slugs!
 		
 		$badges = array();
+
+		$badges['verified'] = array('name'=>qa_lang('badges/verified'),'desc'=>qa_lang('badges/verified_desc'), 'type'=>0);
 		
 		$badges['nice_question'] = array('name'=>qa_lang('badges/nice_question'),'desc'=>qa_lang('badges/nice_question_desc'),'var'=>2, 'type'=>0);
 		$badges['good_question'] = array('name'=>qa_lang('badges/good_question'),'desc'=>qa_lang('badges/good_question_desc'),'var'=>3, 'type'=>1);
@@ -109,8 +111,6 @@
 		$badges['nice_answer'] = array('name'=>qa_lang('badges/nice_answer'),'desc'=>qa_lang('badges/nice_answer_desc'),'var'=>2, 'type'=>0);
 		$badges['good_answer'] = array('name'=>qa_lang('badges/good_answer'),'desc'=>qa_lang('badges/good_answer_desc'),'var'=>3, 'type'=>1);
 		$badges['great_answer'] = array('name'=>qa_lang('badges/great_answer'),'desc'=>qa_lang('badges/great_answer_desc'),'var'=>5, 'type'=>2);
-		
-		$badges['verified'] = array('name'=>qa_lang('badges/verified'),'desc'=>qa_lang('badges/verified_desc'), 'type'=>0);
 		
 		$badges['voter'] = array('name'=>qa_lang('badges/voter'),'desc'=>qa_lang('badges/voter_desc'),'var'=>10, 'type'=>0);
 		$badges['avid_voter'] = array('name'=>qa_lang('badges/avid_voter'),'desc'=>qa_lang('badges/avid_voter_desc'),'var'=>25, 'type'=>1);
