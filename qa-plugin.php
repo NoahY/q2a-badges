@@ -17,6 +17,8 @@
 			header('Location: ../../');
 			exit;
 	}
+
+    include('qa-lang-badges.php');
 	
 	function qa_badges_init() {
 		
