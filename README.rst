@@ -11,7 +11,9 @@ Features
 --------
 - currently 22 badges implemented
 - badge specification modifiable via admin page
+- badge notification system triggers when awardee accesses the site
 - public badge page displays earnable badges
+- earned badges are shown in individual profile pages
 - badges can be deactivated
 - badges are categorized into types (e.g. gold, silver, bronze)
 
