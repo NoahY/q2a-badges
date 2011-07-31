@@ -174,13 +174,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 
@@ -190,13 +190,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		
@@ -206,13 +206,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		}
@@ -232,13 +232,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 
@@ -248,13 +248,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		
@@ -264,13 +264,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		}
@@ -290,13 +290,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 
@@ -306,13 +306,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		
@@ -322,13 +322,13 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		}
@@ -343,7 +343,7 @@
 			
 			// voter check
 			
-			$this->checkvotes($event_user,$id);
+			$this->check_voter($event_user,$id);
 			
 			// nice question: 2 upvotes
 						
@@ -405,7 +405,7 @@
 
 			// voter check
 			
-			$this->checkvotes($event_user,$id);
+			$this->check_voter($event_user,$id);
 			
 			// nice answer: 2 upvotes
 						
@@ -463,7 +463,7 @@
 			
 			// voter check
 			
-			$this->checkvotes($event_user,$id);
+			$this->check_voter($event_user,$id);
 		}
 
 		function answer_vote_down($event,$userid,$params) {
@@ -490,45 +490,45 @@
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 
 			if(count($votes) >= (int)qa_opt('badge_avid_voter_var')-1) {
-				$badge_slug = 'voter';
+				$badge_slug = 'avid_voter';
 				
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 
 			if(count($votes) >= (int)qa_opt('badge_devoted_voter_var')-1) {
-				$badge_slug = 'voter';
+				$badge_slug = 'devoted_voter';
 				
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $id, $badge_slug
+						$uid, $badge_slug
 					),
 					true
 				);
 				
 				if (!$result) { // not already awarded this badge
-					$this->award_badge($id, $userid, $badge_slug);
+					$this->award_badge($oid, $uid, $badge_slug);
 				}
 			}
 		}
