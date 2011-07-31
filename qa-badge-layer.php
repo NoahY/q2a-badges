@@ -66,7 +66,7 @@
 			qa_html_theme_base::form_body($form);
 
 			if(preg_match('/^\.\.\/user\//',qa_self_html())) { // <- this is our addition
-				$this->badge_form();
+				$this->user_badge_form();
 			}
 		}
 
@@ -80,6 +80,7 @@
 				),
 				true
 			);
+
 			if(count($result) > 0) {
 
 				$notice = '<div class="notify-container">';
@@ -101,8 +102,11 @@
 			}
 			$this->output($notice);
 		}
+		
+		function priviledge_notify() { // gained priviledge
+		}
 
-		function badge_form() {
+		function user_badge_form() {
 			$result = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT badge_name FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
@@ -110,6 +114,7 @@
 				)
 			);
 			if(count($result) > 0) {
+			error_log('5');
 				
 				$output = '
 			<h2>Badges</h2>

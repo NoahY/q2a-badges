@@ -68,7 +68,7 @@
 					'awarded_at DATETIME NOT NULL,'.
 					'user_id INT(11) NOT NULL,'.
 					'notify TINYINT DEFAULT 0 NOT NULL,'.
-					'object_id INT(10) NOT NULL,'.
+					'object_id INT(10),'.
 					'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
 					'id INT(11) NOT NULL AUTO_INCREMENT,'.
 					'PRIMARY KEY (id)'.
@@ -76,6 +76,18 @@
 			);
 			
 		}
+		
+		// set default badge options
+
+		$badges = qa_get_badge_list();
+			error_log('b');
+		
+		foreach ($badges as $slug => $info) {
+			if($info['var'] && !qa_opt('badge_'.$slug.'_var')) {
+				qa_opt('badge_'.$slug.'_var',$info['var']);
+			}
+		}
+			error_log('a');
 	}
 	
 	function qa_import_badge_list() {
@@ -86,6 +98,7 @@
 		// import our list of badge types 
 
 		$badges = qa_get_badge_list();
+			error_log('b2');
 		
 		foreach ($badges as $slug => $info) {
 			
@@ -106,19 +119,24 @@
 				);
 			}
 		}
+			error_log('a2');
 	}
 	
 	function qa_get_badge_list() {
 		
 		// badge types - add to this list to add a new badge type, it will be imported when you run this function.  Don't change existing slugs!
 		
-		$badges['nice_question'] = array('name'=>'Nice Question','desc'=>'Question received +2 upvote');
-		$badges['good_question'] = array('name'=>'Good Question','desc'=>'Question received +3 upvote');
-		$badges['great_question'] = array('name'=>'Great Question','desc'=>'Question received +5 upvote');
+		$badges = array();
+		
+		$badges['nice_question'] = array('name'=>'Nice Question','desc'=>'Question received +# upvote', 'var'=>2);
+		$badges['good_question'] = array('name'=>'Good Question','desc'=>'Question received +# upvote', 'var'=>3);
+		$badges['great_question'] = array('name'=>'Great Question','desc'=>'Question received +# upvote', 'var'=>5);
 
-		$badges['nice_answer'] = array('name'=>'Nice Answer','desc'=>'Answer received +2 upvote');
-		$badges['good_answer'] = array('name'=>'Good Answer','desc'=>'Answer received +3 upvote');
-		$badges['great_answer'] = array('name'=>'Great Answer','desc'=>'Answer received +5 upvote');
+		$badges['nice_answer'] = array('name'=>'Nice Answer','desc'=>'Answer received +# upvote', 'var'=>2);
+		$badges['good_answer'] = array('name'=>'Good Answer','desc'=>'Answer received +# upvote', 'var'=>3);
+		$badges['great_answer'] = array('name'=>'Great Answer','desc'=>'Answer received +# upvote', 'var'=>5);
+		
+		$badges['verified'] = array('name'=>'Verified Person','desc'=>'Successfully verified email address');
 
 		return $badges;
 	}

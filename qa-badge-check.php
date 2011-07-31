@@ -65,12 +65,14 @@
 					break;
 				case 'u_confirmed':
 				// when a user successfully confirms their email address, given in $params['email'].
+					$this->award_badge(null,$user_id,'verified');
 					break;
 				case 'u_reset':
 				// when a user successfully resets their password, which was emailed to $params['email'].
 					break;
 				case 'u_save':
 				// when a user saves (and has possibly changed) their Q2A account details.
+					// check for full details
 					break;
 				case 'u_password':
 				// when a user sets (and has possibly changed) their Q2A password.
@@ -80,6 +82,7 @@
 					break;
 				case 'u_level':
 				// when a user's privilege level is changed by a different user. See u_edit above for how the two users are identified. The old and new levels are in $params['level'] and $params['oldlevel'].
+					//$this->priviledge_flag($params['level'],$params['userid']);
 					break;
 				case 'u_block':
 				case 'u_unblock':
@@ -106,7 +109,7 @@
 			
 			// nice question: 2 upvotes
 						
-			if($votes >= 1) {  // 1, because we can't count this upvote
+			if($votes >= (int)qa_opt('badge_nice_question_var')-1) {  // -1, because we can't count this upvote
 				$badge_slug = 'nice_question';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -122,7 +125,7 @@
 
 			// good question: 3 upvotes
 						
-			if($votes >= 2) {
+			if($votes >= (int)qa_opt('badge_good_question_var')-1) {
 				$badge_slug = 'good_question';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -138,7 +141,7 @@
 
 			// great question: 5 upvotes
 						
-			if($votes >= 4) {
+			if($votes >= (int)qa_opt('badge_great_question_var')-1) {
 				$badge_slug = 'great_question';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -161,9 +164,10 @@
 			$post = $this->get_post_data($id);
 			$votes = $post['netvotes'];
 			$userid = $post['userid'];
+			
 			// nice answer: 2 upvotes
 						
-			if($votes >= 1) {  // 1, because we can't count this upvote
+			if($votes >= (int)qa_opt('badge_nice_answer_var')-1) {  // -1, because we can't count this upvote
 				$badge_slug = 'nice_answer';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -179,7 +183,7 @@
 
 			// good answer: 3 upvotes
 						
-			if($votes >= 2) {
+			if($votes >= (int)qa_opt('badge_good_answer_var')-1) {
 				$badge_slug = 'good_answer';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -195,7 +199,7 @@
 
 			// great answer: 5 upvotes
 						
-			if($votes >= 4) {
+			if($votes >= (int)qa_opt('badge_great_answer_var')-1) {
 				$badge_slug = 'great_answer';
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -216,6 +220,17 @@
 	// worker functions
 		
 		function award_badge($object_id, $user_id, $badge_slug) {
+			
+			// add badge to userbadges
+			
+			qa_db_query_sub(
+				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+				'VALUES (NOW(), 1, #, #, #, 0)',
+				$object_id, $user_id, $badge_slug
+			);
+		}
+
+		function priviledge_notify($object_id, $user_id, $badge_slug) {
 			
 			// add badge to userbadges
 			

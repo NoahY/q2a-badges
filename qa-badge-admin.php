@@ -13,18 +13,23 @@
 
 			$ok = null;
 
+			$badges = qa_get_badge_list();
 			if (qa_clicked('badge_rebuild_button')) {
 				qa_import_badge_list(true);
 				$ok = 'Badge list rebuilt.';
 			}
 			else if(qa_clicked('badge_save_settings')) {
+				foreach ($badges as $slug => $info) {
+					if($info['var'] && qa_post_text('badge_'.$slug.'_var')) {
+						qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
+					}
+				}
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
 				$ok = 'Options saved.';
 			}
 			
 		//	Create the form for display
 			
-			$badges = qa_get_badge_list();
 			
 			$fields = array();
 			
@@ -43,11 +48,23 @@
 				);
 
 
-				foreach ($badges as $info) {
-					$fields[] = array(
-							'type' => 'static',
-							'note' => '<b>'.$info['name'].':</b> '.$info['desc'],
-					);
+				foreach ($badges as $slug => $info) {
+					if($info['var']) {
+						$desc = str_replace('#',qa_opt('badge_'.$slug.'_var'),$info['desc']);
+						$fields[] = array(
+								'type' => 'number',
+								'label' => $info['name'],
+								'tags' => 'NAME="badge_'.$slug.'_var"',
+								'value' => qa_opt('badge_'.$slug.'_var'),
+								'note' => '<em>currently: '.$desc.'</em>'
+						);
+					}
+					else {
+						$fields[] = array(
+								'type' => 'static',
+								'note' => '<b>'.$info['name'].':</b> '.$info['desc'],
+						);
+					}
 				}
 			}
 			
