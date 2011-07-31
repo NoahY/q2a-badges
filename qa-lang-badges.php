@@ -78,8 +78,12 @@
 		'badge_admin_saved'=>'Options saved.',
 		'badge_admin_activate'=>'Activate badges',
 		'active_badges'=>'Active Badges',
-		'badge_recreate'=>'Recreate Badge List',
-		'save_changes'=>'Save Changes'
+		'badge_recreate'=>'Recreate Badges',
+		'badge_recreate_desc'=>'recreate the badge database (for when changing the php code)',
+		'reset_values'=>'Reset',
+		'reset_values_desc'=>'reset variable badge data as input above',
+		'save_settings'=>'Save',
+		'save_settings_desc'=>'save above settings'
 	);
 	
 

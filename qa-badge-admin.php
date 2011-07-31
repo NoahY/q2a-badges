@@ -18,6 +18,13 @@
 				qa_import_badge_list(true);
 				$ok = qa_lang('badges/list_rebuilt');
 			}
+			else if (qa_clicked('badge_reset_button')) {
+				foreach ($badges as $slug => $info) {
+					if(isset($info['var'])) {
+						qa_opt('badge_'.$slug.'_var',$info['var']);
+					}
+				}
+			}
 			else if(qa_clicked('badge_save_settings')) {
 				foreach ($badges as $slug => $info) {
 					if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
@@ -76,11 +83,17 @@
 					array(
 						'label' => qa_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
-						'note' => '<br/><em>DELETE and rebuild list</em><br/><br/>',
+						'note' => '<br/><em>'.qa_lang('badges/badge_recreate_desc').'</em><br/><br/>',
 					),
 					array(
-						'label' => qa_lang('badges/save_changes'),
+						'label' => qa_lang('badges/reset_values'),
+						'tags' => 'NAME="badge_reset_button"',
+						'note' => '<br/><em>'.qa_lang('badges/reset_values_desc').'</em><br/><br/>',
+					),
+					array(
+						'label' => qa_lang('badges/save_settings'),
 						'tags' => 'NAME="badge_save_settings"',
+						'note' => '<br/><em>'.qa_lang('badges/save_settings_desc').'</em><br/><br/>',
 					),
 				),
 			);
