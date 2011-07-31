@@ -80,14 +80,12 @@
 		// set default badge options
 
 		$badges = qa_get_badge_list();
-			error_log('b');
 		
 		foreach ($badges as $slug => $info) {
 			if($info['var'] && !qa_opt('badge_'.$slug.'_var')) {
 				qa_opt('badge_'.$slug.'_var',$info['var']);
 			}
 		}
-			error_log('a');
 	}
 	
 	function qa_import_badge_list() {
@@ -98,7 +96,6 @@
 		// import our list of badge types 
 
 		$badges = qa_get_badge_list();
-			error_log('b2');
 		
 		foreach ($badges as $slug => $info) {
 			
@@ -119,26 +116,59 @@
 				);
 			}
 		}
-			error_log('a2');
 	}
 	
 	function qa_get_badge_list() {
 		
-		// badge types - add to this list to add a new badge type, it will be imported when you run this function.  Don't change existing slugs!
+		// badges - add to this list to add a new badge, it will be imported when you run this function.  Don't change existing slugs!
 		
 		$badges = array();
 		
-		$badges['nice_question'] = array('name'=>'Nice Question','desc'=>'Question received +# upvote', 'var'=>2);
-		$badges['good_question'] = array('name'=>'Good Question','desc'=>'Question received +# upvote', 'var'=>3);
-		$badges['great_question'] = array('name'=>'Great Question','desc'=>'Question received +# upvote', 'var'=>5);
+		$badges['nice_question'] = array('name'=>'Nice Question','desc'=>'Question received +# upvote', 'var'=>2, 'type'=>0);
+		$badges['good_question'] = array('name'=>'Good Question','desc'=>'Question received +# upvote', 'var'=>3, 'type'=>1);
+		$badges['great_question'] = array('name'=>'Great Question','desc'=>'Question received +# upvote', 'var'=>5, 'type'=>2);
 
-		$badges['nice_answer'] = array('name'=>'Nice Answer','desc'=>'Answer received +# upvote', 'var'=>2);
-		$badges['good_answer'] = array('name'=>'Good Answer','desc'=>'Answer received +# upvote', 'var'=>3);
-		$badges['great_answer'] = array('name'=>'Great Answer','desc'=>'Answer received +# upvote', 'var'=>5);
+		$badges['nice_answer'] = array('name'=>'Nice Answer','desc'=>'Answer received +# upvote', 'var'=>2, 'type'=>0);
+		$badges['good_answer'] = array('name'=>'Good Answer','desc'=>'Answer received +# upvote', 'var'=>3, 'type'=>1);
+		$badges['great_answer'] = array('name'=>'Great Answer','desc'=>'Answer received +# upvote', 'var'=>5, 'type'=>2);
 		
-		$badges['verified'] = array('name'=>'Verified Person','desc'=>'Successfully verified email address');
+		$badges['verified'] = array('name'=>'Verified Human','desc'=>'Successfully verified email address', 'type'=>0);
+		
+		$badges['voter'] = array('name'=>'Voter','desc'=>'Voted # times', 'var'=>10, 'type'=>0);
+		$badges['avid_voter'] = array('name'=>'Avid Voter','desc'=>'Voted # times', 'var'=>25, 'type'=>1);
+		$badges['devoted_voter'] = array('name'=>'Devoted Voter','desc'=>'Voted # times', 'var'=>50, 'type'=>2);
+
+		$badges['asker'] = array('name'=>'Asker','desc'=>'Asked # questions', 'var'=>10, 'type'=>0);
+		$badges['questioner'] = array('name'=>'Questioner','desc'=>'Asked # questions', 'var'=>25, 'type'=>1);
+		$badges['inquisitor'] = array('name'=>'Inquisitor','desc'=>'Asked # questions', 'var'=>50, 'type'=>2);
+
+		$badges['answerer'] = array('name'=>'Answerer','desc'=>'Posted # answers', 'var'=>10, 'type'=>0);
+		$badges['lecturer'] = array('name'=>'Lecturer','desc'=>'Posted # answers', 'var'=>25, 'type'=>1);
+		$badges['preacher'] = array('name'=>'Preacher','desc'=>'Posted # answers', 'var'=>50, 'type'=>2);
+
+		$badges['commenter'] = array('name'=>'Commenter','desc'=>'Posted # comments', 'var'=>10, 'type'=>0);
+		$badges['commentator'] = array('name'=>'Commentator','desc'=>'Posted # comments', 'var'=>25, 'type'=>1);
+		$badges['annotator'] = array('name'=>'Annotator','desc'=>'Posted # comments', 'var'=>50, 'type'=>2);
+
+		$badges['learner'] = array('name'=>'Learner','desc'=>'Accepted answers to # questions', 'var'=>1, 'type'=>0);
+		$badges['student'] = array('name'=>'Student','desc'=>'Accepted answers to # questions', 'var'=>5, 'type'=>1);
+		$badges['scholar'] = array('name'=>'Scholar','desc'=>'Accepted answers to # questions', 'var'=>15, 'type'=>2);
 
 		return $badges;
+	}
+	
+	function qa_get_badge_type($id) {
+		
+		// badge categories, e.g. bronze, silver, gold
+		
+		$badge_types = array();
+		
+		$badge_types[] = array('slug'=>'bronze','name'=>'Bronze');
+		$badge_types[] = array('slug'=>'silver','name'=>'Silver');
+		$badge_types[] = array('slug'=>'gold','name'=>'Gold');
+		
+		return $badge_types[$id];
+		
 	}
 	
 	qa_badges_init();
@@ -149,6 +179,9 @@
 	}
 	
 	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
+
+	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
+
 
 /*
 	Omit PHP closing tag to help avoid accidental output

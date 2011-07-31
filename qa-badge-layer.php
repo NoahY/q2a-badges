@@ -40,6 +40,31 @@
 				  text-decoration: none;
 				  top: 8px;
 				}				
+				.badge-table {
+				}
+				.badge-bronze,.badge-silver, .badge-gold {
+				  text-align:center;
+				  border-radius:4px;
+				  padding:1px 4px;
+				}
+				.badge-bronze {
+				  background-color: #CB9114;
+				  color: #6C582C;
+				  border:2px solid #6C582C;
+				}				
+				.badge-silver {
+				  background-color: #CDCDCD;
+				  color: #737373;
+				  border:2px solid #737373;
+				}				
+				.badge-gold {
+				  background-color: #EEDD0F;
+				  color: #5F5908;
+				  border:2px solid #5F5908;
+				}				
+				.badge-desc {
+					padding-left:8px;
+				}				
 			</style>');
 		}
 
