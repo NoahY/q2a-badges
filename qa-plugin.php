@@ -55,15 +55,30 @@
 			
 		}
 		
-		// set default badge options
 
 		$badges = qa_get_badge_list();
 		
 		foreach ($badges as $slug => $info) {
+
+			// set default badge options
+
 			if($info['var'] && !qa_opt('badge_'.$slug.'_var')) {
 				qa_opt('badge_'.$slug.'_var',$info['var']);
 			}
+
+			// set custom badge names
+			
+			if(qa_opt('badge_'.$slug.'_name')) {
+				$qa_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
+			}
+
 		}
+		
+		// set default settings
+		
+		if(!qa_opt('badge_notify_time')) qa_opt('badge_notify_time',0);
+		
+		
 	}
 	
 	function qa_import_badge_list() {

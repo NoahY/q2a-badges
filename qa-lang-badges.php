@@ -82,6 +82,8 @@
 		'badge_recreate_desc'=>'recreate the badge database (for when changing the php code)',
 		'reset_values'=>'Reset',
 		'reset_values_desc'=>'reset variable badge data as input above',
+		'notify_time'=>'Notify Duration',
+		'notify_time_desc'=>'duration (s) before hiding badge notification (0 = off)',
 		'save_settings'=>'Save',
 		'save_settings_desc'=>'save above settings'
 	);

@@ -4,6 +4,24 @@
 
 	// theme replacement functions
 
+		function head_script() {
+			qa_html_theme_base::head_script();
+			$this->output("
+			<script>".(qa_opt('badge_notify_time') != '0'?"
+				$('document').ready(function() { $('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").fadeOut(); });":"")."
+				function badgeEdit(slug,end) {
+					if(end) {
+						$('#badge_'+slug+'_edit').hide();
+						$('#badge_'+slug+'_badge').show();
+						$('#badge_'+slug+'_badge').html($('#badge_'+slug+'_edit').val());
+						return;
+					}
+					$('#badge_'+slug+'_badge').hide();
+					$('#badge_'+slug+'_edit').show();
+					$('#badge_'+slug+'_edit').focus();
+				}
+			</script>");
+		}
 		function head_css()
 		{
 			qa_html_theme_base::head_css();
@@ -18,7 +36,7 @@
 					width: 100%;
 					z-index: 100;
 				}
-				.badge-notify {
+					.badge-notify {
 					background-color: #F6DF30;
 					color: #444444;
 					font-weight: bold;
@@ -30,39 +48,38 @@
 					position:relative;
 				}
 				.notify-close {
-				  color: #735005;
-				  cursor: pointer;
-				  font-size: 18px;
-				  line-height: 18px;
-				  padding: 0 3px;
-				  position: absolute;
-				  right: 8px;
-				  text-decoration: none;
-				  top: 8px;
+					color: #735005;
+					cursor: pointer;
+					font-size: 18px;
+					line-height: 18px;
+					padding: 0 3px;
+					position: absolute;
+					right: 8px;
+					text-decoration: none;
+					top: 8px;
 				}				
 				.badge-table {
 				}
 				.badge-bronze,.badge-silver, .badge-gold {
-				  font-weight:bold;
-				  text-align:center;
-				  border-radius:4px;
-				  width:120px;
-				  display: inline-block;
+					cursor:pointer;
+					color: #000;
+					font-weight:bold;
+					text-align:center;
+					border-radius:4px;
+					width:120px;
+					display: inline-block;
 				}
 				.badge-bronze {
-				  background-color: #CB9114;
-				  color: #6C582C;
-				  border:2px solid #6C582C;
+					background-color: #CB9114;
+					border:2px solid #6C582C;
 				}				
 				.badge-silver {
-				  background-color: #CDCDCD;
-				  color: #737373;
-				  border:2px solid #737373;
+					background-color: #CDCDCD;
+					border:2px solid #737373;
 				}				
 				.badge-gold {
-				  background-color: #EEDD0F;
-				  color: #5F5908;
-				  border:2px solid #5F5908;
+					background-color: #EEDD0F;
+					border:2px solid #5F5908;
 				}				
 				.badge-desc {
 					padding-left:8px;
@@ -113,9 +130,8 @@
 				$notice = '<div class="notify-container">';
 
 				// populate notification list
-
 				foreach($result as $name) {
-					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="alert(\'clicked\');$(this).parent().hide(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
@@ -127,6 +143,11 @@
 					qa_get_logged_in_userid()
 				);
 			}
+			$this->output($notice);
+		}
+		
+		function trigger_notify($message) {
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
 			$this->output($notice);
 		}
 		

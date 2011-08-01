@@ -42,8 +42,10 @@
 			$qa_content['custom2']='<table cellspacing="20">';
 			$c = 2;
 			foreach($badges as $slug => $info) {
+				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
 				$c++;
-				$name = $info['name'];
+				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$info['name']);
+				$name = qa_opt('badge_'.$slug.'_name');
 				$var = qa_opt('badge_'.$slug.'_var');
 				$desc = str_replace('#',$var,$info['desc']);
 				$type = qa_get_badge_type($info['type']);
