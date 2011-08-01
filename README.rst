@@ -64,7 +64,7 @@ http://www.question2answer.org/
 Badge List
 ----------
 
-Level[#]_	Title				Description
+Level[#]	Title				Description
 -----		-----				-----------
 
 1			Verified Human		Successfully verified email address
@@ -104,5 +104,21 @@ Level[#]_	Title				Description
 1			Dedicated			Visited every day for # consecutive days
 2			Devoted				Visited every day for # consecutive days
 3			Zealous				Visited every day for # consecutive days
+
+1			Gifted				# answers selected as best answer
+2			Wise				# answers selected as best answer
+3			Enlightened			# answers selected as best answer
+
+1			Grateful			selected # answers as best answer
+2			Respectful			selected # answers as best answer
+3			Reverential			selected # answers as best answer
+
+1			Medalist			Received total of # badges
+2			Champion			Received total of # badges
+3			Olympian			Received total of # badges
+
+1			Editor				Performed total of # edits
+2			Copy Editor			Performed total of # edits
+3			Senior Editor		Performed total of # edits
 
 [#]_ Level refers to difficulty level (e.g. gold, silver, bronze).

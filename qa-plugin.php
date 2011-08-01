@@ -260,6 +260,22 @@
 		$badges['devoted'] = array('name'=>qa_badge_lang('badges/devoted'),'desc'=>qa_badge_lang('badges/devoted_desc'),'var'=>25, 'type'=>1);
 		$badges['zealous'] = array('name'=>qa_badge_lang('badges/zealous'),'desc'=>qa_badge_lang('badges/zealous_desc'),'var'=>50, 'type'=>2);
 
+		$badges['gifted'] = array('name'=>qa_badge_lang('badges/gifted'),'desc'=>qa_badge_lang('badges/gifted_desc'),'var'=>5, 'type'=>0);
+		$badges['wise'] = array('name'=>qa_badge_lang('badges/wise'),'desc'=>qa_badge_lang('badges/wise_desc'),'var'=>10, 'type'=>1);
+		$badges['enlightened'] = array('name'=>qa_badge_lang('badges/enlightened'),'desc'=>qa_badge_lang('badges/enlightened_desc'),'var'=>20, 'type'=>2);
+
+		$badges['grateful'] = array('name'=>qa_badge_lang('badges/grateful'),'desc'=>qa_badge_lang('badges/grateful_desc'),'var'=>1, 'type'=>0);
+		$badges['respectful'] = array('name'=>qa_badge_lang('badges/respectful'),'desc'=>qa_badge_lang('badges/respectful_desc'),'var'=>8, 'type'=>1);
+		$badges['reverential'] = array('name'=>qa_badge_lang('badges/reverential'),'desc'=>qa_badge_lang('badges/reverential_desc'),'var'=>20, 'type'=>2);
+
+		$badges['medalist'] = array('name'=>qa_badge_lang('badges/medalist'),'desc'=>qa_badge_lang('badges/medalist_desc'),'var'=>10, 'type'=>0);
+		$badges['champion'] = array('name'=>qa_badge_lang('badges/champion'),'desc'=>qa_badge_lang('badges/champion_desc'),'var'=>25, 'type'=>1);
+		$badges['olympian'] = array('name'=>qa_badge_lang('badges/olympian'),'desc'=>qa_badge_lang('badges/olympian_desc'),'var'=>50, 'type'=>2);
+
+		$badges['editor'] = array('name'=>qa_badge_lang('badges/editor'),'desc'=>qa_badge_lang('badges/editor_desc'),'var'=>1, 'type'=>0);
+		$badges['copy_editor'] = array('name'=>qa_badge_lang('badges/copy_editor'),'desc'=>qa_badge_lang('badges/copy_editor_desc'),'var'=>15, 'type'=>1);
+		$badges['senior_editor'] = array('name'=>qa_badge_lang('badges/senior_editor'),'desc'=>qa_badge_lang('badges/senior_editor_desc'),'var'=>50, 'type'=>2);
+
 		return $badges;
 	}
 	

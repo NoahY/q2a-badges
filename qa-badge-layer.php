@@ -127,7 +127,6 @@
 				),
 				true
 			);
-			error_log(count($result));
 			if(count($result) > 0) {
 
 				$notice = '<div class="notify-container">';
@@ -165,7 +164,6 @@
 				)
 			);
 			if(count($result) > 0) {
-			error_log('5');
 				
 				$output = '
 			<h2>Badges</h2>

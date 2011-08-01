@@ -1,5 +1,7 @@
 <?php
 	return array(
+		'verified'=>'Verified Human',
+
 		'nice_question'=>'Nice Question',
 		'good_question'=>'Good Question',
 		'great_question'=>'Great Question',
@@ -7,8 +9,6 @@
 		'nice_answer'=>'Nice Answer',
 		'good_answer'=>'Good Answer',
 		'great_answer'=>'Great Answer',
-		
-		'verified'=>'Verified Human',
 		
 		'voter'=>'Voter',
 		'avid_voter'=>'Avid Voter',
@@ -38,6 +38,24 @@
 		'devoted'=>'Devoted',
 		'zealous'=>'Zealous',
 
+		'gifted'=>'Gifted',
+		'wise'=>'Wise',
+		'enlightened'=>'Enlightened',
+
+		'grateful'=>'Grateful',
+		'respectful'=>'Respectful',
+		'reverential'=>'Reverential',
+		
+		'medalist'=>'Medalist',
+		'champion'=>'Champion',
+		'olympian'=>'Olympian',
+
+		'editor'=>'Editor',
+		'copy_editor'=>'Copy Editor',
+		'senior_editor'=>'Senior Editor',
+
+		'verified_desc'=>'Successfully verified email address',
+
 		'nice_question_desc'=>'Question received +# upvote',
 		'good_question_desc'=>'Question received +# upvote',
 		'great_question_desc'=>'Question received +# upvote',
@@ -45,8 +63,6 @@
 		'nice_answer_desc'=>'Answer received +# upvote',
 		'good_answer_desc'=>'Answer received +# upvote',
 		'great_answer_desc'=>'Answer received +# upvote',
-		
-		'verified_desc'=>'Successfully verified email address',
 		
 		'voter_desc'=>'Voted # times',
 		'avid_voter_desc'=>'Voted # times',
@@ -72,9 +88,25 @@
 		'bloodhound_desc'=>'flagged # posts as inappropriate',
 		'pitbull_desc'=>'flagged # posts as inappropriate',
 
-		'dedicated_desc'=>'visited every day for # consecutive days',
-		'devoted_desc'=>'visited every day for # consecutive days',
-		'zealous_desc'=>'visited every day for # consecutive days',
+		'dedicated_desc'=>'Visited every day for # consecutive days',
+		'devoted_desc'=>'Visited every day for # consecutive days',
+		'zealous_desc'=>'Visited every day for # consecutive days',
+		
+		'gifted_desc'=>'# answers selected as best answer',
+		'wise_desc'=>'# answers selected as best answer',
+		'enlightened_desc'=>'# answers selected as best answer',
+
+		'grateful_desc'=>'selected # answers as best answer',
+		'respectful_desc'=>'selected # answers as best answer',
+		'reverential_desc'=>'selected # answers as best answer',
+
+		'medalist_desc'=>'Received total of # badges',
+		'champion_desc'=>'Received total of # badges',
+		'olympian_desc'=>'Received total of # badges',
+
+		'editor_desc'=>'Performed total of # edits',
+		'copy_editor_desc'=>'Performed total of # edits',
+		'senior_editor_desc'=>'Performed total of # edits',
 		
 		'bronze'=>'Bronze',
 		'silver'=>'Silver',

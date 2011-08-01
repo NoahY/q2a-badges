@@ -2,7 +2,7 @@
 
 	class badge_check {
 		
-	// main event processing function
+// main event processing function
 		
 		function process_event($event, $userid, $handle, $cookieid, $params) {
 			switch ($event) {
@@ -20,12 +20,19 @@
 
 				// when a question, answer or comment is modified. The $params array contains information about the post both before and after the change, e.g. $params['content'] and $params['oldcontent'].
 				case 'q_edit':
+					$this->question_edit($event,$userid,$params);
+					break;
 				case 'a_edit':
+					$this->answer_edit($event,$userid,$params);
+					break;
 				case 'c_edit':
+					$this->comment_edit($event,$userid,$params);
 					break;
 
 				// when an answer is selected or unselected as the best answer for its question. The IDs of the answer and its parent question are in $params['postid'] and $params['parentid'] respectively.
 				case 'a_select':
+					$this->answer_select($event,$userid,$params);
+					break;
 				case'a_unselect':
 					break;
 
@@ -142,9 +149,9 @@
 			}
 		}
 
-	// badge checking functions
+// badge checking functions
 		
-// check on post
+	// check on post
 		
 		function question_post($event,$event_user,$params) {
 			$id = $params['postid'];
@@ -268,7 +275,7 @@
 			}
 		}
 		
-// check on votes
+	// check on votes
 		
 		function question_vote_up($event,$event_user,$params) {
 			$id = $params['postid'];
@@ -377,8 +384,156 @@
 			}
 		}
 
+	// check on selected answer
 
-// check on flags
+		function answer_select($event,$event_user,$params) {
+			$qid = $params['parentid'];
+			$aid = $params['postid'];
+			$a = $this->get_post_data($aid);
+			$auid = $a['userid'];
+			
+			// sheer number of own answers selected by others
+			
+			$this->check_best_answers($auid);
+			
+			// sheer number of answers selected by self
+
+			$this->check_selected_answers($event_user);
+			
+		
+		}
+
+		function check_best_answers($uid) {
+			$count = qa_db_read_one_value(
+				qa_db_query_sub(
+					'SELECT aselects FROM ^userpoints WHERE userid=#',
+					$uid
+				),
+				true
+			);
+
+			$badges = array('gifted','wise','enlightened');
+
+			foreach($badges as $badge_slug) {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+					$result = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						),
+						true
+					);
+					
+					if (!$result) { // not already awarded this badge
+						$this->award_badge(NULL, $uid, $badge_slug);
+					}
+				}
+			}			
+		}
+		
+		function check_selected_answers($uid) {
+			$count = qa_db_read_one_value(
+				qa_db_query_sub(
+					'SELECT aselecteds FROM ^userpoints WHERE userid=#',
+					$uid
+				),
+				true
+			);
+
+			$badges = array('grateful','respectful','reverential');
+
+			foreach($badges as $badge_slug) {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+					$result = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						),
+						true
+					);
+					
+					if (!$result) { // not already awarded this badge
+						$this->award_badge(NULL, $uid, $badge_slug);
+					}
+				}
+			}			
+		}
+	
+	// check on edit
+	
+		function question_edit($event,$event_user,$params) {
+
+			if($params['content'] == $params['oldcontent']) return;
+			
+			$this->add_edit_count($event_user);
+			
+			// sheer edit volume
+			$this->check_editor($event_user);
+			
+		}
+
+		function answer_edit($event,$event_user,$params) {
+
+			if($params['content'] == $params['oldcontent']) return;
+			
+			$this->add_edit_count($event_user);
+			
+			// sheer edit volume
+			
+			$this->check_editor($event_user);
+			
+		}
+
+		function comment_edit($event,$event_user,$params) {
+
+			if($params['content'] == $params['oldcontent']) return;
+			
+			$this->add_edit_count($event_user);
+			
+			// sheer edit volume
+			
+			$this->check_editor($event_user);
+			
+		}
+		
+		function add_edit_count($uid) {
+			
+			qa_db_query_sub(
+				'UPDATE ^achievements SET posts_edited=posts_edited+1 WHERE user_id=#',
+				$uid
+			);
+					
+		}
+		
+		function check_editor($uid) {
+			$count = qa_db_read_one_value(
+				qa_db_query_sub(
+					'SELECT posts_edited FROM ^achievements WHERE user_id=#',
+					$uid
+				),
+				true
+			);
+
+			$badges = array('editor','copy_editor','senior_editor');
+
+			foreach($badges as $badge_slug) {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+					$result = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						),
+						true
+					);
+					
+					if (!$result) { // not already awarded this badge
+						$this->award_badge(NULL, $uid, $badge_slug);
+					}
+				}
+			}			
+		}		
+
+	// check on flags
 
 		function question_flag($event,$event_user,$params) {
 			$id = $params['postid'];
@@ -452,11 +607,41 @@
 			}
 		}
 
+	// check on badges
+	
+		function check_badges($uid) {
+			$medals = qa_db_read_all_values(
+				qa_db_query_sub(
+					'SELECT user_id FROM ^userbadges WHERE user_id=#',
+					$user_id
+				),
+				true
+			);
 
-	// worker functions
+			$badges = array('medalist','champion','olympian');
+
+			foreach($badges as $badge_slug) {
+				if(count($medals)  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+					$result = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						),
+						true
+					);
+					
+					if (!$result) { // not already awarded this badge
+						$this->award_badge($oid, $uid, $badge_slug, true); // this is a "badge badge"
+					}
+				}
+			}			
+		}
+
+
+// worker functions
 
 		
-		function award_badge($object_id, $user_id, $badge_slug) {
+		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false) {
 			
 			// add badge to userbadges
 			
@@ -465,6 +650,9 @@
 				'VALUES (NOW(), 1, #, #, #, 0)',
 				$object_id, $user_id, $badge_slug
 			);
+			
+			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
+			if(!$badge_badge) $this->check_badges($user_id);
 		}
 
 		function priviledge_notify($object_id, $user_id, $badge_slug) {
