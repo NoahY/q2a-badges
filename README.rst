@@ -4,7 +4,7 @@ Question2Answer Badges
 -----------
 Description
 -----------
-This is a plugin for *Question2Answer* that provides basic badge functionality. 
+This is a plugin for **Question2Answer** that provides basic badge functionality. 
 
 --------
 Features
@@ -25,20 +25,20 @@ Installation
 2. Create a new folder in the qa-plugin directory (e.g. badges)
 3. Place the files in this repository in that folder.
 4. navigate to your site and check your database to make sure the tables were created (^badges and ^userbadges)
-5. Go to *Admin -> Plugins* on your q2a install and select the '*Activate badges*' option, then '*Save Changes*'.
+5. Go to **Admin -> Plugins** on your q2a install and select the '**Activate badges**' option, then '**Save Changes**'.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
 
 -----------
 Translation
 -----------
-The translation file is *qa-lang-badges.php*.  Copy this file to the *qa-lang/<your-language>/* directory.  Edit the right-hand side strings in this file with notepad++ (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
+The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad++ (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
 
-*'nice_question'=>'Nice Question',*
+**'nice_question'=>'Nice Question',**
 
 to
 
-*'good_question'=>'Swali nzuri',*
+**'good_question'=>'Swali nzuri',**
 
 for Swahili.  Don't edit the string on the left-hand side or bad things will happen.
 
@@ -47,7 +47,7 @@ Once you've completed the translation, don't forget to set the site language in 
 ----------
 Disclaimer
 ----------
-This is *alpha* software.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
+This is **alpha** software.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
 
 -------
 Release
@@ -123,4 +123,4 @@ Level[#]_   Title               Description
 3           Senior Editor       Performed total of # edits
 =========   ==============      ========================================
 
-[#]_ Level refers to difficulty level (e.g. gold, silver, bronze).
+.. [#]  Level refers to difficulty level (e.g. gold, silver, bronze).
