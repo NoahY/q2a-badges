@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: 
         Plugin Description: Awards Badges on events
-        Plugin Version: 0.1
+        Plugin Version: 0.2
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
