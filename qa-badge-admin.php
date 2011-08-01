@@ -16,7 +16,7 @@
 			$badges = qa_get_badge_list();
 			if (qa_clicked('badge_rebuild_button')) {
 				qa_import_badge_list(true);
-				$ok = qa_lang('badges/list_rebuilt');
+				$ok = qa_badge_lang('badges/list_rebuilt');
 			}
 			else if (qa_clicked('badge_reset_button')) {
 				foreach ($badges as $slug => $info) {
@@ -47,14 +47,14 @@
 					
 					if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
 						qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
-						$qa_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
+						$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
 					}
 						
 					
 				}
 				qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
-				$ok = qa_lang('badges/badge_admin_saved');
+				$ok = qa_badge_lang('badges/badge_admin_saved');
 			}
 			
 		//	Create the form for display
@@ -63,7 +63,7 @@
 			$fields = array();
 			
 			$fields[] = array(
-				'label' => qa_lang('badges/badge_admin_activate'),
+				'label' => qa_badge_lang('badges/badge_admin_activate'),
 				'tags' => 'NAME="badge_active_check"',
 				'value' => qa_opt('badge_active'),
 				'type' => 'checkbox',
@@ -72,7 +72,7 @@
 			if(qa_opt('badge_active')) {
 
 				$fields[] = array(
-						'label' => qa_lang('badges/active_badges').':',
+						'label' => qa_badge_lang('badges/active_badges').':',
 						'type' => 'static',
 				);
 
@@ -99,11 +99,11 @@
 					}
 				}
 				$fields[] = array(
-						'label' => qa_lang('badges/notify_time').':',
+						'label' => '<hr/>'.qa_badge_lang('badges/notify_time').':',
 						'type' => 'number',
 						'value' => qa_opt('badge_notify_time'),
 						'tags' => 'NAME="badge_notify_time"',
-						'note' => '<em>'.qa_lang('badges/notify_time_desc').'</em>',
+						'note' => '<em>'.qa_badge_lang('badges/notify_time_desc').'</em><hr/>',
 				);
 				
 			}
@@ -115,19 +115,19 @@
 				
 				'buttons' => array(
 					array(
-						'label' => qa_lang('badges/badge_recreate'),
+						'label' => qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
-						'note' => '<br/><em>'.qa_lang('badges/badge_recreate_desc').'</em><br/><br/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><br/><br/>',
 					),
 					array(
-						'label' => qa_lang('badges/reset_values'),
+						'label' => qa_badge_lang('badges/reset_values'),
 						'tags' => 'NAME="badge_reset_button"',
-						'note' => '<br/><em>'.qa_lang('badges/reset_values_desc').'</em><br/><br/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/reset_values_desc').'</em><br/><br/>',
 					),
 					array(
-						'label' => qa_lang('badges/save_settings'),
+						'label' => qa_badge_lang('badges/save_settings'),
 						'tags' => 'NAME="badge_save_settings"',
-						'note' => '<br/><em>'.qa_lang('badges/save_settings_desc').'</em><br/><br/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/save_settings_desc').'</em><br/><br/>',
 					),
 				),
 			);

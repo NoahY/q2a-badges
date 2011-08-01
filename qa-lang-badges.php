@@ -1,7 +1,5 @@
 <?php
-	global $qa_lang_default;
-
-	$qa_lang_default['badges'] = array(
+	return array(
 		'nice_question'=>'Nice Question',
 		'good_question'=>'Good Question',
 		'great_question'=>'Great Question',
@@ -32,6 +30,14 @@
 		'student'=>'Student',
 		'scholar'=>'Scholar',
 
+		'watchdog'=>'Watchdog',
+		'bloodhound'=>'Bloodhound',
+		'pitbull'=>'Pitbull',
+
+		'dedicated'=>'Dedicated',
+		'devoted'=>'Devoted',
+		'zealous'=>'Zealous',
+
 		'nice_question_desc'=>'Question received +# upvote',
 		'good_question_desc'=>'Question received +# upvote',
 		'great_question_desc'=>'Question received +# upvote',
@@ -61,6 +67,14 @@
 		'learner_desc'=>'Accepted answers to # questions',
 		'student_desc'=>'Accepted answers to # questions',
 		'scholar_desc'=>'Accepted answers to # questions',
+
+		'watchdog_desc'=>'flagged # posts as inappropriate',
+		'bloodhound_desc'=>'flagged # posts as inappropriate',
+		'pitbull_desc'=>'flagged # posts as inappropriate',
+
+		'dedicated_desc'=>'visited every day for # consecutive days',
+		'devoted_desc'=>'visited every day for # consecutive days',
+		'zealous_desc'=>'visited every day for # consecutive days',
 		
 		'bronze'=>'Bronze',
 		'silver'=>'Silver',

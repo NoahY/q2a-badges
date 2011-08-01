@@ -15,7 +15,7 @@
 		{	
 			return array(
 				array(
-					'title' => qa_lang('badges/badges'),
+					'title' => qa_badge_lang('badges/badges'),
 					'request' => 'badges',
 					'nav' => 'M', // 'M'=main, 'F'=footer, 'B'=before main, 'O'=opposite main, null=none
 				),
@@ -34,11 +34,11 @@
 		{
 			$qa_content=qa_content_prepare();
 
-			$qa_content['title']=qa_lang('badges/badge_list_title');
+			$qa_content['title']=qa_badge_lang('badges/badge_list_title');
 
 			$badges = qa_get_badge_list();
 
-			$qa_content['custom']='<em>'.qa_lang('badges/badge_list_pre').'</em><br />';
+			$qa_content['custom']='<em>'.qa_badge_lang('badges/badge_list_pre').'</em><br />';
 			$qa_content['custom2']='<table cellspacing="20">';
 			$c = 2;
 			foreach($badges as $slug => $info) {

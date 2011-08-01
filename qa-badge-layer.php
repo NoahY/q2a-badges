@@ -61,6 +61,7 @@
 				.badge-table {
 				}
 				.badge-bronze,.badge-silver, .badge-gold {
+					margin-right:4px;
 					cursor:pointer;
 					color: #000;
 					font-weight:bold;
@@ -117,21 +118,23 @@
 	// worker functions
 
 		function badge_notify() {
+			$userid = qa_get_logged_in_userid();
+			
 			$result = qa_db_read_all_values(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_name FROM ^userbadges,^badges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=# AND ^userbadges.notify=1',
-					qa_get_logged_in_userid()
+					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify=1',
+					$userid
 				),
 				true
 			);
-
+			error_log(count($result));
 			if(count($result) > 0) {
 
 				$notice = '<div class="notify-container">';
 
 				// populate notification list
 				foreach($result as $name) {
-					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="alert(\'clicked\');$(this).parent().hide(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".qa_badge_lang('badges/'.$name).'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
@@ -140,7 +143,7 @@
 				
 				qa_db_query_sub(
 					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify=1',
-					qa_get_logged_in_userid()
+					$userid
 				);
 			}
 			$this->output($notice);

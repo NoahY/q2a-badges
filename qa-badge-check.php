@@ -74,6 +74,22 @@
 				case 'q_vote_nil':
 				case 'a_vote_nil':
 					break;
+				// when a question, answer or comment is flagged or unflagged. The ID of the question, answer or comment is in $params['postid'].
+				case 'q_flag':
+					$this->question_flag($event,$userid,$params);
+					break;
+				case 'a_flag':
+					$this->answer_flag($event,$userid,$params);
+					break;
+				case 'c_flag':
+					$this->comment_flag($event,$userid,$params);
+					break;
+				case 'q_unflag':
+					break;
+				case 'a_unflag':
+					break;
+				case 'c_unflag':
+					break;
 
 				// when a new user registers. The email is in $params['email'] and the privilege level in $params['level'].
 				case 'u_register':
@@ -128,7 +144,7 @@
 
 	// badge checking functions
 		
-		// check on post
+// check on post
 		
 		function question_post($event,$event_user,$params) {
 			$id = $params['postid'];
@@ -252,7 +268,7 @@
 			}
 		}
 		
-		// check number of votes on question
+// check on votes
 		
 		function question_vote_up($event,$event_user,$params) {
 			$id = $params['postid'];
@@ -316,7 +332,7 @@
 			}		
 		}
 
-		function question_vote_down($event,$userid,$params) {
+		function question_vote_down($event,$event_user,$params) {
 			$id = $params['postid'];
 			
 			// vote volume check
@@ -324,20 +340,20 @@
 			$this->check_voter($event_user,$id);
 		}
 
-		function answer_vote_down($event,$userid,$params) {
+		function answer_vote_down($event,$event_user,$params) {
 			$id = $params['postid'];
 			
 			// vote volume check
 			
-			$this->checkvoter($event_user,$id);
+			$this->check_voter($event_user,$id);
 		}
 
 		function check_voter($uid,$oid) {
 			
 			$votes = qa_db_read_all_values(
 				qa_db_query_sub(
-					'SELECT userid FROM ^uservotes WHERE userid=# AND postid=# AND vote !=#',
-					$uid, $oid, 0
+					'SELECT userid FROM ^uservotes WHERE userid=# AND vote !=#',
+					$uid, 0
 				),
 				true
 			);
@@ -360,9 +376,64 @@
 				}
 			}
 		}
+
+
+// check on flags
+
+		function question_flag($event,$event_user,$params) {
+			$id = $params['postid'];
+			
+			// flag volume check
+			
+			$this->check_flagger($event_user,$id);
+		}
+
+		function answer_flag($event,$event_user,$params) {
+			$id = $params['postid'];
+			
+			// flag volume check
+			
+			$this->check_flagger($event_user,$id);
+		}
+
+		function comment_flag($event,$event_user,$params) {
+			$id = $params['postid'];
+			
+			// flag volume check
+			
+			$this->check_flagger($event_user,$id);
+		}
+
+		function check_flagger($uid,$oid) {
+			$flags = qa_db_read_all_values(
+				qa_db_query_sub(
+					'SELECT userid FROM ^uservotes WHERE userid=# AND flag = #',
+					$uid, 1
+				),
+				true
+			);
+
+			$badges = array('watchdog','bloodhound','pitbull');
+
+			foreach($badges as $badge_slug) {
+				if(count($flags)  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+					$result = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						),
+						true
+					);
+					
+					if (!$result) { // not already awarded this badge
+						$this->award_badge($oid, $uid, $badge_slug);
+					}
+				}
+			}
+		}
 		
 		// verified email check for badge 
-		function check_email_award($event,$userid,$params) {
+		function check_email_award($event,$event_user,$params) {
 			
 			$badge_slug = 'verified';
 			
