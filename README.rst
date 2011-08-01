@@ -34,7 +34,7 @@ Translation
 -----------
 The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad++ (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
 
-**'nice_question'=>'Nice Question',**
+**'good_question'=>'Nice Question',**
 
 to
 
