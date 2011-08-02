@@ -44,13 +44,13 @@
 			foreach($badges as $slug => $info) {
 				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
 				$c++;
-				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$info['name']);
+				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
 				$name = qa_opt('badge_'.$slug.'_name');
 				$var = qa_opt('badge_'.$slug.'_var');
-				$desc = str_replace('#',$var,$info['desc']);
+				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
-				$qa_content['custom'.$c]="<tr class='badge-entry'><td class='badge-$types'><b>$name</b></td><td class='badge-desc'>$desc</td></tr>";
+				$qa_content['custom'.$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td></tr>";
 			
 			}
 

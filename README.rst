@@ -32,7 +32,7 @@ Installation
 -----------
 Translation
 -----------
-The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad++ (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
+The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad2, notepad++, etc. (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
 
 **'good_question'=>'Nice Question',**
 

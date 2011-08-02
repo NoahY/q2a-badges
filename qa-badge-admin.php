@@ -15,7 +15,7 @@
 
 			$badges = qa_get_badge_list();
 			if (qa_clicked('badge_rebuild_button')) {
-				qa_import_badge_list(true);
+				qa_import_badge_list();
 				$ok = qa_badge_lang('badges/list_rebuilt');
 			}
 			else if (qa_clicked('badge_reset_button')) {
@@ -23,7 +23,7 @@
 					if(isset($info['var'])) {
 						qa_opt('badge_'.$slug.'_var',$info['var']);
 					}
-					qa_opt('badge_'.$slug.'_name',$info['name']);
+					qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
 					qa_opt('badge_'.$slug.'_enabled','1');
 				}
 			}
@@ -78,14 +78,16 @@
 
 
 				foreach ($badges as $slug => $info) {
-					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$info['name']);
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					$badge_desc=qa_badge_lang('badges/'.$slug.'_desc');
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 					
 					$type = qa_get_badge_type($info['type']);
 					$types = $type['slug'];
 					
 					if(isset($info['var'])) {
-						$htmlout = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$info['desc']);
+						$htmlout = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$badge_desc);
 						$fields[] = array(
 								'type' => 'static',
 								'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')">'.$name.'</span></td><td>'.$htmlout.'</td></tr></table>'
@@ -94,7 +96,7 @@
 					else {
 						$fields[] = array(
 								'type' => 'static',
-								'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')">'.$name.'</span></td><td>'.$info['desc'].'</td></tr></table>'
+								'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
 						);
 					}
 				}

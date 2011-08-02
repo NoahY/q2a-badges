@@ -130,10 +130,14 @@
 			if(count($result) > 0) {
 
 				$notice = '<div class="notify-container">';
-
+				
 				// populate notification list
-				foreach($result as $name) {
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".qa_badge_lang('badges/'.$name).'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
+				foreach($result as $slug) {
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+					$name = qa_opt('badge_'.$slug.'_name');
+					
+					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
@@ -155,11 +159,70 @@
 		
 		function priviledge_notify() { // gained priviledge
 		}
+		function user_badge_widget() {
+			// displays small badge icons (e.g. next to points in meta)
+			$result = qa_db_read_all_assoc(
+				qa_db_query_sub(
+					'SELECT ^badges.badge_slug, badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					qa_get_logged_in_userid()
+				)
+			);
+			if(count($result) > 0) {
+				$output = '
+			<h2>Badges</h2>
+			<table class="qa-form-wide-table">
+				<tbody>';
+				// count badges
+				
+				$badges;
+				
+				foreach($result as $info) {
+					$slug = $info['badge_slug'];
+					if(isset($badges[$slug])) $badges[$slug]['count']++;
+					else {
+						$badges[$slug]['count'] = 1;
+						$badges[$slug]['type'] = $info['badge_type'];
+					}
+					
+				}
+				
+				foreach($badges as $slug => $info) {
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+					$name = qa_opt('badge_'.$slug.'_name');
+					
+					$var = qa_opt('badge_'.$slug.'_var');
+					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+					
+					$count = $info['count'];
+					
+					$type = qa_get_badge_type($info['type']);
+					$types = $type['slug'];
+					$typed = $type['slug'];
+					
+					$output .= '
+					<tr>
+						<td class="qa-form-wide-label">
+							<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+						</td>
+						<td class="qa-form-wide-data">
+							<span class="badge-count">x&nbsp;'.$count.'</span>
+						</td>
+					</tr>';
+				}
+				$output .= '
+				</tbody>
+			</table>';
+				$this->output($output);
+			}
+		}
 
 		function user_badge_form() {
-			$result = qa_db_read_all_values(
+			// displays badge list in user profile
+
+			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT badge_name FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					'SELECT ^badges.badge_slug, badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
 					qa_get_logged_in_userid()
 				)
 			);
@@ -173,17 +236,34 @@
 				
 				$badges;
 				
-				foreach($result as $name) {
-					if($badges[$name]) $badges[$name]++;
-					else $badges[$name] = 1;
+				foreach($result as $info) {
+					$slug = $info['badge_slug'];
+					if(isset($badges[$slug])) $badges[$slug]['count']++;
+					else {
+						$badges[$slug]['count'] = 1;
+						$badges[$slug]['type'] = $info['badge_type'];
+					}
 					
 				}
 				
-				foreach($badges as $name => $count) {
+				foreach($badges as $slug => $info) {
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+					$name = qa_opt('badge_'.$slug.'_name');
+					
+					$var = qa_opt('badge_'.$slug.'_var');
+					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+					
+					$count = $info['count'];
+					
+					$type = qa_get_badge_type($info['type']);
+					$types = $type['slug'];
+					$typed = $type['slug'];
+					
 					$output .= '
 					<tr>
 						<td class="qa-form-wide-label">
-							<span class="badge-name">'.$name.'</span>
+							<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
 						</td>
 						<td class="qa-form-wide-data">
 							<span class="badge-count">x&nbsp;'.$count.'</span>
