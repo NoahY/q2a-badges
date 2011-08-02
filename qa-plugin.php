@@ -68,16 +68,6 @@
 
 		if(!$badges_exists) {		
 
-			// create tables
-
-			qa_db_query_sub(
-				'CREATE TABLE ^badges ('.
-					'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
-					'badge_name VARCHAR (256) CHARACTER SET ascii DEFAULT \'\','.
-					'badge_type INT(10),'.
-					'PRIMARY KEY (badge_slug)'.
-				') ENGINE=MyISAM DEFAULT CHARSET=utf8'
-			);
 			qa_import_badge_list();
 		}
 

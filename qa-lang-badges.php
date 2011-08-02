@@ -124,12 +124,14 @@
 		'badge_admin_saved'=>'Options saved.',
 		'badge_admin_activate'=>'Activate badges',
 		'active_badges'=>'Active Badges',
+		'badge_award_button'=>'Recheck Badge Awarding',
+		'badge_recreate_desc'=>'Manually check all for deserved awards',
 		'badge_recreate'=>'Recreate Badges',
-		'badge_recreate_desc'=>'recreate the badge database (for when changing the php code)',
+		'badge_recreate_desc'=>'Recreate the badge database (for when changing the php code)',
 		'reset_values'=>'Reset',
-		'reset_values_desc'=>'reset variable badge data as input above',
+		'reset_values_desc'=>'Reset variable badge data as input above',
 		'notify_time'=>'Notify Duration',
-		'notify_time_desc'=>'duration (s) before hiding badge notification (0 = off)',
+		'notify_time_desc'=>'Duration in seconds before hiding badge notification (0 = off)',
 		'save_settings'=>'Save',
 		'save_settings_desc'=>'save above settings'
 	);

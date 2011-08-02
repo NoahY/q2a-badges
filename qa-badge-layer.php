@@ -82,9 +82,22 @@
 					background-color: #EEDD0F;
 					border:2px solid #5F5908;
 				}				
+				.badge-bronze-medal, .badge-silver-medal, .badge-gold-medal  {
+					font-size: 14px;
+					font-family:sans-serif;
+				}
+				.badge-bronze-medal {
+					color: #CB9114;
+				}				
+				.badge-silver-medal {
+					color: #CDCDCD;
+				}				
+				.badge-gold-medal {
+					color: #EEDD0F;
+				}				
 				.badge-desc {
 					padding-left:8px;
-				}				
+				}			
 			</style>');
 		}
 
@@ -110,10 +123,45 @@
 		{
 			qa_html_theme_base::form_body($form);
 
-			if(preg_match('/^\.\.\/user\//',qa_self_html())) { // <- this is our addition
+			if(preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
 				$this->user_badge_form();
 			}
+			else if (preg_match('/^\.\.\/admin\/stats/',qa_self_html())) { // <- add admin badge recreate
+				//$this->admin_badge_button();
+			}
 		}
+
+		function post_meta_who($post, $class)
+		{
+			if (isset($post['who'])) {
+				$this->output('<SPAN CLASS="'.$class.'-who">');
+				
+				if (strlen(@$post['who']['prefix']))
+					$this->output('<SPAN CLASS="'.$class.'-who-pad">'.$post['who']['prefix'].'</SPAN>');
+				
+				if (isset($post['who']['data']))
+					$this->output('<SPAN CLASS="'.$class.'-who-data">'.$post['who']['data'].'</SPAN>');
+				
+				if (isset($post['who']['title']))
+					$this->output('<SPAN CLASS="'.$class.'-who-title">'.$post['who']['title'].'</SPAN>');
+					
+				// You can also use $post['level'] to get the author's privilege level (as a string)
+				$this->output('<br/>');
+				$this->user_badge_widget($post['raw']['userid']);
+	
+				if (isset($post['who']['points'])) {
+					$post['who']['points']['prefix']='('.$post['who']['points']['prefix'];
+					$post['who']['points']['suffix'].=')';
+					$this->output_split($post['who']['points'], $class.'-who-points');
+				}
+				
+				if (strlen(@$post['who']['suffix']))
+					$this->output('<SPAN CLASS="'.$class.'-who-pad">'.$post['who']['suffix'].'</SPAN>');
+	
+				$this->output('</SPAN>');
+			}
+		}
+
 
 	// worker functions
 
@@ -159,62 +207,30 @@
 		
 		function priviledge_notify() { // gained priviledge
 		}
-		function user_badge_widget() {
-			// displays small badge icons (e.g. next to points in meta)
+		
+		function user_badge_widget($id) {
+			
+			// displays small badge widget, suitable for meta
+			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_slug, badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
-					qa_get_logged_in_userid()
+					'SELECT ^badges.badge_type,COUNT(^userbadges.id) FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=# GROUP BY ^badges.badge_type ORDER BY ^badges.badge_type',
+					$id
 				)
 			);
-			if(count($result) > 0) {
-				$output = '
-			<h2>Badges</h2>
-			<table class="qa-form-wide-table">
-				<tbody>';
-				// count badges
-				
-				$badges;
-				
-				foreach($result as $info) {
-					$slug = $info['badge_slug'];
-					if(isset($badges[$slug])) $badges[$slug]['count']++;
-					else {
-						$badges[$slug]['count'] = 1;
-						$badges[$slug]['type'] = $info['badge_type'];
-					}
-					
-				}
-				
-				foreach($badges as $slug => $info) {
-					$badge_name=qa_badge_lang('badges/'.$slug);
-					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-					$name = qa_opt('badge_'.$slug.'_name');
-					
-					$var = qa_opt('badge_'.$slug.'_var');
-					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
-					
-					$count = $info['count'];
-					
-					$type = qa_get_badge_type($info['type']);
-					$types = $type['slug'];
-					$typed = $type['slug'];
-					
-					$output .= '
-					<tr>
-						<td class="qa-form-wide-label">
-							<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
-						</td>
-						<td class="qa-form-wide-data">
-							<span class="badge-count">x&nbsp;'.$count.'</span>
-						</td>
-					</tr>';
-				}
-				$output .= '
-				</tbody>
-			</table>';
-				$this->output($output);
+			$output='<span id="badge-medals-widget">';
+			for($x = 2; $x >= 0; $x--) {
+				$a = $result[$x];
+				if($a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'] == 0) continue;
+
+				$type = qa_get_badge_type($x);
+				$types = $type['slug'];
+				$typed = $type['name'];
+
+				$output.='<span class="badge-'.$types.'-medal">●</span><span class="badge-'.$types.'-count" title="'.$typed.'"> '.$a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'].'</span> ';
 			}
+			$output.='</span>';
+			$this->output($output);
 		}
 
 		function user_badge_form() {
@@ -226,55 +242,59 @@
 					qa_get_logged_in_userid()
 				)
 			);
-			if(count($result) > 0) {
-				
-				$output = '
-			<h2>Badges</h2>
-			<table class="qa-form-wide-table">
-				<tbody>';
-				// count badges
-				
-				$badges;
-				
-				foreach($result as $info) {
-					$slug = $info['badge_slug'];
-					if(isset($badges[$slug])) $badges[$slug]['count']++;
-					else {
-						$badges[$slug]['count'] = 1;
-						$badges[$slug]['type'] = $info['badge_type'];
-					}
-					
+			if(count($result) == 0) return;
+			
+			$output = '
+		<h2>Badges</h2>
+		<table class="qa-form-wide-table">
+			<tbody>';
+			// count badges
+			
+			$badges;
+			
+			foreach($result as $info) {
+				$slug = $info['badge_slug'];
+				if(isset($badges[$slug])) $badges[$slug]['count']++;
+				else {
+					$badges[$slug]['count'] = 1;
+					$badges[$slug]['type'] = $info['badge_type'];
 				}
 				
-				foreach($badges as $slug => $info) {
-					$badge_name=qa_badge_lang('badges/'.$slug);
-					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-					$name = qa_opt('badge_'.$slug.'_name');
-					
-					$var = qa_opt('badge_'.$slug.'_var');
-					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
-					
-					$count = $info['count'];
-					
-					$type = qa_get_badge_type($info['type']);
-					$types = $type['slug'];
-					$typed = $type['slug'];
-					
-					$output .= '
-					<tr>
-						<td class="qa-form-wide-label">
-							<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
-						</td>
-						<td class="qa-form-wide-data">
-							<span class="badge-count">x&nbsp;'.$count.'</span>
-						</td>
-					</tr>';
-				}
-				$output .= '
-				</tbody>
-			</table>';
-				$this->output($output);
 			}
+			
+			foreach($badges as $slug => $info) {
+				$badge_name=qa_badge_lang('badges/'.$slug);
+				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+				$name = qa_opt('badge_'.$slug.'_name');
+				
+				$var = qa_opt('badge_'.$slug.'_var');
+				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+				
+				$count = $info['count'];
+				
+				$type = qa_get_badge_type($info['type']);
+				$types = $type['slug'];
+				$typed = $type['name'];
+				
+				$output .= '
+				<tr>
+					<td class="qa-form-wide-label">
+						<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+					</td>
+					<td class="qa-form-wide-data">
+						<span class="badge-count">x&nbsp;'.$count.'</span>
+					</td>
+				</tr>';
+			}
+			$output .= '
+			</tbody>
+		</table>';
+			$this->output($output);
 		}
+
+		function admin_badge_button() {
+			$this->output('<form METHOD="POST" ACTION="../qa-plugin/badges/qa-badge-recalc.php"><input type="submit" onmouseout="this.className=\'qa-form-basic-button qa-form-basic-button-check_badges\';" onmouseover="this.className=\'qa-form-basic-hover qa-form-basic-hover-check_badges\';" class="qa-form-basic-button qa-form-basic-button-check_badges" title="" value="Check Badges" onclick="return qa_check_badges_click(this.name, this, \'Stop Checking\', \'check_badges_note\');" name="docheckbadges"></form>');
+		}
+		
 	}
 	

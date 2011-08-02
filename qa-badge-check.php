@@ -517,7 +517,7 @@
 			$badges = array('editor','copy_editor','senior_editor');
 
 			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -641,14 +641,14 @@
 // worker functions
 
 		
-		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false) {
+		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false, $silent = false) {
 			
 			// add badge to userbadges
 			
 			qa_db_query_sub(
 				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-				'VALUES (NOW(), 1, #, #, #, 0)',
-				$object_id, $user_id, $badge_slug
+				'VALUES (NOW(), #, #, #, #, 0)',
+				(silent?0:1), $object_id, $user_id, $badge_slug
 			);
 			
 			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
