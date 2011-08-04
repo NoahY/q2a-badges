@@ -124,8 +124,12 @@
 		function post_meta_who($post, $class)
 		{
 			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
-				
-				$post['who']['points']['prefix'] = $post['who']['points']['prefix'].$this->user_badge_widget($handle).'&nbsp;';
+				$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
+				ob_start();
+				var_dump($post['who']['points']);
+				$contents = ob_get_contents();
+				ob_end_clean();
+				error_log($contents);
 			}
 			qa_html_theme_base::post_meta_who($post, $class);
 		}
