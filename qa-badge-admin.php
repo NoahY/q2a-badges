@@ -452,6 +452,6 @@
 					}
 				}
 			}
-			return $awarded.' badges awarded.';
+			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
 	}
