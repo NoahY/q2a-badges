@@ -147,6 +147,9 @@
 					'type' => 'checkbox',
 				);				
 			}
+			if (qa_clicked('badge_trigger_notify')) {
+				$fields['test-notify'] = 1;
+			}
 			
 			return array(
 				'ok' => ($ok && !isset($error)) ? $ok : null,
