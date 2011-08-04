@@ -113,11 +113,19 @@
 		{
 			qa_html_theme_base::form_body($form);
 
-			if(qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
+			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
 				$this->user_badge_form();
 			}
 			else if (preg_match('/^\.\.\/admin\/stats/',qa_self_html())) { // <- add admin badge recreate
 				//$this->admin_badge_button();
+			}
+		}
+
+		function post_meta_who($post, $class)
+		{
+			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
+				
+				$post['who']['points']['data'] = user_badge_widget($handle).'&nbsp;'$post['who']['points']['data'];
 			}
 		}
 
@@ -166,9 +174,15 @@
 		function priviledge_notify() { // gained priviledge
 		}
 		
-		function user_badge_widget($id) {
+		function user_badge_widget($handle) {
 			
 			// displays small badge widget, suitable for meta
+			
+			$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
+
+			$userid = $this->getuserfromhandle($handle);
+			
+			if(!$userid) return;
 			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
@@ -195,30 +209,10 @@
 
 			// displays badge list in user profile
 			
-			require_once QA_INCLUDE_DIR.'qa-app-users.php';
-			require_once QA_INCLUDE_DIR.'qa-page.php';
-			
-			$handle = preg_replace('/^\.\.\/user\/([^\/]+)/',"$1",qa_self_html());
-			
-			if (QA_FINAL_EXTERNAL_USERS) {
-				$publictouserid=qa_get_userids_from_public(array($handle));
-				$userid=@$publictouserid[$handle];
-				
-				if (!isset($userid))
-					return;
-			} 
-			else {
-				$userid = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT userid FROM ^users WHERE handle = $',
-						$handle
-					),
-					true
-				);
-				if (!isset($userid))
-					return;
-			}
+			$handle = preg_replace('/^\.\.\/user\/([^\/]+)\/*$/',"$1",qa_self_html());
 
+			$userid = $this->getuserfromhandle($handle);
+			if(!$userid) return;
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
@@ -277,6 +271,26 @@
 
 		function admin_badge_button() {
 			$this->output('<form METHOD="POST" ACTION="../qa-plugin/badges/qa-badge-recalc.php"><input type="submit" onmouseout="this.className=\'qa-form-basic-button qa-form-basic-button-check_badges\';" onmouseover="this.className=\'qa-form-basic-hover qa-form-basic-hover-check_badges\';" class="qa-form-basic-button qa-form-basic-button-check_badges" title="" value="Check Badges" onclick="return qa_check_badges_click(this.name, this, \'Stop Checking\', \'check_badges_note\');" name="docheckbadges"></form>');
+		}
+		function getuserfromhandle($handle) {
+			require_once QA_INCLUDE_DIR.'qa-app-users.php';
+			
+			if (QA_FINAL_EXTERNAL_USERS) {
+				$publictouserid=qa_get_userids_from_public(array($handle));
+				$userid=@$publictouserid[$handle];
+				
+			} 
+			else {
+				$userid = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT userid FROM ^users WHERE handle = $',
+						$handle
+					),
+					true
+				);
+			}
+			if (!isset($userid)) return;
+			return $userid;
 		}
 		
 	}
