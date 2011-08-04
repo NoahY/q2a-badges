@@ -34,7 +34,7 @@
 					padding: 0;
 					position: fixed;
 					width: 100%;
-					z-index: 100;
+					z-index: 10000;
 				}
 					.badge-notify {
 					background-color: #F6DF30;
