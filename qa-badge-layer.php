@@ -220,7 +220,8 @@
 					qa_db_query_sub(
 						'SELECT userid FROM ^users WHERE handle = $',
 						$handle
-					)
+					),
+					true
 				);
 				if (!isset($userid))
 					return;
