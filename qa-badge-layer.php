@@ -218,7 +218,6 @@
 				if (!isset($userid))
 					return;
 			}
-			error_log('test '.$userid);
 
 
 			$result = qa_db_read_all_assoc(

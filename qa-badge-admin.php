@@ -45,10 +45,6 @@
 					qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
 					qa_opt('badge_'.$slug.'_enabled','1');
 				}
-				$ok = qa_badge_lang('badges/badges_reset');
-			}
-			else if (qa_clicked('badge_trigger_notify')) {
-				trigger_notify('Congratulations!  This is a test message');
 			}
 			else if(qa_clicked('badge_save_settings')) {
 				foreach ($badges as $slug => $info) {
@@ -153,11 +149,6 @@
 						'label' => qa_badge_lang('badges/reset_values'),
 						'tags' => 'NAME="badge_reset_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/reset_values_desc').'</em><br/><br/>',
-					),
-					array(
-						'label' => qa_badge_lang('badges/badge_trigger_notify'),
-						'tags' => 'NAME="badge_trigger_notify"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em><br/><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/save_settings'),
