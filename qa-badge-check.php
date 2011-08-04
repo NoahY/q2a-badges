@@ -343,12 +343,12 @@
 					$qid = $params['parentid'];
 					$create = new DateTime($post['created']);
 					
-					$parent = $this->get_post_data($id);
+					$parent = $this->get_post_data($qid);
 					$pcreate = new DateTime($parent['created']);
 					
 					$diffd = $pcreate->diff($create);
 					$diff = $diffd->format('%d'); 
-				error_log($votes);	
+
 					$badge_slug2 = $badge_slug.'_old';
 					
 					if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var') && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
