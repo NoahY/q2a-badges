@@ -184,6 +184,18 @@
 
 	// worker functions
 
+		function award_badge($object_id, $user_id, $badge_slug) {
+			
+			// add badge to userbadges
+			
+			qa_db_query_sub(
+				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+				'VALUES (NOW(), #, #, #, #, 0)',
+				0, $object_id, $user_id, $badge_slug
+			);
+			
+		}
+
 		function badge_notify() {
 			$userid = qa_get_logged_in_userid();
 			
