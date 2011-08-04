@@ -184,10 +184,12 @@
 			// displays small badge widget, suitable for meta
 			
 			$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
-
+			error_log($handle);
 			$userid = $this->getuserfromhandle($handle);
 			
 			if(!$userid) return;
+
+			error_log($userid);
 			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
@@ -207,7 +209,7 @@
 				$output.='<span class="badge-'.$types.'-medal">●</span><span class="badge-'.$types.'-count" title="'.$typed.'"> '.$a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'].'</span> ';
 			}
 			$output.='</span>';
-			$this->output($output);
+			return($output);
 		}
 
 		function user_badge_form() {
