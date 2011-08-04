@@ -126,7 +126,7 @@
 			if((bool)qa_opt('badge_admin_user_widget')) {
 				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 				if (isset($post['who']['points'])) {
-					$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
+					$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;-&nbsp;'.$post['who']['points']['data'];
 				}
 				else if (isset($post['who']['title'])) {
 					$post['who']['title'] = $post['who']['title'].'&nbsp;'.$this->user_badge_widget($handle);
@@ -200,14 +200,16 @@
 			$output='<span id="badge-medals-widget">';
 			for($x = 2; $x >= 0; $x--) {
 				$a = $result[$x];
-				if($a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'] == 0) continue;
+				$count = $a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'];
+				if($count == 0) continue;
 
 				$type = qa_get_badge_type($x);
 				$types = $type['slug'];
 				$typed = $type['name'];
 
-				$output.='<span class="badge-'.$types.'-medal">●</span><span class="badge-'.$types.'-count" title="'.$typed.'"> '.$a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'].'</span> ';
+				$output.='<span class="badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-'.$types.'-count" title="'.$typed.'"> '.$count.'</span> ';
 			}
+			$output = substr($output,0,-1);  // lazy remove space
 			$output.='</span>';
 			return($output);
 		}
