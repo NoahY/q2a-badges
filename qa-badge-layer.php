@@ -113,7 +113,7 @@
 		{
 			qa_html_theme_base::form_body($form);
 
-			if(preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
+			if(qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
 				$this->user_badge_form();
 			}
 			else if (preg_match('/^\.\.\/admin\/stats/',qa_self_html())) { // <- add admin badge recreate
