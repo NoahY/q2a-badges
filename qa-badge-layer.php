@@ -124,6 +124,7 @@
 		function post_meta_who($post, $class)
 		{
 			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
+				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 				$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
 				ob_start();
 				var_dump($post['who']['points']);
@@ -183,13 +184,12 @@
 			
 			// displays small badge widget, suitable for meta
 			
-			$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
-			error_log($handle);
+			error_log('handle: '.$handle);
 			$userid = $this->getuserfromhandle($handle);
 			
 			if(!$userid) return;
 
-			error_log($userid);
+			error_log('userid: '.$userid);
 			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
