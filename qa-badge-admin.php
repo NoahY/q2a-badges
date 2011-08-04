@@ -22,7 +22,7 @@
 				if((bool)qa_post_text('badge_award_delete')) {
 					qa_db_query_sub(
 						'DROP TABLE ^userbadges'
-					):
+					);
 					qa_db_query_sub(
 						'CREATE TABLE ^userbadges ('.
 							'awarded_at DATETIME NOT NULL,'.
