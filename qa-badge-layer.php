@@ -126,11 +126,6 @@
 			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
 				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 				$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
-				ob_start();
-				var_dump($post['who']['points']);
-				$contents = ob_get_contents();
-				ob_end_clean();
-				error_log($contents);
 			}
 			qa_html_theme_base::post_meta_who($post, $class);
 		}
@@ -184,19 +179,19 @@
 			
 			// displays small badge widget, suitable for meta
 			
-			error_log('handle: '.$handle);
 			$userid = $this->getuserfromhandle($handle);
 			
 			if(!$userid) return;
 
-			error_log('userid: '.$userid);
-			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
 					'SELECT ^badges.badge_type,COUNT(^userbadges.id) FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=# GROUP BY ^badges.badge_type ORDER BY ^badges.badge_type',
-					$id
+					$userid
 				)
 			);
+
+			if(count($result) == 0) return;
+
 			$output='<span id="badge-medals-widget">';
 			for($x = 2; $x >= 0; $x--) {
 				$a = $result[$x];
