@@ -187,10 +187,12 @@
 			
 			foreach ($userposts as $user => $data) {
 				$uid = (int)substr($user,4);
-				
-				$badges['Q'] = array('asker','questioner','inquisitor');
-				$badges['A'] = array('answerer','lecturer','preacher');
-				$badges['C'] = array('commenter','commentator','annotator');
+
+				$badges = array(
+					'Q' => array('asker','questioner','inquisitor'),
+					'A' => array('answerer','lecturer','preacher'),
+					'C' => array('commenter','commentator','annotator')
+				);
 			
 				foreach($badges as $pt => $slugs) {
 					foreach($slugs as $badge_slug) {
@@ -211,9 +213,10 @@
 						}
 					}
 				}
-
-				$badges['Q'] = array('nice_question','good_question','great_question');
-				$badges['A'] = array('nice_answer','good_answer','great_answer');
+				$badges = array(
+					'Q' => array('nice_question','good_question','great_question'), 
+					'A' => array('nice_answer','good_answer','great_answer')
+				);
 			
 				foreach($badges as $pt => $slugs) {
 					foreach($slugs as $badge_slug) {
