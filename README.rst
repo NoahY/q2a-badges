@@ -66,7 +66,7 @@ Badge List
 ----------
 
 ==========   ==============      ========================================
-Level [#]_   Title               Description
+Level [*]_   Title               Description
 ==========   ==============      ========================================
 1            Verified Human      Successfully verified email address
 
@@ -127,4 +127,4 @@ Level [#]_   Title               Description
 3            Ressurection        Received "Great Answer" badge in response to a question more than # days old
 ==========   ==============      ========================================
 
-.. [#]  Level refers to difficulty level (e.g. gold, silver, bronze).
+.. [*]  Level refers to difficulty level (e.g. gold, silver, bronze).
