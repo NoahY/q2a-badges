@@ -207,7 +207,7 @@
 							);
 							
 							if (!$result) { // not already awarded this badge
-								award_badge($pid, $uid, $badge_slug,false,true);
+								$this->award_badge($pid, $uid, $badge_slug,false,true);
 								$awarded++;
 							}
 						}
@@ -234,7 +234,7 @@
 								);
 								
 								if (!$result) { // not already awarded this badge
-									award_badge($idv['id'], $uid, $badge_slug,false,true);
+									$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
 									$awarded++;
 								}
 							}
@@ -277,7 +277,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}
@@ -310,7 +310,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}
@@ -330,7 +330,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}			
@@ -360,7 +360,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}
@@ -405,7 +405,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}
@@ -446,7 +446,7 @@
 						);
 						
 						if (!$result) { // not already awarded this badge
-							award_badge(NULL, $uid, $badge_slug,false,true);
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
 							$awarded++;
 						}
 					}
