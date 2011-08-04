@@ -202,14 +202,38 @@
 		}
 
 		function user_badge_form() {
+
 			// displays badge list in user profile
+			
+			require_once QA_INCLUDE_DIR.'qa-app-users.php';
+
+			if (QA_FINAL_EXTERNAL_USERS) {
+				$publictouserid=qa_get_userids_from_public(array(@$pass_subrequests[0]));
+				$userid=@$publictouserid[@$pass_subrequests[0]];
+				
+				if (!isset($userid))
+					return;
+			} 
+			else {
+				$handle=@$pass_subrequests[0]; // picked up from qa-page.php
+				$userid = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT userid FROM ^users WHERE handle = $',
+						$handle
+					)
+				);
+				if (!isset($userid))
+					return;
+			}
+
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
 					'SELECT ^badges.badge_slug, badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
-					qa_get_logged_in_userid()
+					$userid
 				)
 			);
+			
 			if(count($result) == 0) return;
 			
 			$output = '
