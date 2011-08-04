@@ -345,7 +345,7 @@
 					
 					$parent = $this->get_post_data($id);
 					$pcreate = strtotime($parent['created']);
-					
+					continue;
 					$diffd = $pcreate->diff($create);
 					$diff = $diffd->format('%d'); 
 					

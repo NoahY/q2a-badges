@@ -146,7 +146,6 @@
 					$this->output('<SPAN CLASS="'.$class.'-who-title">'.$post['who']['title'].'</SPAN>');
 					
 				// You can also use $post['level'] to get the author's privilege level (as a string)
-				$this->output('<br/>');
 				$this->user_badge_widget($post['raw']['userid']);
 	
 				if (isset($post['who']['points'])) {
