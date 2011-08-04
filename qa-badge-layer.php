@@ -207,9 +207,11 @@
 			
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 			require_once QA_INCLUDE_DIR.'qa-page.php';
-
+			
+			$handle = preg_replace('/^\.\.\/user\/([^\/]+)/',"$1",qa_self_html());
+			
 			if (QA_FINAL_EXTERNAL_USERS) {
-				$publictouserid=qa_get_userids_from_public(array(@$pass_subrequests[0]));
+				$publictouserid=qa_get_userids_from_public(array($handle));
 				$userid=@$publictouserid[@$pass_subrequests[0]];
 				
 				ob_start();
@@ -222,7 +224,6 @@
 					return;
 			} 
 			else {
-				$handle=@$pass_subrequests[0]; // picked up from qa-page.php
 				$userid = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT userid FROM ^users WHERE handle = $',
