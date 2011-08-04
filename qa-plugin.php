@@ -260,9 +260,9 @@
 		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
 		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
 
-		$badges['notable_question'] = array('var'=>100, 'type'=>0);
-		$badges['popular_question'] = array('var'=>500, 'type'=>1);
-		$badges['famous_question'] = array('var'=>1000, 'type'=>2);
+		$badges['notable_question'] = array('var'=>50, 'type'=>0);
+		$badges['popular_question'] = array('var'=>100, 'type'=>1);
+		$badges['famous_question'] = array('var'=>500, 'type'=>2);
 
 		$badges['verified'] = array('type'=>0);
 
