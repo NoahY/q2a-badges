@@ -210,7 +210,7 @@
 			if (QA_FINAL_EXTERNAL_USERS) {
 				$publictouserid=qa_get_userids_from_public(array(@$pass_subrequests[0]));
 				$userid=@$publictouserid[@$pass_subrequests[0]];
-				
+				error_log($publictouserid.' '.$userid);
 				if (!isset($userid))
 					return;
 			} 
@@ -226,6 +226,7 @@
 				if (!isset($userid))
 					return;
 			}
+			error_log($userid);
 
 
 			$result = qa_db_read_all_assoc(
