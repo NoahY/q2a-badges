@@ -212,39 +212,80 @@
 		function qa_check_all_users_badges() {
 
 			$awarded = 0;
-			$userposts;
+			$users;
 		
-			$result = qa_db_read_all_assoc(
+			$post_result = qa_db_read_all_assoc(
 				qa_db_query_sub(
 					'SELECT * FROM ^posts'
 				)
 			);
 			
-			foreach ($result as $post) {
-				$uid='user'.$post['userid'];
+			foreach ($post_result as $post) {
+				$user='user'.$post['userid'];
 				$pid = $post['postid'];
 				$pt = $post['type'];
 				
 				// get post count
 				
-				if(isset($userposts[$uid]) && isset($userposts[$uid][$pt])) $userposts[$uid][$pt]++;
-				else $userposts[$uid][$pt] = 1;
+				if(isset($users[$user]) && isset($users[$user][$pt])) $users[$user][$pt]++;
+				else $users[$user][$pt] = 1;
 				
 				// get post votes
 				
-				if($post['netvotes'] !=0) $userposts[$uid][$pt.'votes'][] = array(
-																				'id'=>$pid,
-																				'votes'=>$post['netvotes'],
-																				'parentid'=>$post['parentid'],
-																				'created'=>$post['created']
-																				);
+				if($post['netvotes'] !=0) $users[$user][$pt.'votes'][] = array(
+					'id'=>$pid,
+					'votes'=>$post['netvotes'],
+					'parentid'=>$post['parentid'],
+					'created'=>$post['created']
+				);
+
+				// get post views
+				
+				if($post['views']) $users[$user]['views'][] = array(
+					'id'=>$pid,
+					'views'=>$post['views']
+				);
 				 
 			} 
+
+
+			$vote_result = qa_db_read_all_assoc(
+				qa_db_query_sub(
+					'SELECT * FROM ^uservotes WHERE vote <> 0'
+				)
+			);
+			foreach ($vote_result as $vote) {
+				$user='user'.$vote['userid'];
+				$pid = $vote['postid'];
+				
+				// get vote count
+				
+				if(isset($users[$user]) && isset($users[$user]['votes'])) $users[$user]['votes'] = $users[$user]['votes']++;
+				else $users[$user]['votes'] = 1;
+			} 
+
+			// flags
+
+			$flag_result = qa_db_read_all_values(
+				qa_db_query_sub(
+					'SELECT userid FROM ^uservotes WHERE flag > 0'
+				),
+				true
+			);
+
+			foreach ($flag_result as $flag) {
+				$user='user'.$flag['userid'];
+				
+				// get flag count
+				
+				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags'] = $users[$user]['flags']++;
+				else $users[$user]['flags'] = 1;
+			}
 			
-			foreach ($userposts as $user => $data) {
+			foreach ($users as $user => $data) {
 				$uid = (int)substr($user,4);
 				
-				// bulk amounts
+				// bulk posts
 				
 				$badges = array(
 					'Q' => array('asker','questioner','inquisitor'),
@@ -331,27 +372,9 @@
 						}
 					}
 				}
-			}
 
-		// vote volume check
+				// votes per user badges
 
-			$result = qa_db_read_all_assoc(
-				qa_db_query_sub(
-					'SELECT * FROM ^uservotes WHERE vote <> 0'
-				)
-			);
-			foreach ($result as $vote) {
-				$user='user'.$vote['userid'];
-				$pid = $vote['postid'];
-				
-				// get vote count
-				
-				if(isset($userposts[$user]) && isset($userposts[$user]['votes'])) $userposts[$user]['votes'] = $userposts[$user]['votes']++;
-				else $userposts[$user]['votes'] = 1;
-			} 
-
-			foreach($userposts as $user => $data) {
-				$uid = (int)substr($user,4);
 				$votes = $data['votes']; 
 				
 				$badges = array('voter','avid_voter','devoted_voter');
@@ -372,7 +395,57 @@
 						}
 					}
 				}
+				
+				// views per post badges
+				
+				$badges = array('notable_question','popular_question','famous_question');
+				
+				foreach($badges as $badge_slug) {
+					if(!isset($data['views'])) continue;
+					foreach($data['views'] as $idv) {
+						if($idv['views'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+							
+							$result = qa_db_read_one_value(
+								qa_db_query_sub(
+									'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+									$uid, $idv['id'], $badge_slug
+								),
+								true
+							);
+							
+							if (!$result) { // not already awarded this badge
+								$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
+								$awarded++;
+							}
+						}
+					}
+				}
+				
+				// flags per user
+
+				$flags = $data['flags']; 
+				
+				$badges = array('watchdog','bloodhound','pitbull');
+
+				foreach($badges as $badge_slug) {
+					if((int)$flags  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+						$result = qa_db_read_one_value(
+							qa_db_query_sub(
+								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+								$uid, $badge_slug
+							),
+							true
+						);
+						
+						if (!$result) { // not already awarded this badge
+							$this->award_badge(NULL, $uid, $badge_slug,false,true);
+							$awarded++;
+						}
+					}
+				}
 			}
+
+
 
 		// selects, selecteds
 			
@@ -455,28 +528,9 @@
 					}
 				}
 			}
-		// flags
+ 
 
-			$counts = qa_db_read_all_values(
-				qa_db_query_sub(
-					'SELECT userid FROM ^uservotes WHERE flag > 0'
-				),
-				true
-			);
-
-			$badges = array('watchdog','bloodhound','pitbull');
-
-
-			foreach ($counts as $flag) {
-				$uid='user'.$flag['userid'];
-				
-				// get flag count
-				
-				if(isset($userposts[$uid]) && isset($userposts[$uid]['flags'])) $userposts[$uid]['flags'] = $userposts[$uid]['flags']++;
-				else $userposts[$uid]['flags'] = 1;
-			} 
-
-			foreach($userposts as $user => $data) {
+			foreach($users as $user => $data) {
 				$uid = (int)substr($user,4);
 				
 				$flags = $data['flags']; 
