@@ -257,9 +257,9 @@
 		$badges['champion'] = array('var'=>25, 'type'=>1);
 		$badges['olympian'] = array('var'=>50, 'type'=>2);
 
-		$badges['nice_question_old'] = array('var'=>10, 'type'=>0);
-		$badges['good_question_old'] = array('var'=>30, 'type'=>1);
-		$badges['great_question_old'] = array('var'=>60, 'type'=>2);
+		$badges['nice_question_old'] = array('var'=>30, 'type'=>0);
+		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
+		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
 
 		$badges['verified'] = array('type'=>0);
 
