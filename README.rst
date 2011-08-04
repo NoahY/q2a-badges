@@ -21,7 +21,7 @@ Features
 ------------
 Installation
 ------------
-1. Install _Question2Answer
+1. Install Question2Answer_
 2. Create a new folder in the qa-plugin directory (e.g. badges)
 3. Place the files in this repository in that folder.
 4. navigate to your site and check your database to make sure the tables were created (^badges and ^userbadges)
