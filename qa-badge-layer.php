@@ -125,7 +125,7 @@
 		{
 			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
 				
-				$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
+				$post['who']['points']['prefix'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['prefix'];
 			}
 		}
 
