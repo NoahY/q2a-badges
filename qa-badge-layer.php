@@ -207,7 +207,7 @@
 				$types = $type['slug'];
 				$typed = $type['name'];
 
-				$output.='<span class="badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-'.$types.'-count" title="'.$typed.'"> '.$count.'</span> ';
+				$output.='<span class="badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-'.$types.'-count" title="'.$count.' '.$typed.'"> '.$count.'</span> ';
 			}
 			$output = substr($output,0,-1);  // lazy remove space
 			$output.='</span>';

@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: 
         Plugin Description: Awards Badges on events
-        Plugin Version: 0.2
+        Plugin Version: 0.3
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -96,6 +96,7 @@
 					'user_id INT(11) UNIQUE NOT NULL,'.
 					'first_visit DATETIME,'.
 					'oldest_consec_visit DATETIME,'.
+					'longest_consec_visit INT(10),'.
 					'last_visit DATETIME,'.
 					'total_days_visited INT(10),'.
 					'questions_read INT(10),'.
@@ -135,18 +136,16 @@
 		
 		// first visit check
 		
-		$user = qa_db_read_one_value(
+		$user = qa_db_read_one_assoc(
 			qa_db_query_sub(
-				'SELECT user_id FROM ^achievements WHERE user_id=# ',
+				'SELECT user_id,longest_consec_visit,last_visit FROM ^achievements WHERE user_id=# ',
 				$userid
-			),
-			true
+			)
 		);
 
-
-		if(!$user) {
+		if(!$user['user_id']) {
 			qa_db_query_sub(
-				'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), NOW(), #, #, #)',
+				'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), NOW(), #, #, #)',
 				$userid, 1, 0, 0
 			);
 			return;
@@ -154,18 +153,18 @@
 
 		// check lapse since last visit
 		
-		$result = qa_db_read_one_value(
+		$result = (int)qa_db_read_one_value(
 			qa_db_query_sub(
-				'SELECT DATEDIFF(NOW(),(SELECT last_visit FROM ^achievements WHERE user_id=#))',
-				$userid
+				'SELECT DATEDIFF(NOW(),$)',
+				$user['last_visit']
 			),
 			true
 		);
-
-		if((int)$result < 2) { // one day or less, update last visit
+		
+		if($result < 2) { // one day or less, update last visit
 			qa_db_query_sub(
-				'UPDATE ^achievements SET last_visit=NOW() WHERE user_id=#',
-				$userid
+				'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#  WHERE user_id=#',
+				$result, $userid 
 			);		
 			qa_badge_check_consec_days($userid);
 		}
