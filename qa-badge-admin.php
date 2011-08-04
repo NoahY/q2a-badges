@@ -220,6 +220,11 @@
 			
 				foreach($badges as $pt => $slugs) {
 					foreach($slugs as $badge_slug) {
+						ob_start();
+						var_dump($data[$pt.'votes']);
+						$contents = ob_get_contents();
+						ob_end_clean();
+						error_log($contents);
 						foreach($data[$pt.'votes'] as $idv) {
 							
 							if($idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
