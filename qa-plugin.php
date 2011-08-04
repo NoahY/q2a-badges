@@ -208,13 +208,13 @@
 		$badges = array();
 		
 
-		$badges['answerer'] = array('var'=>10, 'type'=>0);
-		$badges['lecturer'] = array('var'=>25, 'type'=>1);
-		$badges['preacher'] = array('var'=>50, 'type'=>2);
+		$badges['answerer'] = array('var'=>25, 'type'=>0);
+		$badges['lecturer'] = array('var'=>50, 'type'=>1);
+		$badges['preacher'] = array('var'=>100, 'type'=>2);
 
-		$badges['commenter'] = array('var'=>10, 'type'=>0);
-		$badges['commentator'] = array('var'=>25, 'type'=>1);
-		$badges['annotator'] = array('var'=>50, 'type'=>2);
+		$badges['commenter'] = array('var'=>50, 'type'=>0);
+		$badges['commentator'] = array('var'=>100, 'type'=>1);
+		$badges['annotator'] = array('var'=>500, 'type'=>2);
 
 		$badges['asker'] = array('var'=>10, 'type'=>0);
 		$badges['questioner'] = array('var'=>25, 'type'=>1);
@@ -259,6 +259,10 @@
 		$badges['nice_question_old'] = array('var'=>30, 'type'=>0);
 		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
 		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
+
+		$badges['notable_question'] = array('var'=>100, 'type'=>0);
+		$badges['popular_question'] = array('var'=>500, 'type'=>1);
+		$badges['famous_question'] = array('var'=>1000, 'type'=>2);
 
 		$badges['verified'] = array('type'=>0);
 
