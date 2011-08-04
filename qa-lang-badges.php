@@ -54,9 +54,9 @@
 		'copy_editor'=>'Copy Editor',
 		'senior_editor'=>'Senior Editor',
 
-		'renewal'=>'Renewal',
-		'revival'=>'Revival',
-		'ressurection'=>'Ressurection',
+		'nice_question_old'=>'Renewal',
+		'good_question_old'=>'Revival',
+		'great_question_old'=>'Ressurection',
 
 		'verified_desc'=>'Successfully verified email address',
 
@@ -112,9 +112,9 @@
 		'copy_editor_desc'=>'Performed total of # edits',
 		'senior_editor_desc'=>'Performed total of # edits',
 
-		'renewal'=>'Received "Nice Answer" badge in response to a question more than # days old',
-		'revival'=>'Received "Good Answer" badge in response to a question more than # days old',
-		'ressurection'=>'Received "Great Answer" badge in response to a question more than # days old',
+		'nice_question_old_desc'=>'Received "Nice Answer" badge in response to a question more than # days old',
+		'good_question_old_desc'=>'Received "Good Answer" badge in response to a question more than # days old',
+		'great_question_old_desc'=>'Received "Great Answer" badge in response to a question more than # days old',
 
 
 		
