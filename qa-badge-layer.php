@@ -104,9 +104,13 @@
 		function body_prefix()
 		{
 			qa_html_theme_base::body_prefix();
-			if($content['test-notify'])	$this->trigger_notify('Congratulations!  This is a test message');
-			
 			$this->badge_notify();  
+		}
+
+		function body_suffix()
+		{
+			qa_html_theme_base::body_suffix();
+			if($content['test-notify'])	$this->trigger_notify('Congratulations!  This is a test message');
 		}
 
 		function form_body($form)
