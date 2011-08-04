@@ -221,38 +221,35 @@
 			$badges;
 			
 			foreach($result as $info) {
+				$type = $info['badge_type'];
 				$slug = $info['badge_slug'];
-				if(isset($badges[$slug])) $badges[$slug]['count']++;
-				else {
-					$badges[$slug]['count'] = 1;
-					$badges[$slug]['type'] = $info['badge_type'];
-				}
+				if(isset($badges[$type][$slug])) $badges[$type][$slug]++;
+				else $badges[$type][$slug] = 1;
 				
 			}
 			
-			foreach($badges as $slug => $info) {
-				$badge_name=qa_badge_lang('badges/'.$slug);
-				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-				$name = qa_opt('badge_'.$slug.'_name');
-				
-				$var = qa_opt('badge_'.$slug.'_var');
-				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
-				
-				$count = $info['count'];
-				
-				$type = qa_get_badge_type($info['type']);
-				$types = $type['slug'];
-				$typed = $type['name'];
-				
-				$output .= '
-				<tr>
-					<td class="qa-form-wide-label">
-						<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
-					</td>
-					<td class="qa-form-wide-data">
-						<span class="badge-count">x&nbsp;'.$count.'</span>
-					</td>
-				</tr>';
+			foreach($badges as $type => $badge) {
+				foreach($badge as $slug => $count) {
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+					$name = qa_opt('badge_'.$slug.'_name');
+					
+					$var = qa_opt('badge_'.$slug.'_var');
+					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+					
+					$type = qa_get_badge_type($type);
+					$types = $type['slug'];
+					$typed = $type['name'];
+					
+					$output .= '
+					<tr>
+						<td class="qa-form-wide-label">
+							<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+						</td>
+						<td class="qa-form-wide-data">
+							<span class="badge-count">x&nbsp;'.$count.'</span>
+						</td>
+					</tr>';
 			}
 			$output .= '
 			</tbody>
