@@ -124,12 +124,11 @@
 		function post_meta_who($post, $class)
 		{
 			if((bool)qa_opt('badge_admin_user_widget')) {
+				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 				if (isset($post['who']['points'])) {
-					$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 					$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
 				}
 				else if (isset($post['who']['title'])) {
-					$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 					$post['who']['title'] = $post['who']['title'].'&nbsp;'.$this->user_badge_widget($handle);
 				}
 			}
