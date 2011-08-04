@@ -211,7 +211,7 @@
 				if($post['netvotes'] !=0) $userposts[$uid][$pt.'votes'][] = array(
 																				'id'=>$pid,
 																				'votes'=>$post['netvotes'],
-																				'parentid'=>$post['parentid']
+																				'parentid'=>$post['parentid'],
 																				'created'=>$post['created']
 																				);
 				 
