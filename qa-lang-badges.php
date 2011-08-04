@@ -135,6 +135,8 @@
 		'reset_values_desc'=>'Reset variable badge data as input above',
 		'notify_time'=>'Notify Duration',
 		'notify_time_desc'=>'Duration in seconds before hiding badge notification (0 = off)',
+		'badge_trigger_notify'=>'Test Notify',
+		'badge_trigger_notify_desc'=>'show a sample notification box'
 		'save_settings'=>'Save',
 		'save_settings_desc'=>'save above settings'
 	);

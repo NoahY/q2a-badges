@@ -36,7 +36,7 @@
 					width: 100%;
 					z-index: 100;
 				}
-					.badge-notify {
+				.badge-notify {
 					background-color: #F6DF30;
 					color: #444444;
 					font-weight: bold;
@@ -102,21 +102,11 @@
 		}
 
 		function body() {
-			$this->output('<BODY');
-			$this->body_tags();
-			$this->output('>');
 
-			$this->badge_notify();  // <- this is our addition
+			qa_html_theme_base::body();
 			
-			if (isset($this->content['body_header']))
-				$this->output_raw($this->content['body_header']);
-				
-			$this->body_content();
-			
-			if (isset($this->content['body_footer']))
-				$this->output_raw($this->content['body_footer']);
-				
-			$this->output('</BODY>');
+			$this->badge_notify();
+
 		}
 
 		function form_body($form)
