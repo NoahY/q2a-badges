@@ -212,13 +212,7 @@
 			
 			if (QA_FINAL_EXTERNAL_USERS) {
 				$publictouserid=qa_get_userids_from_public(array($handle));
-				$userid=@$publictouserid[@$pass_subrequests[0]];
-				
-				ob_start();
-				var_dump($publictouserid);
-				$contents = ob_get_contents();
-				ob_end_clean();
-				error_log($contents);
+				$userid=@$publictouserid[$handle];
 				
 				if (!isset($userid))
 					return;
