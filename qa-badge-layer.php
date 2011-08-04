@@ -2,6 +2,37 @@
 
 	class qa_html_theme_layer extends qa_html_theme_base {
 
+	// badge check on view update
+	if(isset($qa_content['inc_views_postid'])) {
+		$oid = $qa_content['inc_views_postid'];
+		$views = qa_db_read_one_value(
+			qa_db_query_sub(
+				'SELECT views FROM ^posts WHERE postid=# ',
+				$oid
+			),
+			true
+		);
+		$views++; // because we haven't incremented the views yet
+		
+		$badges = array('notable_question','popular_questions','famous_question');
+
+		foreach($badges as $badge_slug) {
+			if($views  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
+						$uid, $badge_slug, $oid
+					),
+					true
+				);
+				
+				if (!$result) { // not already awarded this badge for this question
+					$this->award_badge($oid, $uid, $badge_slug);
+				}
+			}
+		}	
+	}
+
 	// theme replacement functions
 
 		function head_script() {
