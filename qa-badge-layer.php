@@ -206,11 +206,18 @@
 			// displays badge list in user profile
 			
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
+			require_once QA_INCLUDE_DIR.'qa-page.php';
 
 			if (QA_FINAL_EXTERNAL_USERS) {
 				$publictouserid=qa_get_userids_from_public(array(@$pass_subrequests[0]));
 				$userid=@$publictouserid[@$pass_subrequests[0]];
-				@error_log($publictouserid[$pass_subrequests[0]].' '.$userid);
+				
+				ob_start();
+				var_dump($publictouserid);
+				$contents = ob_get_contents();
+				ob_end_clean();
+				error_log($contents);
+				
 				if (!isset($userid))
 					return;
 			} 
