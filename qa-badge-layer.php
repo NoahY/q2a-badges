@@ -222,7 +222,7 @@
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_slug, badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					'SELECT ^badges.badge_slug, ^badges.badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
 					$userid
 				)
 			);
@@ -254,9 +254,9 @@
 					$var = qa_opt('badge_'.$slug.'_var');
 					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
 					
-					$type = qa_get_badge_type($type);
-					$types = $type['slug'];
-					$typed = $type['name'];
+					$typea = qa_get_badge_type($type);
+					$types = $typea['slug'];
+					$typed = $typea['name'];
 					
 					$output .= '
 					<tr>
