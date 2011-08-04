@@ -196,6 +196,7 @@
 			
 				foreach($badges as $pt => $slugs) {
 					foreach($slugs as $badge_slug) {
+						if(!isset($data[$pt])) continue;
 						if($data[$pt] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 							
 							$result = qa_db_read_one_value(
@@ -220,7 +221,7 @@
 			
 				foreach($badges as $pt => $slugs) {
 					foreach($slugs as $badge_slug) {
-						if(!$data[$pt.'votes']) continue;
+						if(!isset($data[$pt.'votes'])) continue;
 						foreach($data[$pt.'votes'] as $idv) {
 							
 							if($idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
