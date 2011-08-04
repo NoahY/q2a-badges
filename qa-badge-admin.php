@@ -148,7 +148,7 @@
 				);				
 			}
 			
-			$notifyjs = "jQuery('body').prepend('<div class='notify-container'><div class='badge-notify notify'>This is a test notification!<div class='notify-close' onclick='$(this).parent().fadeOut()'>x</div></div></div>')".(qa_opt('badge_notify_time') != '0'?"jQuery('document').ready(function() { $('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").fadeOut(); });":"");
+			$notifyjs = 'jQuery(\'body\').prepend(\'<div class="notify-container"><div class="badge-notify notify">This is a test notification!<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>\');'.(qa_opt('badge_notify_time') != '0'?' jQuery(\'document\').ready(function() { $(\'.notify-container\').delay('.((int)qa_opt('badge_notify_time')*1000).').fadeOut(); });':'');
 			
 			return array(
 				'ok' => ($ok && !isset($error)) ? $ok : null,
