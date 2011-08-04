@@ -299,6 +299,7 @@
 										);
 										if (!$result) { // not already awarded for this answer
 											$this->award_badge($id, $uid, $badge_slug2);
+											$awarded++;
 										}
 									}
 								}
