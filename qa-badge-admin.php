@@ -171,7 +171,8 @@
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_trigger_notify'),
-						'tags' => 'NAME="badge_trigger_notify"',
+						'tags' => "name='badge_trigger_notify' onclick='jQuery('body').prepend('<div class='notify-container'><div class='badge-notify notify'>This is a test notification!<div class='notify-close' onclick='$(this).parent().fadeOut()'>x</div></div></div>')".(qa_opt('badge_notify_time') != '0'?"
+				jQuery('document').ready(function() { $('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").fadeOut(); });'":"'"),
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em><hr/>',
 					),
 					array(
@@ -181,11 +182,6 @@
 					),
 				),
 			);
-		}
-
-		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
-			$this->output($notice);
 		}
 		
 // imported user badge checking functions
