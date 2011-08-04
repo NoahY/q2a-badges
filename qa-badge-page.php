@@ -55,7 +55,7 @@
 			}
 
 			$qa_content['custom'.++$c]='</table>';
-		
+			$qa_content['navigation']['main']['badges']['selected'] = '1';
 			return $qa_content;
 		}
 	
