@@ -207,61 +207,49 @@
 		// badges - add to this list to add a new badge, it will be imported when you run this function.  Don't change existing slugs!
 		
 		$badges = array();
-		
 
 		$badges['answerer'] = array('var'=>10, 'type'=>0);
-		$badges['lecturer'] = array('var'=>25, 'type'=>1);
-		$badges['preacher'] = array('var'=>50, 'type'=>2);
-
-		$badges['commenter'] = array('var'=>10, 'type'=>0);
-		$badges['commentator'] = array('var'=>25, 'type'=>1);
-		$badges['annotator'] = array('var'=>50, 'type'=>2);
-
 		$badges['asker'] = array('var'=>10, 'type'=>0);
-		$badges['questioner'] = array('var'=>25, 'type'=>1);
-		$badges['inquisitor'] = array('var'=>50, 'type'=>2);
-
-		$badges['nice_question'] = array('var'=>2, 'type'=>0);
-		$badges['good_question'] = array('var'=>3, 'type'=>1);
-		$badges['great_question'] = array('var'=>5, 'type'=>2);
-
-		$badges['nice_answer'] = array('var'=>2, 'type'=>0);
-		$badges['good_answer'] = array('var'=>3, 'type'=>1);
-		$badges['great_answer'] = array('var'=>5, 'type'=>2);
-
-		$badges['voter'] = array('var'=>10, 'type'=>0);
-		$badges['avid_voter'] = array('var'=>25, 'type'=>1);
-		$badges['devoted_voter'] = array('var'=>50, 'type'=>2);
-
-		$badges['gifted'] = array('var'=>5, 'type'=>0);
-		$badges['wise'] = array('var'=>10, 'type'=>1);
-		$badges['enlightened'] = array('var'=>20, 'type'=>2);
-
-		$badges['grateful'] = array('var'=>1, 'type'=>0);
-		$badges['respectful'] = array('var'=>8, 'type'=>1);
-		$badges['reverential'] = array('var'=>20, 'type'=>2);
-
-		$badges['editor'] = array('var'=>1, 'type'=>0);
-		$badges['copy_editor'] = array('var'=>15, 'type'=>1);
-		$badges['senior_editor'] = array('var'=>50, 'type'=>2);
-
-		$badges['watchdog'] = array('var'=>1, 'type'=>0);
-		$badges['bloodhound'] = array('var'=>5, 'type'=>1);
-		$badges['pitbull'] = array('var'=>15, 'type'=>2);
-
+		$badges['commenter'] = array('var'=>10, 'type'=>0);
 		$badges['dedicated'] = array('var'=>10, 'type'=>0);
-		$badges['devoted'] = array('var'=>25, 'type'=>1);
-		$badges['zealous'] = array('var'=>50, 'type'=>2);
-
+		$badges['editor'] = array('var'=>1, 'type'=>0);
+		$badges['gifted'] = array('var'=>5, 'type'=>0);
+		$badges['grateful'] = array('var'=>1, 'type'=>0);
 		$badges['medalist'] = array('var'=>10, 'type'=>0);
-		$badges['champion'] = array('var'=>25, 'type'=>1);
-		$badges['olympian'] = array('var'=>50, 'type'=>2);
-
+		$badges['nice_answer'] = array('var'=>2, 'type'=>0);
+		$badges['nice_question'] = array('var'=>2, 'type'=>0);
 		$badges['nice_question_old'] = array('var'=>30, 'type'=>0);
-		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
-		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
-
 		$badges['verified'] = array('type'=>0);
+		$badges['voter'] = array('var'=>10, 'type'=>0);
+		$badges['watchdog'] = array('var'=>1, 'type'=>0);
+		
+		$badges['avid_voter'] = array('var'=>25, 'type'=>1);
+		$badges['bloodhound'] = array('var'=>5, 'type'=>1);
+		$badges['champion'] = array('var'=>25, 'type'=>1);
+		$badges['commentator'] = array('var'=>25, 'type'=>1);
+		$badges['copy_editor'] = array('var'=>15, 'type'=>1);
+		$badges['devoted'] = array('var'=>25, 'type'=>1);
+		$badges['good_answer'] = array('var'=>3, 'type'=>1);
+		$badges['good_question'] = array('var'=>3, 'type'=>1);
+		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
+		$badges['lecturer'] = array('var'=>25, 'type'=>1);
+		$badges['questioner'] = array('var'=>25, 'type'=>1);
+		$badges['respectful'] = array('var'=>8, 'type'=>1);
+		$badges['wise'] = array('var'=>10, 'type'=>1);
+		
+		$badges['annotator'] = array('var'=>50, 'type'=>2);
+		$badges['devoted_voter'] = array('var'=>50, 'type'=>2);
+		$badges['enlightened'] = array('var'=>20, 'type'=>2);
+		$badges['great_answer'] = array('var'=>5, 'type'=>2);
+		$badges['great_question'] = array('var'=>5, 'type'=>2);
+		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
+		$badges['inquisitor'] = array('var'=>50, 'type'=>2);
+		$badges['olympian'] = array('var'=>50, 'type'=>2);
+		$badges['pitbull'] = array('var'=>15, 'type'=>2);
+		$badges['preacher'] = array('var'=>50, 'type'=>2);
+		$badges['reverential'] = array('var'=>20, 'type'=>2);
+		$badges['senior_editor'] = array('var'=>50, 'type'=>2);
+		$badges['zealous'] = array('var'=>50, 'type'=>2);
 
 		return $badges;
 	}
