@@ -36,7 +36,7 @@
 					width: 100%;
 					z-index: 100;
 				}
-				.badge-notify {
+					.badge-notify {
 					background-color: #F6DF30;
 					color: #444444;
 					font-weight: bold;
@@ -101,11 +101,11 @@
 			</style>');
 		}
 
-		function body() {
-
-			qa_html_theme_base::body();
+		function body_prefix()
+		{
+			qa_html_theme_base::body_prefix();
 			
-			$this->badge_notify();
+			$this->badge_notify();  // <- this is our addition
 
 		}
 
