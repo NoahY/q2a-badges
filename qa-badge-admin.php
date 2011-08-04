@@ -143,7 +143,7 @@
 					array(
 						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete">'.qa_badge_lang('badges/badge_award_delete_desc').'<br/><br/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete"><b>'.qa_badge_lang('badges/badge_award_delete_desc').'</b><br/><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/reset_values'),
@@ -298,7 +298,7 @@
 											true
 										);
 										if (!$result) { // not already awarded for this answer
-											$this->award_badge($id, $userid, $badge_slug2);
+											$this->award_badge($id, $uid, $badge_slug2);
 										}
 									}
 								}
