@@ -125,13 +125,9 @@
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><br/><br/>',
 					),
 					array(
+						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><br/>',
-					),
-					array(
-						'label' => qa_badge_lang('badges/badge_award_button'),
-						'tags' => 'NAME="dopostbadqes" onClick="return qa_badges_recalc_click(this.name, this, '.qa_js(qa_lang('badges/award_stop')).', \'award_note\');"',
-						'note' => '<SPAN ID="award_note">'.qa_lang_html('badges/award_note').'</SPAN>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/reset_values'),
@@ -146,6 +142,9 @@
 				),
 			);
 		}
+		
+// imported user badge checking functions
+
 		function award_badge($object_id, $user_id, $badge_slug) {
 			
 			// add badge to userbadges
@@ -158,7 +157,6 @@
 			
 		}
 		
-// imported user badge checking function
 		function qa_check_all_users_badges() {
 
 	// check posts

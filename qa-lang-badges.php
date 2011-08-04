@@ -54,6 +54,10 @@
 		'copy_editor'=>'Copy Editor',
 		'senior_editor'=>'Senior Editor',
 
+		'renewal'=>'Renewal',
+		'revival'=>'Revival',
+		'ressurection'=>'Ressurection',
+
 		'verified_desc'=>'Successfully verified email address',
 
 		'nice_question_desc'=>'Question received +# upvote',
@@ -107,6 +111,12 @@
 		'editor_desc'=>'Performed total of # edits',
 		'copy_editor_desc'=>'Performed total of # edits',
 		'senior_editor_desc'=>'Performed total of # edits',
+
+		'renewal'=>'Received "Nice Answer" badge in response to a question more than # days old',
+		'revival'=>'Received "Good Answer" badge in response to a question more than # days old',
+		'ressurection'=>'Received "Great Answer" badge in response to a question more than # days old',
+
+
 		
 		'bronze'=>'Bronze',
 		'silver'=>'Silver',
@@ -125,7 +135,7 @@
 		'badge_admin_activate'=>'Activate badges',
 		'active_badges'=>'Active Badges',
 		'badge_award_button'=>'Recheck Badge Awarding',
-		'badge_recreate_desc'=>'Manually check all for deserved awards',
+		'badge_award_button_desc'=>'Manually check all for deserved awards',
 		'badge_recreate'=>'Recreate Badges',
 		'badge_recreate_desc'=>'Recreate the badge database (for when changing the php code)',
 		'reset_values'=>'Reset',

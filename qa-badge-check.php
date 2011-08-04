@@ -332,11 +332,39 @@
 						),
 						true
 					);
-					if (!$result) { // not already awarded for this question
+					if (!$result) { // not already awarded for this answer
 						$this->award_badge($id, $userid, $badge_slug);
 					}
+
+					// self-answer vote checks TODO
+
+					// old question answer vote checks
+					
+					$qid = $params['parentid'];
+					$create = strtotime($post['created']);
+					
+					$parent = $this->get_post_data($id);
+					$pcreate = strtotime($parent['created']);
+					
+					$diffd = $pcreate->diff($create);
+					$diff = $diffd->format('%d'); 
+					
+					$badge_slug2 = $badge_slug.'_old';
+					
+					if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var')-1 && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
+						$result = qa_db_read_one_value(
+							qa_db_query_sub(
+								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+								$userid, $id, $badge_slug2
+							),
+							true
+						);
+						if (!$result) { // not already awarded for this answer
+							$this->award_badge($id, $userid, $badge_slug2);
+						}
+					}
 				}
-			}		
+			}
 		}
 
 		function question_vote_down($event,$event_user,$params) {
