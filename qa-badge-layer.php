@@ -147,6 +147,7 @@
 			
 			if(isset($this->content['inc_views_postid'])) {
 				$oid = $content['inc_views_postid'];
+				$uid = $content['raw']['userid'];
 				$views = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT views FROM ^posts WHERE postid=# ',
@@ -156,7 +157,7 @@
 				);
 				$views++; // because we haven't incremented the views yet
 				
-				$badges = array('notable_question','popular_questions','famous_question');
+				$badges = array('notable_question','popular_question','famous_question');
 
 				foreach($badges as $badge_slug) {
 					if($views  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
