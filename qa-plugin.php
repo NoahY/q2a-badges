@@ -262,6 +262,10 @@
 		$badges['copy_editor'] = array('var'=>15, 'type'=>1);
 		$badges['senior_editor'] = array('var'=>50, 'type'=>2);
 
+		$badges['renewal'] = array('var'=>10, 'type'=>0);
+		$badges['revival'] = array('var'=>30, 'type'=>1);
+		$badges['ressurection'] = array('var'=>60, 'type'=>2);
+
 		return $badges;
 	}
 	

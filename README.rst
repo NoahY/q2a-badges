@@ -121,6 +121,10 @@ Level[#]_   Title               Description
 1           Editor              Performed total of # edits
 2           Copy Editor         Performed total of # edits
 3           Senior Editor       Performed total of # edits
+
+1           Renewal             Received "Nice Answer" badge in response to a question more than # days old
+2           Revival             Received "Good Answer" badge in response to a question more than # days old
+3           Ressurection        Received "Great Answer" badge in response to a question more than # days old
 =========   ==============      ========================================
 
 .. [#]  Level refers to difficulty level (e.g. gold, silver, bronze).
