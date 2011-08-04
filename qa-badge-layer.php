@@ -101,12 +101,22 @@
 			</style>');
 		}
 
-		function body_prefix()
-		{
-			qa_html_theme_base::body_prefix();
-			
-			$this->badge_notify();  // <- this is our addition
+		function body() {
+			$this->output('<BODY');
+			$this->body_tags();
+			$this->output('>');
 
+			$this->badge_notify();  // <- this is our addition
+			
+			if (isset($this->content['body_header']))
+				$this->output_raw($this->content['body_header']);
+				
+			$this->body_content();
+			
+			if (isset($this->content['body_footer']))
+				$this->output_raw($this->content['body_footer']);
+				
+			$this->output('</BODY>');
 		}
 
 		function form_body($form)
@@ -218,6 +228,7 @@
 				if (!isset($userid))
 					return;
 			}
+			error_log('test '.$userid);
 
 
 			$result = qa_db_read_all_assoc(
