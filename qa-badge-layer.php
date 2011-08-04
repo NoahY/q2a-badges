@@ -131,42 +131,6 @@
 			}
 		}
 
-		function post_meta_who($post, $class)
-		{
-			if (isset($post['who'])) {
-				$this->output('<SPAN CLASS="'.$class.'-who">');
-				
-				if (strlen(@$post['who']['prefix']))
-					$this->output('<SPAN CLASS="'.$class.'-who-pad">'.$post['who']['prefix'].'</SPAN>');
-				
-				if (isset($post['who']['data']))
-					$this->output('<SPAN CLASS="'.$class.'-who-data">'.$post['who']['data'].'</SPAN>');
-				
-				if (isset($post['who']['title']))
-					$this->output('<SPAN CLASS="'.$class.'-who-title">'.$post['who']['title'].'</SPAN>');
-					
-				// You can also use $post['level'] to get the author's privilege level (as a string)
-				ob_start();
-				var_dump($post);
-				$contents = ob_get_contents();
-				ob_end_clean();
-				error_log($contents);
-				//$this->user_badge_widget($post['raw']['userid']);
-	
-				if (isset($post['who']['points'])) {
-					$post['who']['points']['prefix']='('.$post['who']['points']['prefix'];
-					$post['who']['points']['suffix'].=')';
-					$this->output_split($post['who']['points'], $class.'-who-points');
-				}
-				
-				if (strlen(@$post['who']['suffix']))
-					$this->output('<SPAN CLASS="'.$class.'-who-pad">'.$post['who']['suffix'].'</SPAN>');
-	
-				$this->output('</SPAN>');
-			}
-		}
-
-
 	// worker functions
 
 		function badge_notify() {
