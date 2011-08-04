@@ -293,12 +293,12 @@
 										$result = qa_db_read_one_value(
 											qa_db_query_sub(
 												'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-												$userid, $id, $badge_slug2
+												$uid, $idv['id'], $badge_slug2
 											),
 											true
 										);
 										if (!$result) { // not already awarded for this answer
-											$this->award_badge($id, $uid, $badge_slug2);
+											$this->award_badge($idv['id'], $uid, $badge_slug2);
 											$awarded++;
 										}
 									}
