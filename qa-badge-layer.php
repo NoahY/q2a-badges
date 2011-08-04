@@ -250,6 +250,7 @@
 							<span class="badge-count">x&nbsp;'.$count.'</span>
 						</td>
 					</tr>';
+				}
 			}
 			$output .= '
 			</tbody>
