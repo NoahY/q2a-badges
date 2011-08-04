@@ -104,7 +104,13 @@
 		function body_prefix()
 		{
 			qa_html_theme_base::body_prefix();
-			$this->badge_notify();  
+			$this->badge_notify();
+			
+			ob_start();
+			var_dump($content);
+			$contents = ob_get_contents();
+			ob_end_clean();
+			error_log($contents);
 		}
 
 		function body_suffix()
