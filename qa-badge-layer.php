@@ -107,16 +107,16 @@
 			$this->badge_notify();
 			
 			ob_start();
-			var_dump($content);
-			$contents = ob_get_contents();
+			var_dump($this->content);
+			$x = ob_get_contents();
 			ob_end_clean();
-			error_log($contents);
+			error_log($x);
 		}
 
 		function body_suffix()
 		{
 			qa_html_theme_base::body_suffix();
-			if($content['test-notify'])	$this->trigger_notify('Congratulations!  This is a test message');
+			if($this->content['test-notify'])	$this->trigger_notify('Congratulations!  This is a test message');
 		}
 
 		function form_body($form)
@@ -150,7 +150,8 @@
 			
 			// badge check on view update
 			
-			if(isset($content['inc_views_postid'])) {
+			if(isset($this->content['inc_views_postid'])) {
+				error_log('added a view to '.$this->content['inc_views_postid']);
 				$oid = $content['inc_views_postid'];
 				$views = qa_db_read_one_value(
 					qa_db_query_sub(
