@@ -9,7 +9,7 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 22 badges implemented
+- currently 40 badges implemented
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge requirements modifiable via admin page
 - badge notification system triggers jquery notice when awardee accesses the site
