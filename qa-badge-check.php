@@ -196,7 +196,7 @@
 			$badges = array('asker','questioner','inquisitor');
 			
 			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
@@ -227,7 +227,7 @@
 			$badges = array('answerer','lecturer','preacher');
 			
 			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
@@ -258,7 +258,7 @@
 			$badges = array('commenter','commentator','annotator');
 			
 			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
@@ -292,7 +292,7 @@
 			$badges = array('nice_question','good_question','great_question');
 
 			foreach($badges as $badge_slug) {
-				if($votes  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if($votes  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
@@ -324,7 +324,7 @@
 			$badges = array('nice_answer','good_answer','great_answer');
 
 			foreach($badges as $badge_slug) {
-				if($votes  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if($votes  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
@@ -341,17 +341,17 @@
 					// old question answer vote checks
 					
 					$qid = $params['parentid'];
-					$create = strtotime($post['created']);
+					$create = new DateTime($post['created']);
 					
 					$parent = $this->get_post_data($id);
-					$pcreate = strtotime($parent['created']);
-					continue;
+					$pcreate = new DateTime($parent['created']);
+					
 					$diffd = $pcreate->diff($create);
 					$diff = $diffd->format('%d'); 
 					
 					$badge_slug2 = $badge_slug.'_old';
 					
-					if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var')-1 && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
+					if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var') && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
 						$result = qa_db_read_one_value(
 							qa_db_query_sub(
 								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
@@ -396,7 +396,7 @@
 			$badges = array('voter','avid_voter','devoted_voter');
 
 			foreach($badges as $badge_slug) {
-				if(count($votes)  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($votes)  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -443,7 +443,7 @@
 			$badges = array('gifted','wise','enlightened');
 
 			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -471,7 +471,7 @@
 			$badges = array('grateful','respectful','reverential');
 
 			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -545,7 +545,7 @@
 			$badges = array('editor','copy_editor','senior_editor');
 
 			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -599,7 +599,7 @@
 			$badges = array('watchdog','bloodhound','pitbull');
 
 			foreach($badges as $badge_slug) {
-				if(count($flags)  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($flags)  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
@@ -649,7 +649,7 @@
 			$badges = array('medalist','champion','olympian');
 
 			foreach($badges as $badge_slug) {
-				if(count($medals)  >= (int)qa_opt('badge_'.$badge_slug.'_var')-1 && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				if(count($medals)  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
