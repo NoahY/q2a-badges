@@ -94,10 +94,6 @@ Level [*]_   Title               Description
 2            Commentator         Posted # comments
 3            Annotator           Posted # comments
 
-1            Learner             Accepted answers to # questions
-2            Student             Accepted answers to # questions
-3            Scholar             Accepted answers to # questions
-
 1            Watchdog            Flagged # posts as inappropriate
 2            Bloodhound          Flagged # posts as inappropriate
 3            Pitbull             Flagged # posts as inappropriate
@@ -110,9 +106,9 @@ Level [*]_   Title               Description
 2            Wise                # answers selected as best answer
 3            Enlightened         # answers selected as best answer
 
-1            Grateful            selected # answers as best answer
-2            Respectful          selected # answers as best answer
-3            Reverential         selected # answers as best answer
+1            Grateful            Selected # answers as best answer
+2            Respectful          Selected # answers as best answer
+3            Reverential         Selected # answers as best answer
 
 1            Medalist            Received total of # badges
 2            Champion            Received total of # badges

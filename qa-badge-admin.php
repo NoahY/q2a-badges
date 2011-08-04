@@ -19,6 +19,22 @@
 				$ok = qa_badge_lang('badges/list_rebuilt');
 			}
 			else if (qa_clicked('badge_award_button')) {
+				if((bool)qa_post_text('badge_award_delete')) {
+					qa_db_query_sub(
+						'DROP TABLE ^userbadges'
+					):
+					qa_db_query_sub(
+						'CREATE TABLE ^userbadges ('.
+							'awarded_at DATETIME NOT NULL,'.
+							'user_id INT(11) NOT NULL,'.
+							'notify TINYINT DEFAULT 0 NOT NULL,'.
+							'object_id INT(10),'.
+							'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
+							'id INT(11) NOT NULL AUTO_INCREMENT,'.
+							'PRIMARY KEY (id)'.
+						') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+					);
+				}
 				$ok = $this->qa_check_all_users_badges();
 			}
 			else if (qa_clicked('badge_reset_button')) {
@@ -127,7 +143,7 @@
 					array(
 						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><br/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" checked="" name="badge_award_delete">'.qa_badge_lang('badges/badge_award_delete_desc').'<br/><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/reset_values'),
@@ -156,10 +172,21 @@
 			);
 			
 		}
+		function get_post_data($id) {
+			$result = qa_db_read_one_assoc(
+				qa_db_query_sub(
+					'SELECT * FROM ^posts WHERE postid=#',
+					$id
+				),
+				true
+			);
+			return $result;
+		}
 		
+	// post check
+
 		function qa_check_all_users_badges() {
 
-	// check posts
 			$awarded = 0;
 			$userposts;
 		
@@ -181,13 +208,20 @@
 				
 				// get post votes
 				
-				if($post['netvotes'] !=0) $userposts[$uid][$pt.'votes'][] = array('id'=>$pid,'votes'=>$post['netvotes']);
+				if($post['netvotes'] !=0) $userposts[$uid][$pt.'votes'][] = array(
+																				'id'=>$pid,
+																				'votes'=>$post['netvotes'],
+																				'parentid'=>$post['parentid']
+																				'created'=>$post['created']
+																				);
 				 
 			} 
 			
 			foreach ($userposts as $user => $data) {
 				$uid = (int)substr($user,4);
-
+				
+				// bulk amounts
+				
 				$badges = array(
 					'Q' => array('asker','questioner','inquisitor'),
 					'A' => array('answerer','lecturer','preacher'),
@@ -214,6 +248,9 @@
 						}
 					}
 				}
+
+				// nice Q&A
+				
 				$badges = array(
 					'Q' => array('nice_question','good_question','great_question'), 
 					'A' => array('nice_answer','good_answer','great_answer')
@@ -238,6 +275,33 @@
 									$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
 									$awarded++;
 								}
+
+							// old question answer vote checks
+								if($pt == 'A') {
+									$qid = $idv['parentid'];
+									$create = new DateTime($post['created']);
+									
+									$parent = $this->get_post_data($qid);
+									$pcreate = new DateTime($parent['created']);
+									
+									$diffd = $pcreate->diff($create);
+									$diff = $diffd->format('%d'); 
+
+									$badge_slug2 = $badge_slug.'_old';
+									
+									if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var') && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
+										$result = qa_db_read_one_value(
+											qa_db_query_sub(
+												'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+												$userid, $id, $badge_slug2
+											),
+											true
+										);
+										if (!$result) { // not already awarded for this answer
+											$this->award_badge($id, $userid, $badge_slug2);
+										}
+									}
+								}
 							}
 						}
 					}
@@ -252,13 +316,13 @@
 				)
 			);
 			foreach ($result as $vote) {
-				$uid='user'.$vote['userid'];
+				$user='user'.$vote['userid'];
 				$pid = $vote['postid'];
 				
 				// get vote count
 				
-				if(isset($userposts[$uid]) && isset($userposts[$uid]['votes'])) $userposts[$uid]['votes'] = $userposts[$uid]['votes']++;
-				else $userposts[$uid]['votes'] = 1;
+				if(isset($userposts[$user]) && isset($userposts[$user]['votes'])) $userposts[$user]['votes'] = $userposts[$user]['votes']++;
+				else $userposts[$user]['votes'] = 1;
 			} 
 
 			foreach($userposts as $user => $data) {
@@ -292,7 +356,6 @@
 					'SELECT aselects, aselecteds userid FROM ^userpoints'
 				)
 			);
-
 			
 			foreach($selects as $s) {
 				$uid = $s['userid'];

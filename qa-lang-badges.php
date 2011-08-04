@@ -26,10 +26,6 @@
 		'commentator'=>'Commentator',
 		'annotator'=>'Annotator',
 
-		'learner'=>'Learner',
-		'student'=>'Student',
-		'scholar'=>'Scholar',
-
 		'watchdog'=>'Watchdog',
 		'bloodhound'=>'Bloodhound',
 		'pitbull'=>'Pitbull',
@@ -84,10 +80,6 @@
 		'commentator_desc'=>'Posted # comments',
 		'annotator_desc'=>'Posted # comments',
 
-		'learner_desc'=>'Accepted answers to # questions',
-		'student_desc'=>'Accepted answers to # questions',
-		'scholar_desc'=>'Accepted answers to # questions',
-
 		'watchdog_desc'=>'flagged # posts as inappropriate',
 		'bloodhound_desc'=>'flagged # posts as inappropriate',
 		'pitbull_desc'=>'flagged # posts as inappropriate',
@@ -100,9 +92,9 @@
 		'wise_desc'=>'# answers selected as best answer',
 		'enlightened_desc'=>'# answers selected as best answer',
 
-		'grateful_desc'=>'selected # answers as best answer',
-		'respectful_desc'=>'selected # answers as best answer',
-		'reverential_desc'=>'selected # answers as best answer',
+		'grateful_desc'=>'Selected # answers as best answer',
+		'respectful_desc'=>'Selected # answers as best answer',
+		'reverential_desc'=>'Selected # answers as best answer',
 
 		'medalist_desc'=>'Received total of # badges',
 		'champion_desc'=>'Received total of # badges',
@@ -135,7 +127,8 @@
 		'badge_admin_activate'=>'Activate badges',
 		'active_badges'=>'Active Badges',
 		'badge_award_button'=>'Recheck Badge Awarding',
-		'badge_award_button_desc'=>'Manually check all for deserved awards',
+		'badge_award_button_desc'=>'Manually check for all deserved awards',
+		'badge_award_delete_desc'=>'Remove all badges from database first',
 		'badge_recreate'=>'Recreate Badges',
 		'badge_recreate_desc'=>'Recreate the badge database (for when changing the php code)',
 		'reset_values'=>'Reset',
