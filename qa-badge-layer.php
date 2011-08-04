@@ -125,8 +125,9 @@
 		{
 			if (isset($post['who']['points']) && (bool)qa_opt('badge_admin_user_widget')) {
 				
-				$post['who']['points']['prefix'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['prefix'];
+				$post['who']['points']['prefix'] = $post['who']['points']['prefix'].$this->user_badge_widget($handle).'&nbsp;';
 			}
+			qa_html_theme_base::post_meta_who($post, $class);
 		}
 
 	// worker functions
