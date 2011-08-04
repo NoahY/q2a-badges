@@ -48,7 +48,7 @@
 				$ok = qa_badge_lang('badges/badges_reset');
 			}
 			else if (qa_clicked('badge_trigger_notify')) {
-				trigger_notify('Congratulations!  This is a test message');
+				$this->trigger_notify('Congratulations!  This is a test message');
 			}
 			else if(qa_clicked('badge_save_settings')) {
 				foreach ($badges as $slug => $info) {
@@ -181,6 +181,11 @@
 					),
 				),
 			);
+		}
+
+		function trigger_notify($message) {
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
+			$this->output($notice);
 		}
 		
 // imported user badge checking functions
