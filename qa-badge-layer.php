@@ -106,11 +106,6 @@
 			qa_html_theme_base::body_prefix();
 			$this->badge_notify();
 			
-			ob_start();
-			var_dump($this->content);
-			$x = ob_get_contents();
-			ob_end_clean();
-			error_log($x);
 		}
 
 		function body_suffix()
@@ -151,7 +146,6 @@
 			// badge check on view update
 			
 			if(isset($this->content['inc_views_postid'])) {
-				error_log('added a view to '.$this->content['inc_views_postid']);
 				$oid = $content['inc_views_postid'];
 				$views = qa_db_read_one_value(
 					qa_db_query_sub(
