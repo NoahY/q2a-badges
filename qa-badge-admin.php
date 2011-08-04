@@ -288,13 +288,13 @@
 							// old question answer vote checks
 								if($pt == 'A') {
 									$qid = $idv['parentid'];
-									$create = new DateTime($post['created']);
+									$create = strtotime($post['created']);
 									
 									$parent = $this->get_post_data($qid);
-									$pcreate = new DateTime($parent['created']);
+									$pcreate = strtotime($parent['created']);
 									
-									$diffd = $pcreate->diff($create);
-									$diff = $diffd->format('%d'); 
+									$diffd = round(abs($pcreate-$create)/60/60/24);
+									
 
 									$badge_slug2 = $badge_slug.'_old';
 									
