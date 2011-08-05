@@ -154,19 +154,23 @@
 
 		// check lapse since last visit
 		
-		$result = (int)qa_db_read_one_value(
-			qa_db_query_sub(
-				'SELECT DATEDIFF(NOW(),$)',
-				$user['last_visit']
-			),
-			true
-		);
+		$result = round(abs(time()-strtotime($user['last_visit']))/60/60/24);
 		
 		if($result < 2) { // one day or less, update last visit
-			qa_db_query_sub(
-				'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#  WHERE user_id=#',
-				$result, $userid 
-			);		
+			
+			$result2 = round(abs(time()-strtotime($user['oldest_consec_visit']))/60/60/24);
+			if($result2 > $user['longest_consec_visit']) {
+				qa_db_query_sub(
+					'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#  WHERE user_id=#',
+					$result2, $userid 
+				);		
+			}
+			else {
+				qa_db_query_sub(
+					'UPDATE ^achievements SET last_visit=NOW() WHERE user_id=#',
+					$userid 
+				);		
+			}
 			qa_badge_check_consec_days($userid);
 		}
 		else { // 2+ days, reset consecutive days due to lapse
