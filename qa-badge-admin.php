@@ -263,7 +263,7 @@
 				
 				// get vote count
 				
-				if(isset($users[$user]) && isset($users[$user]['votes'])) $users[$user]['votes'] = $users[$user]['votes']++;
+				if(isset($users[$user]) && isset($users[$user]['votes'])) $users[$user]['votes']++;
 				else $users[$user]['votes'] = 1;
 			} 
 
@@ -280,7 +280,7 @@
 				
 				// get flag count
 				
-				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags'] = $users[$user]['flags']++;
+				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags']++;
 				else $users[$user]['flags'] = 1;
 			}
 			
@@ -556,10 +556,10 @@
 				
 				// get flag count
 				
-				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals'] = $users[$user]['medals']++;
+				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals']++;
 				else $users[$user]['medals'] = 1;
 			} 
-			foreach($users as $uid => $data) {
+			foreach($users as $user => $data) {
 				$uid = (int)substr($user,4);
 
 				// check badges
