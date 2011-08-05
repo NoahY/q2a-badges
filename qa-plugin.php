@@ -146,8 +146,8 @@
 
 		if(!$user['user_id']) {
 			qa_db_query_sub(
-				'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), NOW(), #, #, #)',
-				$userid, 1, 0, 0
+				'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
+				$userid, 0, 1, 0, 0
 			);
 			return;
 		}
