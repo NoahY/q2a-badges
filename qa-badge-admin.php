@@ -297,8 +297,8 @@
 				
 				// get flag count
 				
-				if(isset($userposts[$user]) && isset($userposts[$user]['medals'])) $userposts[$user]['medals'] = $userposts[$user]['medals']++;
-				else $userposts[$user]['medals'] = 1;
+				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals'] = $users[$user]['medals']++;
+				else $users[$user]['medals'] = 1;
 			} 
 
 			
