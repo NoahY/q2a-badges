@@ -63,7 +63,8 @@
 				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
-				$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td>".(isset($count[$slug]) ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"<td></td>")."</tr>";
+				$typen = $type['name']; 
+				$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types' title='".$typen."'>$name</span></td><td class='badge-desc'>$desc</td>".(isset($count[$slug]) ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"<td></td>")."</tr>";
 			
 			}
 			$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='total-badges'>".count($badges)." ".qa_badge_lang('badges/badges_total')."</td><td></td>".($totalawarded > 0 ? "<td class='total-badge-count'>".$totalawarded." ".qa_badge_lang('badges/awarded_total')."</td>":"<td></td>")."</tr>";
