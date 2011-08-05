@@ -113,7 +113,7 @@
 		function body_suffix()
 		{
 			qa_html_theme_base::body_suffix();
-			if($this->content['test-notify'])	$this->trigger_notify('Congratulations!  This is a test message');
+			if(isset($this->content['test-notify'])) $this->trigger_notify('Congratulations!  This is a test message');
 		}
 
 		function form_body($form)
@@ -220,8 +220,8 @@
 					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify=1',
 					$userid
 				);
+				$this->output($notice);
 			}
-			$this->output($notice);
 		}
 		
 		function trigger_notify($message) {
