@@ -662,14 +662,14 @@
 // worker functions
 
 		
-		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false, $silent = false) {
+		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false) {
 			
 			// add badge to userbadges
 			
 			qa_db_query_sub(
 				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
 				'VALUES (NOW(), #, #, #, #, 0)',
-				(silent?0:1), $object_id, $user_id, $badge_slug
+				1, $object_id, $user_id, $badge_slug
 			);
 			
 			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
