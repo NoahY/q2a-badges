@@ -127,6 +127,7 @@
 		
 		'badge_list_pre'=>'The following is a list of all badges available on this site:',
 		'badge_list_title'=>'Badge List',
+		'awarded'=>'awarded',
 		
 		'badge_notify'=>'Congratulations!  You\'ve earned a badge ',
 		
