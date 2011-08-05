@@ -44,11 +44,11 @@
 			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT COUNT(id),badge_slug  FROM ^userbadges GROUP BY badge_slug',
+					'SELECT COUNT(id),badge_slug  FROM ^userbadges GROUP BY badge_slug'
 				)
 			);
 			
-			foreac($result as $r) {
+			foreach($result as $r) {
 				if($r['COUNT(id)'] > 0) $count[$r['badge_slug']] = $r['COUNT(id)'];
 			}
 			
