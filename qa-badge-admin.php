@@ -283,24 +283,6 @@
 				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags'] = $users[$user]['flags']++;
 				else $users[$user]['flags'] = 1;
 			}
-
-
-			// badges
-			
-			$badges = qa_db_read_all_values(
-				qa_db_query_sub(
-					'SELECT user_id FROM ^userbadges'
-				)
-			);
-			foreach ($badges as $medal) {
-				$user='user'.$medal['userid'];
-				
-				// get flag count
-				
-				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals'] = $users[$user]['medals']++;
-				else $users[$user]['medals'] = 1;
-			} 
-
 			
 			foreach ($users as $user => $data) {
 				$uid = (int)substr($user,4);
@@ -467,33 +449,6 @@
 						}
 					}
 				}
-				// check badges
-
-				if(isset($data['medals'])) {
-					$uid = (int)substr($user,4);
-					
-					$medals = $data['medals']; 
-					
-					$badges = array('medalist','champion','olympian');
-
-					foreach($badges as $badge_slug) {
-						if((int)$medals  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-							$result = qa_db_read_one_value(
-								qa_db_query_sub(
-									'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-									$uid, $badge_slug
-								),
-								true
-							);
-							
-							if (!$result) { // not already awarded this badge
-								$this->award_badge(NULL, $uid, $badge_slug,false,true);
-								$awarded++;
-							}
-						}
-					}
-				}
-
 			}
 
 
@@ -580,6 +535,56 @@
 					}
 				}
 			}
+
+			// badges
+			
+			$badgelist = qa_db_read_all_values(
+				qa_db_query_sub(
+					'SELECT user_id FROM ^userbadges'
+				)
+			);
+			
+			$users = array();
+			
+			foreach ($badgelist as $medal) {
+				$user='user'.$medal['userid'];
+				
+				// get flag count
+				
+				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals'] = $users[$user]['medals']++;
+				else $users[$user]['medals'] = 1;
+			} 
+			foreach($users as $uid => $data) {
+				$uid = (int)substr($user,4);
+
+				// check badges
+
+				if(isset($data['medals'])) {
+					$uid = (int)substr($user,4);
+					
+					$medals = $data['medals']; 
+					
+					$badges = array('medalist','champion','olympian');
+
+					foreach($badges as $badge_slug) {
+						if((int)$medals  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+							$result = qa_db_read_one_value(
+								qa_db_query_sub(
+									'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+									$uid, $badge_slug
+								),
+								true
+							);
+							
+							if (!$result) { // not already awarded this badge
+								$this->award_badge(NULL, $uid, $badge_slug,false,true);
+								$awarded++;
+							}
+						}
+					}
+				}
+			}
+
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
 	}
