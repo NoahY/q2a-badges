@@ -55,14 +55,13 @@
 			
 			foreach($badges as $slug => $info) {
 				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
-				$c++;
 				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
 				$name = qa_opt('badge_'.$slug.'_name');
 				$var = qa_opt('badge_'.$slug.'_var');
 				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
-				$qa_content['custom'.$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td>".($count[$slug] ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"<td></td>")."</tr>";
+				$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td>".($count[$slug] ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"<td></td>")."</tr>";
 			
 			}
 			$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='total-badges'>".count($badges)." ".qa_badge_lang('badges/badges_total')."</td><td></td>".($totalawarded > 0 ? "<td class='total-badge-count'>".$totalawarded." ".qa_badge_lang('badges/awarded_total')."</td>":"<td></td>")."</tr>";

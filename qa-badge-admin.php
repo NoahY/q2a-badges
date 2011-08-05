@@ -351,7 +351,7 @@
 									$parent = $this->get_post_data($qid);
 									$pcreate = strtotime($parent['created']);
 									
-									$diffd = round(abs($pcreate-$create)/60/60/24);
+									$diff = round(abs($pcreate-$create)/60/60/24);
 									
 
 									$badge_slug2 = $badge_slug.'_old';
