@@ -158,7 +158,7 @@
 				
 				'buttons' => array(
 					array(
-						'label' => '<div style="text-align:left>'.qa_badge_lang('badges/badge_recreate'),
+						'label' => '<div style="text-align:left">'.qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
 						'note' => '<em>'.qa_badge_lang('badges/badge_recreate_desc').'</em>',
 					),
