@@ -466,7 +466,7 @@
 				$uid = $s['userid'];
 
 
-				if(isset($s['aselects']) {
+				if(isset($s['aselects'])) {
 					$count = $s['aselects'];
 					$badges = array('gifted','wise','enlightened');
 
@@ -487,7 +487,7 @@
 						}
 					}
 				}
-				if(isset($s['aselecteds']) {
+				if(isset($s['aselecteds'])) {
 					$count = $s['aselecteds'];
 					$badges = array('grateful','respectful','reverential');
 
