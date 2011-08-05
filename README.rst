@@ -9,7 +9,7 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 40 badges implemented
+- currently 43 badges implemented
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge requirements modifiable via admin page
 - badge notification system triggers jquery notice when awardee accesses the site
@@ -123,7 +123,7 @@ Level [*]_   Title                  Description
 3            Ressurection           Received "Great Answer" badge in response to a question more than # days old
 
 1            Notable Question       Asked question received # views
-2            Popluar Question       Asked question received # views
+2            Popular Question       Asked question received # views
 3            Famous Question        Asked question received # views
 ==========   =================      ========================================
 
