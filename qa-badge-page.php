@@ -37,7 +37,9 @@
 			$qa_content['title']=qa_badge_lang('badges/badge_list_title');
 
 			$badges = qa_get_badge_list();
-
+			
+			$totalawarded = 0;
+			
 			$qa_content['custom']='<em>'.qa_badge_lang('badges/badge_list_pre').'</em><br />';
 			$qa_content['custom2']='<table cellspacing="20">';
 			$c = 2;
@@ -50,7 +52,7 @@
 			
 			foreach($result as $r) {
 				if($r['COUNT(id)'] > 0) $count[$r['badge_slug']] = $r['COUNT(id)'];
-				$totalawarded .= (int)$r['COUNT(id)'];
+				$totalawarded = (int)$totalawarded.(int)$r['COUNT(id)'];
 			}
 			
 			foreach($badges as $slug => $info) {
