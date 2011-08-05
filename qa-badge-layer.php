@@ -68,6 +68,7 @@
 					text-align:center;
 					border-radius:4px;
 					width:120px;
+					padding: 0 10px;
 					display: inline-block;
 				}
 				.badge-bronze {
@@ -83,6 +84,7 @@
 					border:2px solid #5F5908;
 				}				
 				.badge-bronze-medal, .badge-silver-medal, .badge-gold-medal  {
+					cursor:pointer;
 					font-size: 14px;
 					font-family:sans-serif;
 				}

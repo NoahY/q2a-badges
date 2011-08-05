@@ -41,6 +41,17 @@
 			$qa_content['custom']='<em>'.qa_badge_lang('badges/badge_list_pre').'</em><br />';
 			$qa_content['custom2']='<table cellspacing="20">';
 			$c = 2;
+			
+			$result = qa_db_read_all_assoc(
+				qa_db_query_sub(
+					'SELECT COUNT(id),badge_slug  FROM ^userbadges GROUP BY badge_slug',
+				)
+			);
+			
+			foreac($result as $r) {
+				if($r['COUNT(id)'] > 0) $count[$r['badge_slug']] = $r['COUNT(id)'];
+			}
+			
 			foreach($badges as $slug => $info) {
 				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
 				$c++;
@@ -50,12 +61,12 @@
 				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
-				$qa_content['custom'.$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td></tr>";
+				$qa_content['custom'.$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types'>$name</span></td><td class='badge-desc'>$desc</td>".($count[$slug] ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"")."</tr>";
 			
 			}
 
 			$qa_content['custom'.++$c]='</table>';
-			//$qa_content['navigation']['main']['custom-2']['selected'] = true;
+			if(isset($qa_content['navigation']['main']['custom-2'])) $qa_content['navigation']['main']['custom-2']['selected'] = true;
 
 			return $qa_content;
 		}
