@@ -457,51 +457,56 @@
 			
 			$selects = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT aselects, aselecteds userid FROM ^userpoints'
+					'SELECT aselects, aselecteds, userid FROM ^userpoints'
 				)
 			);
 			
 			foreach($selects as $s) {
+
 				$uid = $s['userid'];
 
-				$badges = array('gifted','wise','enlightened');
-				$count = $s['aselects'];
 
-				foreach($badges as $badge_slug) {
-					if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-						$result = qa_db_read_one_value(
-							qa_db_query_sub(
-								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-								$uid, $badge_slug
-							),
-							true
-						);
-						
-						if (!$result) { // not already awarded this badge
-							$this->award_badge(NULL, $uid, $badge_slug,false,true);
-							$awarded++;
+				if(isset($s['aselects']) {
+					$count = $s['aselects'];
+					$badges = array('gifted','wise','enlightened');
+
+					foreach($badges as $badge_slug) {
+						if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+							$result = qa_db_read_one_value(
+								qa_db_query_sub(
+									'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+									$uid, $badge_slug
+								),
+								true
+							);
+							
+							if (!$result) { // not already awarded this badge
+								$this->award_badge(NULL, $uid, $badge_slug,false,true);
+								$awarded++;
+							}
 						}
 					}
 				}
+				if(isset($s['aselecteds']) {
+					$count = $s['aselecteds'];
+					$badges = array('grateful','respectful','reverential');
 
-				$badges = array('grateful','respectful','reverential');
-				$count = $s['aselecteds'];
-
-				foreach($badges as $badge_slug) {
-					if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-						$result = qa_db_read_one_value(
-							qa_db_query_sub(
-								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-								$uid, $badge_slug
-							),
-							true
-						);
-						
-						if (!$result) { // not already awarded this badge
-							$this->award_badge(NULL, $uid, $badge_slug,false,true);
-							$awarded++;
-						}
-					}			
+					foreach($badges as $badge_slug) {
+						if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+							$result = qa_db_read_one_value(
+								qa_db_query_sub(
+									'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+									$uid, $badge_slug
+								),
+								true
+							);
+							
+							if (!$result) { // not already awarded this badge
+								$this->award_badge(NULL, $uid, $badge_slug,false,true);
+								$awarded++;
+							}
+						}			
+					}
 				}
 			}
 			
