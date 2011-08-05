@@ -198,8 +198,7 @@
 				qa_db_query_sub(
 					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify=1',
 					$userid
-				),
-				true
+				)
 			);
 			if(count($result) > 0) {
 

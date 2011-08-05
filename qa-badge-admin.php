@@ -272,8 +272,7 @@
 			$flag_result = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT userid FROM ^uservotes WHERE flag > 0'
-				),
-				true
+				)
 			);
 
 			foreach ($flag_result as $flag) {
@@ -562,8 +561,7 @@
 			$counts = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT user_id FROM ^userbadges'
-				),
-				true
+				)
 			);
 			foreach ($counts as $medal) {
 				$uid='user'.$medal['userid'];
