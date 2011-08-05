@@ -187,8 +187,7 @@
 				qa_db_query_sub(
 					'SELECT postid FROM ^posts WHERE userid=# AND type=$',
 					$uid, 'Q'
-				),
-				true
+				)
 			);
 			
 			// sheer volume of posts
@@ -218,8 +217,7 @@
 				qa_db_query_sub(
 					'SELECT postid FROM ^posts WHERE userid=# AND type=$',
 					$uid, 'A'
-				),
-				true
+				)
 			);
 
 			// sheer volume of posts
@@ -249,8 +247,7 @@
 				qa_db_query_sub(
 					'SELECT postid FROM ^posts WHERE userid=# AND type=$',
 					$uid, 'C'
-				),
-				true
+				)
 			);
 
 			// sheer volume of posts
@@ -389,8 +386,7 @@
 				qa_db_query_sub(
 					'SELECT userid FROM ^uservotes WHERE userid=# AND vote !=#',
 					$uid, 0
-				),
-				true
+				)
 			);
 
 			$badges = array('voter','avid_voter','devoted_voter');
@@ -592,8 +588,7 @@
 				qa_db_query_sub(
 					'SELECT userid FROM ^uservotes WHERE userid=# AND flag = #',
 					$uid, 1
-				),
-				true
+				)
 			);
 
 			$badges = array('watchdog','bloodhound','pitbull');
@@ -642,8 +637,7 @@
 				qa_db_query_sub(
 					'SELECT user_id FROM ^userbadges WHERE user_id=#',
 					$user_id
-				),
-				true
+				)
 			);
 
 			$badges = array('medalist','champion','olympian');

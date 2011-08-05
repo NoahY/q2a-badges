@@ -136,11 +136,12 @@
 		
 		// first visit check
 		
-		$user = qa_db_read_one_assoc(
+		$user = @qa_db_read_one_assoc(
 			qa_db_query_sub(
 				'SELECT user_id,longest_consec_visit,last_visit FROM ^achievements WHERE user_id=# ',
 				$userid
-			)
+			),
+			true
 		);
 
 		if(!$user['user_id']) {
