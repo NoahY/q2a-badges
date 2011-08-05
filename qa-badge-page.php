@@ -55,7 +55,7 @@
 			}
 
 			$qa_content['custom'.++$c]='</table>';
-			$qa_content['navigation']['main']['custom-2']['selected'] = true;
+			//$qa_content['navigation']['main']['custom-2']['selected'] = true;
 
 			return $qa_content;
 		}
