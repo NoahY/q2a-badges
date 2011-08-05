@@ -158,7 +158,7 @@
 				
 				'buttons' => array(
 					array(
-						'label' => '<div style="text-align:left">'.qa_badge_lang('badges/badge_recreate'),
+						'label' => qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
 						'note' => '<em>'.qa_badge_lang('badges/badge_recreate_desc').'</em>',
 					),
@@ -180,7 +180,7 @@
 					array(
 						'label' => qa_badge_lang('badges/save_settings'),
 						'tags' => 'NAME="badge_save_settings"',
-						'note' => '<em>'.qa_badge_lang('badges/save_settings_desc').'</em></div>',
+						'note' => '<em>'.qa_badge_lang('badges/save_settings_desc').'</em>',
 					),
 				),
 			);
