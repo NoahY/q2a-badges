@@ -52,7 +52,7 @@
 			
 			foreach($result as $r) {
 				if($r['COUNT(id)'] > 0) $count[$r['badge_slug']] = $r['COUNT(id)'];
-				$totalawarded = (int)$totalawarded.(int)$r['COUNT(id)'];
+				$totalawarded = (int)$totalawarded+(int)$r['COUNT(id)'];
 			}
 			
 			foreach($badges as $slug => $info) {
