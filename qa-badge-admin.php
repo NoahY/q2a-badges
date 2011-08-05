@@ -276,7 +276,7 @@
 			);
 
 			foreach ($flag_result as $flag) {
-				$user='user'.$flag['userid'];
+				$user='user'.$flag;
 				
 				// get flag count
 				
@@ -547,7 +547,7 @@
 			$users = array();
 			
 			foreach ($badgelist as $medal) {
-				$user='user'.$medal['userid'];
+				$user='user'.$medal;
 				
 				// get flag count
 				
