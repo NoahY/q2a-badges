@@ -158,29 +158,29 @@
 				
 				'buttons' => array(
 					array(
-						'label' => qa_badge_lang('badges/badge_recreate'),
+						'label' => '<div style="text-align:left>'.qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><hr/>',
+						'note' => '<em>'.qa_badge_lang('badges/badge_recreate_desc').'</em>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete"><b>'.qa_badge_lang('badges/badge_award_delete_desc').'</b><hr/>',
+						'note' => '<em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete"><b>'.qa_badge_lang('badges/badge_award_delete_desc').'</b>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/reset_values'),
 						'tags' => 'NAME="badge_reset_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/reset_values_desc').'</em><hr/>',
+						'note' => '<em>'.qa_badge_lang('badges/reset_values_desc').'</em>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_trigger_notify'),
 						'tags' => 'name="badge_trigger_notify"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em><hr/>',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/save_settings'),
 						'tags' => 'NAME="badge_save_settings"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/save_settings_desc').'</em>',
+						'note' => '<em>'.qa_badge_lang('badges/save_settings_desc').'</em></div>',
 					),
 				),
 			);
