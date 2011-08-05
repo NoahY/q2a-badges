@@ -326,7 +326,7 @@
 		qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
 	}
 	
-	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', qa_badge_lang('badges/badge_admin'));
+	qa_register_plugin_module('module', 'qa-badge-admin.php', 'qa_badge_admin', qa_badge_lang('badges/badge_admin'));
 
 	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', qa_badge_lang('badges/badges'));
 
