@@ -54,7 +54,9 @@ This is **alpha** software.  It is not intended for production environments unle
 -------
 Release
 -------
-All code herein is released into the public domain.  Pretend you wrote it.
+All code herein is Copylefted_.
+
+.. _Copylefted: http://en.wikipedia.org/wiki/Copyleft
 
 ---------
 About q2A

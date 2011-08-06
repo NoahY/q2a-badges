@@ -16,7 +16,7 @@
 			$badges = qa_get_badge_list();
 			if (qa_clicked('badge_rebuild_button')) {
 				qa_import_badge_list();
-				$ok = qa_badge_lang('badges/list_rebuilt');
+				$ok = qa_badge_lang('badges/badge_list_rebuilt');
 			}
 			else if (qa_clicked('badge_award_button')) {
 				if((bool)qa_post_text('badge_award_delete')) {
@@ -37,15 +37,19 @@
 				}
 				$ok = $this->qa_check_all_users_badges();
 			}
-			else if (qa_clicked('badge_reset_button')) {
+			else if (qa_clicked('badge_reset_names')) {
+				foreach ($badges as $slug => $info) {
+					qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
+				}
+				$ok = qa_badge_lang('badges/badge_names_reset');
+			}
+			else if (qa_clicked('badge_reset_values')) {
 				foreach ($badges as $slug => $info) {
 					if(isset($info['var'])) {
 						qa_opt('badge_'.$slug.'_var',$info['var']);
 					}
-					qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
-					qa_opt('badge_'.$slug.'_enabled','1');
 				}
-				$ok = qa_badge_lang('badges/badges_reset');
+				$ok = qa_badge_lang('badges/badge_values_reset');
 			}
 			else if (qa_clicked('badge_trigger_notify')) {
 				$qa_content['test-notify'] = 1;
@@ -158,7 +162,17 @@
 				
 				'buttons' => array(
 					array(
-						'label' => qa_badge_lang('badges/badge_recreate'),
+						'label' => qa_badge_lang('badges/badge_reset_names'),
+						'tags' => 'NAME="badge_reset_names"',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_reset_names_desc').'</em><br/>',
+					),
+					array(
+						'label' => qa_badge_lang('badges/badge_reset_values'),
+						'tags' => 'NAME="badge_reset_values"',
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_reset_values_desc').'</em><br/>',
+					),					
+					array(
+						'label' => '<hr/>'.qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><br/>',
 					),
@@ -166,11 +180,6 @@
 						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete"><b>'.qa_badge_lang('badges/badge_award_delete_desc').'</b><br/>',
-					),
-					array(
-						'label' => qa_badge_lang('badges/reset_values'),
-						'tags' => 'NAME="badge_reset_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/reset_values_desc').'</em><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_trigger_notify'),

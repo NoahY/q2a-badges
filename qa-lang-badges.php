@@ -169,8 +169,11 @@
 		'badge_notify_profile_pre'=>'Check it out at ',
 		'badge_notify_profile'=>'your profile',
 		
-		'list_rebuilt'=>'Badge list rebuilt.',
+		'badge_names_reset'=>'Badge names reset.',
+		'badge_values_reset'=>'Badge values reset.',
+		'badge_list_rebuilt'=>'Badge list rebuilt.',
 		'badge_admin_saved'=>'Options saved.',
+		
 		'badge_admin_activate'=>'Activate badges',
 		'active_badges'=>'Active Badges',
 		'badge_award_button'=>'Recheck Badge Awarding',
@@ -178,8 +181,12 @@
 		'badge_award_delete_desc'=>'Remove all badges from database first',
 		'badge_recreate'=>'Recreate Badges',
 		'badge_recreate_desc'=>'Recreate the badge database (for when changing the php code)',
-		'reset_values'=>'Reset',
-		'reset_values_desc'=>'Reset variable badge data as input above',
+		
+		'badge_reset_values'=>'Reset Values',
+		'badge_reset_values_desc'=>'Reset variable badge data as input above',
+		'badge_reset_names'=>'Reset Names',
+		'badge_reset_names_desc'=>'Reset badge names as input above',
+		
 		'notify_time'=>'Notify Duration',
 		'notify_time_desc'=>'Duration in seconds before hiding badge notification (0 = off)',
 		'badge_trigger_notify'=>'Test Notify',
