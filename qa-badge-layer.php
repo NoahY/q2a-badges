@@ -60,6 +60,9 @@
 				}				
 				.badge-table {
 				}
+				.badge-table-col {
+					vertical-align:top;
+				}
 				.badge-bronze,.badge-silver, .badge-gold {
 					margin-right:4px;
 					cursor:pointer;
@@ -256,7 +259,7 @@
 			
 			$output = '
 		<h2>Badges</h2>
-		<table class="qa-form-wide-table">
+		<table class="qa-form-wide-table badge-table">
 			<tbody>
 				<tr>';
 			// count badges
@@ -277,7 +280,7 @@
 				$typed = $typea['name'];
 
 				$output .= '
-					<td>
+					<td class="badge-table-col">
 						<table>
 							<tr>
 								<td class="qa-form-wide-label">
