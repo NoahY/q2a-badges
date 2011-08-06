@@ -127,6 +127,8 @@
 		// set default settings
 		
 		if(!qa_opt('badge_notify_time')) qa_opt('badge_notify_time',0);
+		if(!qa_opt('badge_admin_user_field')) qa_opt('badge_admin_user_field',true);
+		if(!qa_opt('badge_admin_user_widget')) qa_opt('badge_admin_user_widget',true);
 		
 	
 	// process per visit events 
