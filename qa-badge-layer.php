@@ -131,7 +131,7 @@
 					$keys = array_keys($content);
 					$vals = array_values($content);
 
-					$insertBefore = array_search('q_list', $keys)-1;
+					$insertBefore = array_search('q_list', $keys);
 
 					$keys2 = array_splice($keys, $insertBefore);
 					$vals2 = array_splice($vals, $insertBefore);
