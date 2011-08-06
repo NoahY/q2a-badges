@@ -1,15 +1,22 @@
 <?php
 	return array(
-		'verified'=>'Verified Human',
 
 		'nice_question'=>'Nice Question',
 		'good_question'=>'Good Question',
 		'great_question'=>'Great Question',
 
+		'notable_question'=>'Notable Question',
+		'popular_question'=>'Popular Question',
+		'famous_question'=>'Famous Question',
+
 		'nice_answer'=>'Nice Answer',
 		'good_answer'=>'Good Answer',
 		'great_answer'=>'Great Answer',
-		
+
+		'nice_answer_old'=>'Renewal',
+		'good_answer_old'=>'Revival',
+		'great_answer_old'=>'Ressurection',
+				
 		'voter'=>'Voter',
 		'avid_voter'=>'Avid Voter',
 		'devoted_voter'=>'Devoted Voter',
@@ -50,23 +57,32 @@
 		'copy_editor'=>'Copy Editor',
 		'senior_editor'=>'Senior Editor',
 
-		'nice_question_old'=>'Renewal',
-		'good_question_old'=>'Revival',
-		'great_question_old'=>'Ressurection',
+		'visitor'=>'Visitor',
+		'trouper'=>'Trouper',
+		'veteran'=>'Veteran',
 
-		'notable_question'=>'Notable Question',
-		'popular_question'=>'Popular Question',
-		'famous_question'=>'Famous Question',
+		'regular'=>'Regular',
+		'old_timer'=>'Old_timer',
+		'ancestor'=>'Ancestor',
 
-		'verified_desc'=>'Successfully verified email address',
+		'verified'=>'Verified Human',
+
 
 		'nice_question_desc'=>'Question received +# upvote',
 		'good_question_desc'=>'Question received +# upvote',
 		'great_question_desc'=>'Question received +# upvote',
 
+		'notable_question_desc'=>'Asked question received # views',
+		'popular_question_desc'=>'Asked question received # views',
+		'famous_question_desc'=>'Asked question received # views',
+		
 		'nice_answer_desc'=>'Answer received +# upvote',
 		'good_answer_desc'=>'Answer received +# upvote',
 		'great_answer_desc'=>'Answer received +# upvote',
+
+		'nice_answer_old_desc'=>'Received "Nice Answer" badge in response to a question more than # days old',
+		'good_answer_old_desc'=>'Received "Good Answer" badge in response to a question more than # days old',
+		'great_answer_old_desc'=>'Received "Great Answer" badge in response to a question more than # days old',
 		
 		'voter_desc'=>'Voted # times',
 		'avid_voter_desc'=>'Voted # times',
@@ -108,13 +124,15 @@
 		'copy_editor_desc'=>'Performed total of # edits',
 		'senior_editor_desc'=>'Performed total of # edits',
 
-		'nice_question_old_desc'=>'Received "Nice Answer" badge in response to a question more than # days old',
-		'good_question_old_desc'=>'Received "Good Answer" badge in response to a question more than # days old',
-		'great_question_old_desc'=>'Received "Great Answer" badge in response to a question more than # days old',
+		'visitor_desc'=>'Visited site on total of # days',
+		'trouper_desc'=>'Visited site on total of # days',
+		'veteran_desc'=>'Visited site on total of # days',
 
-		'notable_question_desc'=>'Asked question received # views',
-		'popular_question_desc'=>'Asked question received # views',
-		'famous_question_desc'=>'Asked question received # views',
+		'regular_desc'=>'First visited more than # days ago',
+		'old_timer_desc'=>'First visited more than # days ago',
+		'ancestor_desc'=>'First visited more than # days ago',
+
+		'verified_desc'=>'Successfully verified email address',
 
 
 		

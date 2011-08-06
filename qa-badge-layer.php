@@ -116,13 +116,12 @@
 			if(isset($this->content['test-notify'])) $this->trigger_notify('Congratulations!  This is a test message');
 		}
 
-		function form($form)
+		function main_parts($content)
 		{
-			qa_html_theme_base::form($form);
-
 			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
-				$this->user_badge_form();
+				$content['form-badges'] = $this->user_badge_form();
 			}
+			qa_html_theme_base::main_parts($content);
 		}
 
 		function post_meta_who($post, $class)
@@ -176,61 +175,9 @@
 			}
 		}
 
-	// worker functions
+// worker functions
 
-		function award_badge($object_id, $user_id, $badge_slug) {
-			
-			// add badge to userbadges
-			
-			qa_db_query_sub(
-				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-				'VALUES (NOW(), #, #, #, #, 0)',
-				0, $object_id, $user_id, $badge_slug
-			);
-			
-		}
-
-		function badge_notify() {
-			$userid = qa_get_logged_in_userid();
-			
-			$result = qa_db_read_all_values(
-				qa_db_query_sub(
-					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify=1',
-					$userid
-				)
-			);
-			if(count($result) > 0) {
-
-				$notice = '<div class="notify-container">';
-				
-				// populate notification list
-				foreach($result as $slug) {
-					$badge_name=qa_badge_lang('badges/'.$slug);
-					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-					$name = qa_opt('badge_'.$slug.'_name');
-					
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
-				}
-
-				$notice .= '</div>';
-				
-				// remove notification flag
-				
-				qa_db_query_sub(
-					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify=1',
-					$userid
-				);
-				$this->output($notice);
-			}
-		}
-		
-		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
-			$this->output($notice);
-		}
-		
-		function priviledge_notify() { // gained priviledge
-		}
+	// layout
 		
 		function user_badge_widget($handle) {
 			
@@ -327,12 +274,72 @@
 			$output .= '
 			</tbody>
 		</table>';
-			$this->output($output);
+			
+			$form = array(
+				'custom1'=>$output;
+			}
+			return $form;
+			
 		}
 
-		function admin_badge_button() {
-			$this->output('<form METHOD="POST" ACTION="../qa-plugin/badges/qa-badge-recalc.php"><input type="submit" onmouseout="this.className=\'qa-form-basic-button qa-form-basic-button-check_badges\';" onmouseover="this.className=\'qa-form-basic-hover qa-form-basic-hover-check_badges\';" class="qa-form-basic-button qa-form-basic-button-check_badges" title="" value="Check Badges" onclick="return qa_check_badges_click(this.name, this, \'Stop Checking\', \'check_badges_note\');" name="docheckbadges"></form>');
+	// badge awarding
+
+		function award_badge($object_id, $user_id, $badge_slug) {
+			
+			// add badge to userbadges
+			
+			qa_db_query_sub(
+				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+				'VALUES (NOW(), #, #, #, #, 0)',
+				0, $object_id, $user_id, $badge_slug
+			);
+			
 		}
+
+		function badge_notify() {
+			$userid = qa_get_logged_in_userid();
+			
+			$result = qa_db_read_all_values(
+				qa_db_query_sub(
+					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify=1',
+					$userid
+				)
+			);
+			if(count($result) > 0) {
+
+				$notice = '<div class="notify-container">';
+				
+				// populate notification list
+				foreach($result as $slug) {
+					$badge_name=qa_badge_lang('badges/'.$slug);
+					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+					$name = qa_opt('badge_'.$slug.'_name');
+					
+					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
+				}
+
+				$notice .= '</div>';
+				
+				// remove notification flag
+				
+				qa_db_query_sub(
+					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify=1',
+					$userid
+				);
+				$this->output($notice);
+			}
+		}
+
+	// etc
+		
+		function trigger_notify($message) {
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
+			$this->output($notice);
+		}
+		
+		function priviledge_notify() { // gained priviledge
+		}
+
 		function getuserfromhandle($handle) {
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 			
