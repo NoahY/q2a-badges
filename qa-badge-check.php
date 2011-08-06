@@ -354,7 +354,7 @@
 
 			$badges = array('gifted','wise','enlightened');
 
-			qa_badge_award_check($badges, $count, $auid)
+			qa_badge_award_check($badges, $count, $auid);
 			
 			// sheer number of answers selected by selecter
 
