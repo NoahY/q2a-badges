@@ -298,7 +298,7 @@
 				foreach($badges as $pt => $slugs) {
 					if(!isset($data[$pt])) continue;
 
-					qa_badge_award_check($slugs, $data[$pt], $uid, null, 1);
+					qa_badge_award_check($slugs, $data[$pt], $uid, null, 0);
 
 				}
 
@@ -369,7 +369,7 @@
 					
 					$badges = array('voter','avid_voter','devoted_voter');
 
-					qa_badge_award_check($badges, $votes, $uid, null, 1);
+					qa_badge_award_check($badges, $votes, $uid, null, 0);
 
 				}		
 						
@@ -381,7 +381,7 @@
 					$badges = array('notable_question','popular_question','famous_question');
 
 					foreach($data['views'] as $idv) {
-						qa_badge_award_check($badges, $idv['views'], $idv['id'], null, 1);
+						qa_badge_award_check($badges, $idv['views'], $idv['id'], null, 0);
 					}
 				}
 				
@@ -391,7 +391,7 @@
 					
 					$badges = array('watchdog','bloodhound','pitbull');
 
-					qa_badge_award_check($badges, $flags, $uid, null, 1);
+					qa_badge_award_check($badges, $flags, $uid, null, 0);
 
 				}
 			}
@@ -415,14 +415,14 @@
 					$count = $s['aselects'];
 					$badges = array('gifted','wise','enlightened');
 
-					qa_badge_award_check($badges, $count, $uid, null, 1);
+					qa_badge_award_check($badges, $count, $uid, null, 0);
 			
 				}
 				if(isset($s['aselecteds'])) {
 					$count = $s['aselecteds'];
 					$badges = array('grateful','respectful','reverential');
 
-					qa_badge_award_check($badges, $count, $uid, null, 1);
+					qa_badge_award_check($badges, $count, $uid, null, 0);
 
 				}
 			}
@@ -440,7 +440,7 @@
 				$uid = $c['user_id'];
 				$badges = array('editor','copy_editor','senior_editor');
 
-				qa_badge_award_check($badges, $count, $uid, null, 1);
+				qa_badge_award_check($badges, $count, $uid, null, 0);
 
 			}
 
@@ -474,7 +474,7 @@
 					
 					$badges = array('medalist','champion','olympian');
 
-					qa_badge_award_check($badges, $count, $uid, null, 1);
+					qa_badge_award_check($badges, $count, $uid, null, 0);
 
 				}
 			}
