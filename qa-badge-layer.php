@@ -277,7 +277,7 @@
 			
 			$form = array(
 				'custom1'=>$output;
-			}
+			);
 			return $form;
 			
 		}
