@@ -330,7 +330,7 @@
 	
 	function qa_badge_check_total_days($userid,$days) {
 
-		$badges = array('regular','trouper','veteran');
+		$badges = array('visitor','trouper','veteran');
 
 		foreach($badges as $badge_slug) {
 		
@@ -357,7 +357,7 @@
 	
 	function qa_badge_check_first_visit($userid,$days) {
 
-		$badges = array('long_timer','old_timer','ancestor');
+		$badges = array('regular','old_timer','ancestor');
 
 		foreach($badges as $badge_slug) {
 		
