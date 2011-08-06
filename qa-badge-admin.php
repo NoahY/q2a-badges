@@ -332,7 +332,7 @@
 							// old question answer vote checks
 								if($pt == 'A') {
 									$qid = $idv['parentid'];
-									$create = strtotime($post['created']);
+									$create = strtotime($idv['created']);
 									
 									$parent = $this->get_post_data($qid);
 									$pcreate = strtotime($parent['created']);
