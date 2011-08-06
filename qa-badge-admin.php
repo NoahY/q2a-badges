@@ -415,9 +415,8 @@
 					$count = $s['aselects'];
 					$badges = array('gifted','wise','enlightened');
 
-						qa_badge_award_check($badges, $count, $uid, null, 1);
+					qa_badge_award_check($badges, $count, $uid, null, 1);
 			
-					}
 				}
 				if(isset($s['aselecteds'])) {
 					$count = $s['aselecteds'];
