@@ -138,7 +138,7 @@
 		
 		$user = @qa_db_read_one_assoc(
 			qa_db_query_sub(
-				'SELECT user_id,longest_consec_visit,last_visit FROM ^achievements WHERE user_id=# ',
+				'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit FROM ^achievements WHERE user_id=# ',
 				$userid
 			),
 			true
@@ -160,25 +160,28 @@
 			
 			$result2 = round(abs(time()-strtotime($user['oldest_consec_visit']))/60/60/24);
 			if($result2 > $user['longest_consec_visit']) {
+				$user['longest_consec_visit'] = $result2;
 				qa_db_query_sub(
-					'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#  WHERE user_id=#',
-					$result2, $userid 
+					'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
+					$result2, $result, $userid 
 				);		
 			}
 			else {
 				qa_db_query_sub(
-					'UPDATE ^achievements SET last_visit=NOW() WHERE user_id=#',
-					$userid 
+					'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
+					$result,$userid 
 				);		
 			}
-			qa_badge_check_consec_days($userid);
+			qa_badge_check_consec_days($userid,$user['longest_consec_visit']);
 		}
 		else { // 2+ days, reset consecutive days due to lapse
 			qa_db_query_sub(
-				'UPDATE ^achievements SET oldest_consec_visit=NOW() WHERE user_id=#',
+				'UPDATE ^achievements SET oldest_consec_visit=NOW(),total_days_visited=total_days_visited+1 WHERE user_id=#',
 				$userid
 			);		
 		}
+		qa_badge_check_total_days($userid,$user['total_days_visited']);
+		qa_badge_check_first_visit($userid,round(abs(time()-strtotime($user['first_visit']))/60/60/24));
 	}
 	
 	function qa_import_badge_list() {
@@ -226,20 +229,28 @@
 		$badges['inquisitor'] = array('var'=>50, 'type'=>2);
 
 		$badges['nice_question'] = array('var'=>2, 'type'=>0);
-		$badges['good_question'] = array('var'=>3, 'type'=>1);
-		$badges['great_question'] = array('var'=>5, 'type'=>2);
+		$badges['good_question'] = array('var'=>5, 'type'=>1);
+		$badges['great_question'] = array('var'=>10, 'type'=>2);
+
+		$badges['notable_question'] = array('var'=>50, 'type'=>0);
+		$badges['popular_question'] = array('var'=>100, 'type'=>1);
+		$badges['famous_question'] = array('var'=>500, 'type'=>2);
 
 		$badges['nice_answer'] = array('var'=>2, 'type'=>0);
-		$badges['good_answer'] = array('var'=>3, 'type'=>1);
-		$badges['great_answer'] = array('var'=>5, 'type'=>2);
+		$badges['good_answer'] = array('var'=>5, 'type'=>1);
+		$badges['great_answer'] = array('var'=>10, 'type'=>2);
+
+		$badges['nice_answer_old'] = array('var'=>30, 'type'=>0);
+		$badges['good_answer_old'] = array('var'=>60, 'type'=>1);
+		$badges['great_answer_old'] = array('var'=>120, 'type'=>2);
 
 		$badges['voter'] = array('var'=>10, 'type'=>0);
 		$badges['avid_voter'] = array('var'=>25, 'type'=>1);
 		$badges['devoted_voter'] = array('var'=>50, 'type'=>2);
 
-		$badges['gifted'] = array('var'=>5, 'type'=>0);
-		$badges['wise'] = array('var'=>10, 'type'=>1);
-		$badges['enlightened'] = array('var'=>20, 'type'=>2);
+		$badges['gifted'] = array('var'=>10, 'type'=>0);
+		$badges['wise'] = array('var'=>20, 'type'=>1);
+		$badges['enlightened'] = array('var'=>50, 'type'=>2);
 
 		$badges['grateful'] = array('var'=>1, 'type'=>0);
 		$badges['respectful'] = array('var'=>8, 'type'=>1);
@@ -250,24 +261,24 @@
 		$badges['senior_editor'] = array('var'=>50, 'type'=>2);
 
 		$badges['watchdog'] = array('var'=>1, 'type'=>0);
-		$badges['bloodhound'] = array('var'=>5, 'type'=>1);
-		$badges['pitbull'] = array('var'=>15, 'type'=>2);
+		$badges['bloodhound'] = array('var'=>10, 'type'=>1);
+		$badges['pitbull'] = array('var'=>30, 'type'=>2);
 
 		$badges['dedicated'] = array('var'=>10, 'type'=>0);
 		$badges['devoted'] = array('var'=>25, 'type'=>1);
 		$badges['zealous'] = array('var'=>50, 'type'=>2);
 
 		$badges['medalist'] = array('var'=>10, 'type'=>0);
-		$badges['champion'] = array('var'=>25, 'type'=>1);
-		$badges['olympian'] = array('var'=>50, 'type'=>2);
+		$badges['champion'] = array('var'=>30, 'type'=>1);
+		$badges['olympian'] = array('var'=>100, 'type'=>2);
 
-		$badges['nice_question_old'] = array('var'=>30, 'type'=>0);
-		$badges['good_question_old'] = array('var'=>60, 'type'=>1);
-		$badges['great_question_old'] = array('var'=>120, 'type'=>2);
+		$badges['visitor'] = array('var'=>30, 'type'=>0);
+		$badges['trouper'] = array('var'=>100, 'type'=>1);
+		$badges['veteran'] = array('var'=>200, 'type'=>2);
 
-		$badges['notable_question'] = array('var'=>50, 'type'=>0);
-		$badges['popular_question'] = array('var'=>100, 'type'=>1);
-		$badges['famous_question'] = array('var'=>500, 'type'=>2);
+		$badges['regular'] = array('var'=>90, 'type'=>0);
+		$badges['old_timer'] = array('var'=>180, 'type'=>1);
+		$badges['ancestor'] = array('var'=>365, 'type'=>2);
 
 		$badges['verified'] = array('type'=>0);
 
@@ -290,16 +301,63 @@
 		
 	}
 	
-	function qa_badge_check_consec_days($userid) {
-		$days = qa_db_read_one_value(
-			qa_db_query_sub(
-				'SELECT DATEDIFF(NOW(),(SELECT oldest_consec_visit FROM ^achievements WHERE user_id=#))',
-				$userid
-			),
-			true
-		);
+	function qa_badge_check_consec_days($userid,$days) {
 
 		$badges = array('dedicated','devoted','zealous');
+
+		foreach($badges as $badge_slug) {
+		
+			if((int)$days >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+						$userid, $badge_slug
+					),
+					true
+				);
+				
+				if (!$result) { // not already awarded this badge
+					qa_db_query_sub(
+						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+						'VALUES (NOW(), 1, #, #, #, 0)',
+						null, $userid, $badge_slug
+					);
+				}
+			}
+		}
+	}
+	
+	function qa_badge_check_total_days($userid,$days) {
+
+		$badges = array('regular','trouper','veteran');
+
+		foreach($badges as $badge_slug) {
+		
+			if((int)$days >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+				
+				$result = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+						$userid, $badge_slug
+					),
+					true
+				);
+				
+				if (!$result) { // not already awarded this badge
+					qa_db_query_sub(
+						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
+						'VALUES (NOW(), 1, #, #, #, 0)',
+						null, $userid, $badge_slug
+					);
+				}
+			}
+		}
+	}
+	
+	function qa_badge_check_first_visit($userid,$days) {
+
+		$badges = array('long_timer','old_timer','ancestor');
 
 		foreach($badges as $badge_slug) {
 		
