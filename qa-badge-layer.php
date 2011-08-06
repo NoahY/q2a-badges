@@ -170,7 +170,11 @@
 			// badge check on view update
 			
 			if(isset($this->content['inc_views_postid'])) {
+
 				$oid = $content['inc_views_postid'];
+
+				// total views check
+
 				$uid = $content['raw']['userid'];
 				$views = qa_db_read_one_value(
 					qa_db_query_sub(
@@ -183,22 +187,33 @@
 				
 				$badges = array('notable_question','popular_question','famous_question');
 
-				foreach($badges as $badge_slug) {
-					if($views  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-						$result = qa_db_read_one_value(
-							qa_db_query_sub(
-								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
-								$uid, $badge_slug, $oid
-							),
-							true
-						);
+				qa_badge_award_check($badges, $views, $uid);
+
+			
+				// personal view count increase and badge check
+				
+				$uid = qa_get_logged_in_userid();
+				
+				qa_db_query_sub(
+					'UPDATE ^achievements SET questions_read=questions_read+1 WHERE user_id=# ',
+					$uid
+				);
+				
+				$views = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT questions_read FROM ^achievements WHERE user_id=# ',
+						$uid
+					),
+					true
+				);		
 						
-						if (!$result) { // not already awarded this badge for this question
-							$this->award_badge($oid, $uid, $badge_slug);
-						}
-					}
-				}	
+				$badges = array('notable_question','popular_question','famous_question');
+
+				qa_badge_award_check($badges, $views, $uid);
+			
 			}
+			
+			
 		}
 
 // worker functions
@@ -318,19 +333,7 @@
 			
 		}
 
-	// badge awarding
-
-		function award_badge($object_id, $user_id, $badge_slug) {
-			
-			// add badge to userbadges
-			
-			qa_db_query_sub(
-				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-				'VALUES (NOW(), #, #, #, #, 0)',
-				0, $object_id, $user_id, $badge_slug
-			);
-			
-		}
+	// badge notification
 
 		function badge_notify() {
 			$userid = qa_get_logged_in_userid();

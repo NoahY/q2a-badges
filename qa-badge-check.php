@@ -191,25 +191,8 @@
 			);
 			
 			// sheer volume of posts
-			
 			$badges = array('asker','questioner','inquisitor');
-			
-			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug);
-					}
-				}
-			}
+			qa_badge_award_check($badges, count($posts), $uid);			
 		}
 		
 		function check_answer_number($uid,$oid) {
@@ -223,23 +206,7 @@
 			// sheer volume of posts
 			
 			$badges = array('answerer','lecturer','preacher');
-			
-			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug);
-					}
-				}
-			}
+			qa_badge_award_check($badges, count($posts), $uid);		
 		}
 		
 		function check_comment_number($uid,$oid) {
@@ -253,55 +220,27 @@
 			// sheer volume of posts
 			
 			$badges = array('commenter','commentator','annotator');
-			
-			foreach($badges as $badge_slug) {
-				if(count($posts) >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug);
-					}
-				}
-			}
+			qa_badge_award_check($badges, count($posts), $uid);			
+
 		}
 		
 	// check on votes
 		
 		function question_vote_up($event,$event_user,$params) {
-			$id = $params['postid'];
+			$oid = $params['postid'];
 			$post = $this->get_post_data($id);
 			$votes = $post['netvotes'];
 			$userid = $post['userid'];
 			
 			// vote volume check
 			
-			$this->check_voter($event_user,$id);
+			$this->check_voter($event_user);
 
 			// post owner upvotes check
 
 			$badges = array('nice_question','good_question','great_question');
-
-			foreach($badges as $badge_slug) {
-				if($votes  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-							$userid, $id, $badge_slug
-						),
-						true
-					);
-					if (!$result) { // not already awarded for this question
-						$this->award_badge($id, $userid, $badge_slug);
-					}
-				}
-			}			
+			qa_badge_award_check($badges, $votes, $uid, $oid)	;		
+		
 		}
 		
 		// check number of votes on answer
@@ -368,7 +307,7 @@
 			
 			// vote volume check
 			
-			$this->check_voter($event_user,$id);
+			$this->check_voter($event_user);
 		}
 
 		function answer_vote_down($event,$event_user,$params) {
@@ -376,85 +315,49 @@
 			
 			// vote volume check
 			
-			$this->check_voter($event_user,$id);
+			$this->check_voter($event_user);
 		}
 
-		function check_voter($uid,$oid) {
+		function check_voter($uid) {
 			
-			$votes = qa_db_read_all_values(
+			$voter = qa_db_read_one_assoc(
 				qa_db_query_sub(
-					'SELECT userid FROM ^uservotes WHERE userid=# AND vote !=#',
-					$uid, 0
-				)
+					'SELECT upvoteds,downvoteds FROM ^userpoints WHERE userid=#',
+					$uid
+				),
+				true
 			);
-
+			$votes = (int)$voter['upvoteds']+(int)$voter['downvoteds'];
 			$badges = array('voter','avid_voter','devoted_voter');
 
-			foreach($badges as $badge_slug) {
-				if(count($votes)  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug);
-					}
-				}
-			}
+			qa_badge_award_check($badges, $votes, $uid);
 		}
 
 	// check on selected answer
 
-		function answer_select($event,$event_user,$params) {
+		function answer_select($event,$uid,$params) {
 			$qid = $params['parentid'];
 			$aid = $params['postid'];
 			$a = $this->get_post_data($aid);
 			$auid = $a['userid'];
 			
-			// sheer number of own answers selected by others
-			
-			$this->check_best_answers($auid);
-			
-			// sheer number of answers selected by self
 
-			$this->check_selected_answers($event_user);
-			
-		
-		}
+			// sheer number of answerer's answers selected by others
 
-		function check_best_answers($uid) {
 			$count = qa_db_read_one_value(
 				qa_db_query_sub(
 					'SELECT aselects FROM ^userpoints WHERE userid=#',
-					$uid
+					$auid
 				),
 				true
-			);
+			);			
 
 			$badges = array('gifted','wise','enlightened');
 
-			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge(NULL, $uid, $badge_slug);
-					}
-				}
-			}			
-		}
-		
-		function check_selected_answers($uid) {
+			qa_badge_award_check($badges, $count, $auid)
+			
+			// sheer number of answers selected by selecter
+
 			$count = qa_db_read_one_value(
 				qa_db_query_sub(
 					'SELECT aselecteds FROM ^userpoints WHERE userid=#',
@@ -465,23 +368,11 @@
 
 			$badges = array('grateful','respectful','reverential');
 
-			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge(NULL, $uid, $badge_slug);
-					}
-				}
-			}			
+			qa_badge_award_check($badges, $count, $uid);
+			
+		
 		}
-	
+		
 	// check on edit
 	
 		function question_edit($event,$event_user,$params) {
@@ -539,21 +430,8 @@
 
 			$badges = array('editor','copy_editor','senior_editor');
 
-			foreach($badges as $badge_slug) {
-				if((int)$count  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge(NULL, $uid, $badge_slug);
-					}
-				}
-			}			
+			qa_badge_award_check($badges, $count, $uid);
+		
 		}		
 
 	// check on flags
@@ -563,7 +441,7 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user,$id);
+			$this->check_flagger($event_user);
 		}
 
 		function answer_flag($event,$event_user,$params) {
@@ -571,7 +449,7 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user,$id);
+			$this->check_flagger($event_user);
 		}
 
 		function comment_flag($event,$event_user,$params) {
@@ -579,10 +457,10 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user,$id);
+			$this->check_flagger($event_user);
 		}
 
-		function check_flagger($uid,$oid) {
+		function check_flagger($uid) {
 			$flags = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT userid FROM ^uservotes WHERE userid=# AND flag = #',
@@ -592,21 +470,8 @@
 
 			$badges = array('watchdog','bloodhound','pitbull');
 
-			foreach($badges as $badge_slug) {
-				if(count($flags)  >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-					$result = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-							$uid, $badge_slug
-						),
-						true
-					);
-					
-					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug);
-					}
-				}
-			}
+			qa_badge_award_check($badges, count($flags), $uid);
+
 		}
 		
 		// verified email check for badge 
@@ -652,7 +517,7 @@
 					);
 					
 					if (!$result) { // not already awarded this badge
-						$this->award_badge($oid, $uid, $badge_slug, true); // this is a "badge badge"
+						$this->award_badge(null, $uid, $badge_slug, true); // this is a "badge badge"
 					}
 				}
 			}			
