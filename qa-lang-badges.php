@@ -158,9 +158,9 @@
 		
 		'badge_admin'=>'Badge Admin',
 		'badges'=>'Badges',
+		'badge_list_title'=>'Badge List',
 		
 		'badge_list_pre'=>'The following is a list of all badges available on this site:',
-		'badge_list_title'=>'Badge List',
 		'awarded'=>'awarded',
 		'awarded_total'=>'awarded in total',
 		'badges_total'=>'total badges',

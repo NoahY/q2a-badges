@@ -268,7 +268,7 @@
 			if(count($result) == 0) return;
 			
 			$output = '
-		<h2>Badges</h2>
+		<h2>'.qa_badge_lang('badges/badges').'</h2>
 		<table class="qa-form-wide-table badge-table">
 			<tbody>
 				<tr>';
@@ -367,7 +367,7 @@
 	// etc
 		
 		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.QA_BASE_DIR.'user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
 			$this->output($notice);
 		}
 		
