@@ -153,7 +153,7 @@
 		function post_meta_who($post, $class)
 		{
 			if((bool)qa_opt('badge_admin_user_widget') && isset($post['who'])) {
-				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
+				$handle = preg_replace('/.*HREF="..\/user\/([^"\/]+).*/',"$1",$post['who']['data']); // this gets the 'who', not necessarily the post userid!
 				if (isset($post['who']['points'])) {
 					@$post['who']['points']['data'] = $this->user_badge_widget($handle).'&nbsp;'.$post['who']['points']['data'];
 				}
