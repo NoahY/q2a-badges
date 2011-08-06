@@ -149,6 +149,7 @@
 					'tags' => 'NAME="badge_admin_user_widget"',
 					'value' => (bool)qa_opt('badge_admin_user_widget'),
 					'type' => 'checkbox',
+					'note' => '<hr/>',
 				);				
 			}
 			if (qa_clicked('badge_trigger_notify')) {
@@ -172,7 +173,7 @@
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_reset_values_desc').'</em><br/>',
 					),					
 					array(
-						'label' => '<hr/>'.qa_badge_lang('badges/badge_recreate'),
+						'label' => qa_badge_lang('badges/badge_recreate'),
 						'tags' => 'NAME="badge_rebuild_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><br/>',
 					),
