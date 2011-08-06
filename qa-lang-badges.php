@@ -131,9 +131,9 @@
 		'senior_editor_desc'=>'Performed total of # edits',
 
 
-		'reader'=>'Read total of # questions',
-		'avid_reader'=>'Read total of # questions',
-		'devoted_reader'=>'Read total of # questions',
+		'reader_desc'=>'Read total of # questions',
+		'avid_reader_desc'=>'Read total of # questions',
+		'devoted_reader_desc'=>'Read total of # questions',
 
 
 		'visitor_desc'=>'Visited site on total of # days',
