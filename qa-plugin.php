@@ -140,7 +140,7 @@
 		
 		$user = @qa_db_read_one_assoc(
 			qa_db_query_sub(
-				'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit FROM ^achievements WHERE user_id=# ',
+				'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
 				$userid
 			),
 			true
