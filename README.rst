@@ -1,6 +1,6 @@
-======================
-Question2Answer Badges
-======================
+============================
+Question2Answer Badges v 0.4
+============================
 -----------
 Description
 -----------
@@ -49,7 +49,7 @@ Once you've completed the translation, don't forget to set the site language in 
 ----------
 Disclaimer
 ----------
-This is **alpha** software.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
+This is **alpha** code.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
 
 -------
 Release
