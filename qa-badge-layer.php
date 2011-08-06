@@ -116,7 +116,7 @@
 		function body_suffix()
 		{
 			qa_html_theme_base::body_suffix();
-			if(isset($this->content['test-notify'])) $this->trigger_notify('Congratulations!  This is a test message');
+			if(isset($this->content['test-notify'])) $this->trigger_notify('Badge Tester');
 		}
 
 		function main_parts($content)
@@ -354,7 +354,7 @@
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 					
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!<div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.QA_BASE_DIR.'user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
@@ -372,7 +372,7 @@
 	// etc
 		
 		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.$message.'<div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.QA_BASE_DIR.'user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().fadeOut()">x</div></div></div>';
 			$this->output($notice);
 		}
 		
