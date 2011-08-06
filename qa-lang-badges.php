@@ -139,6 +139,10 @@
 		'bronze'=>'Bronze',
 		'silver'=>'Silver',
 		'gold'=>'Gold',
+
+		'bronze_desc'=>'Bronze badges are awarded for participation on a basic level. They are relatively easy to earn if you participate.',
+		'silver_desc'=>'Silver badges are awarded for extended participation. They are an accomplishment, and a sign of genuine participation.',
+		'gold_desc'=>'Gold Badges are awarded for extrordinary participation. Only long-term participation can earn you these. They are a sign of a truly valuable contribution!',
 		
 		'badge_admin'=>'Badge Admin',
 		'badges'=>'Badges',
