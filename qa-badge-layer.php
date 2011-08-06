@@ -119,7 +119,7 @@
 		function main_parts($content)
 		{
 			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
-				$content['form-badges'] = $this->user_badge_form();
+				$content['custom-badges'] = $this->user_badge_form();
 			}
 			qa_html_theme_base::main_parts($content);
 		}
@@ -275,10 +275,7 @@
 			</tbody>
 		</table>';
 			
-			$form = array(
-				'custom1'=>$output
-			);
-			return $form;
+			return $output;
 			
 		}
 
