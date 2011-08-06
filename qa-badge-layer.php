@@ -118,8 +118,28 @@
 
 		function main_parts($content)
 		{
-			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { // <- add user badge list
-				$content['custom-badges'] = $this->user_badge_form();
+			
+			// add user badge list
+
+			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { 
+
+				// array splicing kungfu thanks to Stack Exchange
+				
+				// This adds custom-badges before q_list
+			
+				$keys = array_keys($content);
+				$vals = array_values($content);
+
+				$insertBefore = array_search('q_list', $keys)-1;
+
+				$keys2 = array_splice($keys, $insertBefore);
+				$vals2 = array_splice($vals, $insertBefore);
+
+				$keys[] = 'custom-badges';
+				$vals[] = $this->user_badge_form();
+
+				$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+
 			}
 			qa_html_theme_base::main_parts($content);
 		}
