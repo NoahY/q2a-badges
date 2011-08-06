@@ -62,7 +62,7 @@
 		'veteran'=>'Veteran',
 
 		'regular'=>'Regular',
-		'old_timer'=>'Old_timer',
+		'old_timer'=>'Old-Timer',
 		'ancestor'=>'Ancestor',
 
 		'verified'=>'Verified Human',
