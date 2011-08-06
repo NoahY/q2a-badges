@@ -122,23 +122,26 @@
 			// add user badge list
 
 			if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { 
-
-				// array splicing kungfu thanks to Stack Exchange
+				if($content['q_list']) {  // paranoia
 				
-				// This adds custom-badges before q_list
-			
-				$keys = array_keys($content);
-				$vals = array_values($content);
+					// array splicing kungfu thanks to Stack Exchange
+					
+					// This adds custom-badges before q_list
+				
+					$keys = array_keys($content);
+					$vals = array_values($content);
 
-				$insertBefore = array_search('q_list', $keys)-1;
+					$insertBefore = array_search('q_list', $keys)-1;
 
-				$keys2 = array_splice($keys, $insertBefore);
-				$vals2 = array_splice($vals, $insertBefore);
+					$keys2 = array_splice($keys, $insertBefore);
+					$vals2 = array_splice($vals, $insertBefore);
 
-				$keys[] = 'custom-badges';
-				$vals[] = $this->user_badge_form();
+					$keys[] = 'custom-badges';
+					$vals[] = $this->user_badge_form();
 
-				$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+					$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+				}
+				else $content['custom'] = $this->user_badge_form();  // this shouldn't happen
 
 			}
 			qa_html_theme_base::main_parts($content);
