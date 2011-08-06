@@ -18,19 +18,13 @@
 			exit;
 	}
 
+// init functions
+
 	require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
-//	Language support
+	//	Language support ala qa-base.php
 
-	function qa_badge_lang($identifier)
-/*
-	Return the translated string for $identifier, unless we're using external translation logic.
-	This will retrieve the 'site_language' option so make sure you've already loaded/set that if
-	loading an option now will cause a problem (see issue in qa_default_option()). The part of
-	$identifier before the slash (/) replaces the * in the qa-lang-*.php file references, and the
-	part after the / is the key of the array element to be taken from that file's returned result.
-*/
-	{
+	function qa_badge_lang($identifier) {
 		$languagecode=qa_opt('site_language');
 		
 		list($group, $label)=explode('/', $identifier, 2);
@@ -174,7 +168,8 @@
 					$result,$userid 
 				);		
 			}
-			qa_badge_check_consec_days($userid,$user['longest_consec_visit']);
+			$badges = array('dedicated','devoted','zealous');
+			qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
 		}
 		else { // 2+ days, reset consecutive days due to lapse
 			qa_db_query_sub(
@@ -182,10 +177,18 @@
 				$userid
 			);		
 		}
-		qa_badge_check_total_days($userid,$user['total_days_visited']);
-		qa_badge_check_first_visit($userid,round(abs(time()-strtotime($user['first_visit']))/60/60/24));
+
+		$badges = array('visitor','trouper','veteran');
+		qa_badge_award_check($badges, $user['total_days_visited'], $userid);
+		
+		$badges = array('regular','old_timer','ancestor');
+		qa_badge_award_check($badges, round(abs(time()-strtotime($user['first_visit']))/60/60/24), $userid);
+
 	}
-	
+
+// worker functions
+
+
 	function qa_import_badge_list() {
 
 		// import our list of badge types 
@@ -271,6 +274,11 @@
 		$badges['pitbull'] = array('var'=>30, 'type'=>2);
 
 
+		$badges['reader'] = array('var'=>20, 'type'=>0);
+		$badges['avid_reader'] = array('var'=>50, 'type'=>1);
+		$badges['devoted_reader'] = array('var'=>200, 'type'=>2);
+
+
 		$badges['dedicated'] = array('var'=>10, 'type'=>0);
 		$badges['devoted'] = array('var'=>25, 'type'=>1);
 		$badges['zealous'] = array('var'=>50, 'type'=>2);
@@ -308,18 +316,16 @@
 		
 	}
 	
-	function qa_badge_check_consec_days($userid,$days) {
-
-		$badges = array('dedicated','devoted','zealous');
-
+	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {
+		
 		foreach($badges as $badge_slug) {
 		
-			if((int)$days >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 				
 				$result = qa_db_read_one_value(
 					qa_db_query_sub(
-						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $badge_slug
+						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
+						$userid, $badge_slug, $oid
 					),
 					true
 				);
@@ -327,67 +333,15 @@
 				if (!$result) { // not already awarded this badge
 					qa_db_query_sub(
 						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-						'VALUES (NOW(), 1, #, #, #, 0)',
-						null, $userid, $badge_slug
+						'VALUES (NOW(), #, #, #, #, 0)',
+						$notify, $oid, $uid, $badge_slug
 					);
 				}
 			}
 		}
 	}
-	
-	function qa_badge_check_total_days($userid,$days) {
 
-		$badges = array('visitor','trouper','veteran');
-
-		foreach($badges as $badge_slug) {
-		
-			if((int)$days >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-				
-				$result = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $badge_slug
-					),
-					true
-				);
-				
-				if (!$result) { // not already awarded this badge
-					qa_db_query_sub(
-						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-						'VALUES (NOW(), 1, #, #, #, 0)',
-						null, $userid, $badge_slug
-					);
-				}
-			}
-		}
-	}
-	
-	function qa_badge_check_first_visit($userid,$days) {
-
-		$badges = array('regular','old_timer','ancestor');
-
-		foreach($badges as $badge_slug) {
-		
-			if((int)$days >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-				
-				$result = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$userid, $badge_slug
-					),
-					true
-				);
-				
-				if (!$result) { // not already awarded this badge
-					qa_db_query_sub(
-						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-						'VALUES (NOW(), 1, #, #, #, 0)',
-						null, $userid, $badge_slug
-					);
-				}
-			}
-		}
-	}
+// initialize
 	
 	qa_badges_init();
 	

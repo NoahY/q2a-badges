@@ -57,6 +57,12 @@
 		'copy_editor'=>'Copy Editor',
 		'senior_editor'=>'Senior Editor',
 
+
+		'reader'=>'Reader',
+		'avid_reader'=>'Avid Reader',
+		'devoted_reader'=>'Devoted Reader',
+		
+
 		'visitor'=>'Visitor',
 		'trouper'=>'Trouper',
 		'veteran'=>'Veteran',
@@ -124,6 +130,12 @@
 		'copy_editor_desc'=>'Performed total of # edits',
 		'senior_editor_desc'=>'Performed total of # edits',
 
+
+		'reader'=>'Read total of # questions',
+		'avid_reader'=>'Read total of # questions',
+		'devoted_reader'=>'Read total of # questions',
+
+
 		'visitor_desc'=>'Visited site on total of # days',
 		'trouper_desc'=>'Visited site on total of # days',
 		'veteran_desc'=>'Visited site on total of # days',
@@ -154,6 +166,8 @@
 		'badges_total'=>'total badges',
 		
 		'badge_notify'=>'Congratulations!  You\'ve earned a badge ',
+		'badge_notify_profile_pre'=>'Check it out at ',
+		'badge_notify_profile'=>'your profile',
 		
 		'list_rebuilt'=>'Badge list rebuilt.',
 		'badge_admin_saved'=>'Options saved.',
