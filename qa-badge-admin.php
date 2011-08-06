@@ -411,14 +411,14 @@
 				$uid = $s['userid'];
 
 
-				if(isset($s['aselects'])) {
+				if(isset($s['aselecteds'])) {
 					$count = $s['aselects'];
 					$badges = array('gifted','wise','enlightened');
 
 					qa_badge_award_check($badges, $count, $uid, null, 0);
 			
 				}
-				if(isset($s['aselecteds'])) {
+				if(isset($s['aselects'])) {
 					$count = $s['aselecteds'];
 					$badges = array('grateful','respectful','reverential');
 
@@ -444,7 +444,7 @@
 
 			}
 
-			// badges
+		// badges
 			
 			$badgelist = qa_db_read_all_values(
 				qa_db_query_sub(
