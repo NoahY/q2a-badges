@@ -7,21 +7,17 @@
 		function option_default($option) {
 			
 			$badges = qa_get_badge_list();
-			
-			$var = preg_replace('/badge_(.*)_var',"$1",$option);
-			
-			if($badges[$var]) {
-				return $badges[$var]['var'];
-			}
-			
-			$name = preg_replace('/badge_(.*)_name',"$1",$option);
-			
-			if($badges[$name]) {
-				return $badges[$name]['name'];
-			}
-			
+
+			$slug = preg_replace('/badge_(.*)_.+',"$1",$option);
 			
 			switch($option) {
+				case 'badge_'.$slug.'_name':
+					return $badges[$slug]['name'];
+				case 'badge_'.$slug.'_var':
+					error_log($option.' option default var: '.$badges[$slug]['var']);
+					return $badges[$slug]['var'];
+				case 'badge_'.$slug.'_enabled':
+					return '1';
 				case 'badge_notify_time':
 					return 0;
 				case 'badge_admin_user_field':
