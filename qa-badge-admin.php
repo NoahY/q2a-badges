@@ -189,7 +189,7 @@
 				
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_admin_select_all'),
-					'tags' => 'onclick="var isx = this.checked; jQuery(\'#badgelist > :checkbox\').prop(\'checked\',isx);"',
+					'tags' => 'onclick="var isx = this.checked; jQuery(\'.badge-listing :checkbox\').prop(\'checked\',isx);"',
 					'value' => false,
 					'type' => 'checkbox',
 				);	
@@ -207,7 +207,7 @@
 
 					$fields[] = array(
 							'type' => 'static',
-							'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')" title="'.qa_badge_lang('badges/badge_admin_click_edit').'">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
+							'note' => '<table class="badge-listing"><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')" title="'.qa_badge_lang('badges/badge_admin_click_edit').'">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
 					);
 				}
 				$fields[] = array(
