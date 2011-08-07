@@ -38,8 +38,6 @@
 	
 		function qa_html_theme_base($template, $content, $rooturl, $request) {
 			
-			qa_html_theme_base::qa_html_theme_base($template, $content, $rooturl, $request);
-			
 			$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
 
 			if(!$badges_exists) {		
@@ -140,6 +138,8 @@
 			
 			$badges = array('regular','old_timer','ancestor');
 			qa_badge_award_check($badges, round(abs(time()-strtotime($user['first_visit']))/60/60/24), $userid);
+
+			qa_html_theme_base::qa_html_theme_base($template, $content, $rooturl, $request);
 
 		}
 		
