@@ -40,10 +40,11 @@
 		
 		qa_html_theme_base::finish();
 		
+		// process per visit events 
 		
 		if (qa_opt('badge_active')) {
 			
-		// process per visit events 
+			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
 			$userid = qa_get_logged_in_userid();
 			if(!$userid) return; // not logged in?  die.
@@ -52,7 +53,7 @@
 			
 			$user = @qa_db_read_one_assoc(
 				qa_db_query_sub(
-					'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
+					'SELECT user_id,oldest_consec_visit,longest_consec_visit,total_days_visited,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
 					$userid
 				),
 				true

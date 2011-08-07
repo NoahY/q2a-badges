@@ -20,8 +20,6 @@
 
 // init functions
 
-	require_once QA_INCLUDE_DIR.'qa-app-users.php';
-
 	//	Language support ala qa-base.php
 
 	function qa_badge_lang($identifier) {
