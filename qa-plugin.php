@@ -194,16 +194,17 @@
 
 				error_log($uid.' '.$oid.' '.$badge_slug);
 
-				$result = @qa_db_read_one_value(
+				$result = qa_db_read_one_value(
 					qa_db_query_sub(
 						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
 						$uid, $badge_slug, $oid
-					)
+					),
+					true
 				);
 
 				error_log($result);
 				
-				if (!$result) { // not already awarded this badge
+				if ($result != '') { // not already awarded this badge
 					qa_db_query_sub(
 						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
 						'VALUES (NOW(), #, #, #, #, 0)',
