@@ -8,7 +8,7 @@
 			
 			$badges = qa_get_badge_list();
 
-			$slug = preg_replace('/badge_(.*)_.+',"$1",$option);
+			$slug = preg_replace('/badge_(.*)_.+/',"$1",$option);
 			
 			switch($option) {
 				case 'badge_'.$slug.'_name':
