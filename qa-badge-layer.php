@@ -298,11 +298,11 @@
 
 			if (qa_opt('badge_active') && isset($this->content['inc_views_postid'])) {
 
-					$oid = $content['inc_views_postid'];
+					$oid = $this->content['inc_views_postid'];
 
 					// total views check
 
-					$uid = $content['raw']['userid'];
+					$uid = $this->content['raw']['userid'];
 					$views = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT views FROM ^posts WHERE postid=# ',
@@ -334,7 +334,7 @@
 						true
 					);		
 							
-					$badges = array('notable_question','popular_question','famous_question');
+					$badges = array('reader','avid_reader','devoted_reader');
 
 					qa_badge_award_check($badges, $views, $uid);
 				
