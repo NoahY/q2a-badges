@@ -205,6 +205,8 @@
 				error_log($result);
 				
 				if ($result != '') { // not already awarded this badge
+				error_log($result);
+				return;
 					qa_db_query_sub(
 						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
 						'VALUES (NOW(), #, #, #, #, 0)',
