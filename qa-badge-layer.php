@@ -34,89 +34,90 @@
 			
 		}
 
-	// init function
+	// init function, after page loads
 	
-		function qa_html_theme_base($template, $content, $rooturl, $request) {
+	function finish() {
+		
+		qa_html_theme_base::finish();
+		
+		
+		if (qa_opt('badge_active')) {
 			
-			qa_html_theme_base::qa_html_theme_base($template, $content, $rooturl, $request);
+		// process per visit events 
 
-			if (qa_opt('badge_active')) {
-				
-			// process per visit events 
+			$userid = qa_get_logged_in_userid();
+			if(!$userid) return; // not logged in?  die.
+			
+			// first visit check
+			
+			$user = @qa_db_read_one_assoc(
+				qa_db_query_sub(
+					'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
+					$userid
+				),
+				true
+			);
 
-				$userid = qa_get_logged_in_userid();
-				if(!$userid) return; // not logged in?  die.
-				
-				// first visit check
-				
-				$user = @qa_db_read_one_assoc(
-					qa_db_query_sub(
-						'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
-						$userid
-					),
-					true
+			if(!$user['user_id']) {
+				qa_db_query_sub(
+					'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
+					$userid, 1, 1, 0, 0
 				);
-
-				if(!$user['user_id']) {
-					qa_db_query_sub(
-						'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
-						$userid, 1, 1, 0, 0
-					);
-					return;
-				}
-
-				// check lapse in days since last visit
-				// using julian days
-				
-				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
-				
-				$last_visit = strtotime($user['last_visit']);
-				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
-				$last_diff = $todayj-$lastj;
-				
-				$oldest_consec = strtotime($user['oldest_consec_visit']);
-				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
-				$oldest_consec_diff = $todayj-$oldest_consecj;
-				
-				$first_visit = strtotime($user['first_visit']);
-				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
-				$first_visit_diff = $todayj-$first_visitj;
-				
-				error_log($last_diff.' last, '.$oldest_consec_diff.' length, '.$first_visit_diff.' since first');
-				
-				if($last_diff < 2) { // one day or less, update last visit
-					
-					if($oldest_consec_diff > $user['longest_consec_visit']) {
-						$user['longest_consec_visit'] = $oldest_consec_diff;
-						qa_db_query_sub(
-							'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
-							$oldest_consec_diff, $last_diff, $userid 
-						);		
-					}
-					else {
-						qa_db_query_sub(
-							'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
-							$last_diff,$userid 
-						);		
-					}
-					$badges = array('dedicated','devoted','zealous');
-					qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
-				}
-				else { // 2+ days, reset consecutive days due to lapse
-					qa_db_query_sub(
-						'UPDATE ^achievements SET oldest_consec_visit=NOW(),total_days_visited=total_days_visited+1 WHERE user_id=#',
-						$userid
-					);		
-				}
-
-				$badges = array('visitor','trouper','veteran');
-				qa_badge_award_check($badges, $user['total_days_visited'], $userid);
-				
-				$badges = array('regular','old_timer','ancestor');
-				qa_badge_award_check($badges, $first_visit_diff, $userid);
+				return;
 			}
 
+			// check lapse in days since last visit
+			// using julian days
+			
+			$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
+			
+			$last_visit = strtotime($user['last_visit']);
+			$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+			$last_diff = $todayj-$lastj;
+			
+			$oldest_consec = strtotime($user['oldest_consec_visit']);
+			$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
+			$oldest_consec_diff = $todayj-$oldest_consecj;
+			
+			$first_visit = strtotime($user['first_visit']);
+			$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+			$first_visit_diff = $todayj-$first_visitj;
+			
+			error_log($last_diff.' last, '.$oldest_consec_diff.' length, '.$first_visit_diff.' since first');
+			
+			if($last_diff < 2) { // one day or less, update last visit
+				
+				if($oldest_consec_diff > $user['longest_consec_visit']) {
+					$user['longest_consec_visit'] = $oldest_consec_diff;
+					qa_db_query_sub(
+						'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
+						$oldest_consec_diff, $last_diff, $userid 
+					);		
+				}
+				else {
+					qa_db_query_sub(
+						'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
+						$last_diff,$userid 
+					);		
+				}
+				$badges = array('dedicated','devoted','zealous');
+				qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
+			}
+			else { // 2+ days, reset consecutive days due to lapse
+				qa_db_query_sub(
+					'UPDATE ^achievements SET oldest_consec_visit=NOW(),total_days_visited=total_days_visited+1 WHERE user_id=#',
+					$userid
+				);		
+			}
+
+			$badges = array('visitor','trouper','veteran');
+			qa_badge_award_check($badges, $user['total_days_visited'], $userid);
+			
+			$badges = array('regular','old_timer','ancestor');
+			qa_badge_award_check($badges, $first_visit_diff, $userid);
 		}
+	}
+	
 		
 	// theme replacement functions
 
