@@ -9,6 +9,36 @@
 		function admin_form(&$qa_content)
 		{
 
+			function option_default($option) {
+				
+				$badges = qa_get_badge_list();
+				
+				$var = preg_replace('/badge_(.*)_var',"$1",$option);
+				
+				if($badges[$var]) {
+					return $badges[$var]['var'];
+				}
+				
+				$name = preg_replace('/badge_(.*)_name',"$1",$option);
+				
+				if($badges[$name]) {
+					return $badges[$name]['name'];
+				}
+				
+				
+				switch($option) {
+					case 'badge_notify_time':
+						return 0;
+					case 'badge_admin_user_field':
+						return false;
+					case 'badge_admin_user_widget':
+						return false;
+					case 'badge_active':
+						return false;
+				}
+				
+			}
+
 		//	Process form input
 
 			$ok = null;
