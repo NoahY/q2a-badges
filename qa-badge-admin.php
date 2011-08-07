@@ -326,7 +326,7 @@
 				
 				if($post['netvotes'] !=0) $users[$user][$pt.'votes'][] = array(
 					'id'=>$pid,
-					'votes'=>$post['netvotes'],
+					'votes'=>(int)$post['netvotes'],
 					'parentid'=>$post['parentid'],
 					'created'=>$post['created']
 				);
@@ -403,7 +403,7 @@
 						if(!isset($data[$pt.'votes'])) continue;
 						foreach($data[$pt.'votes'] as $idv) {
 							
-							if($idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
+							if((int)$idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 								
 								$result = qa_db_read_one_value(
 									qa_db_query_sub(
