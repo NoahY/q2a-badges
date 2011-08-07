@@ -230,9 +230,9 @@
 					'type' => 'checkbox',
 					'note' => '<hr/>',
 				);				
-			}
-			if (qa_clicked('badge_trigger_notify')) {
-				$fields['test-notify'] = 1;
+				if (qa_clicked('badge_trigger_notify')) {
+					$fields['test-notify'] = 1;
+				}
 			}
 			
 			return array(
@@ -241,6 +241,11 @@
 				'fields' => $fields,
 				
 				'buttons' => array(
+					array(
+						'label' => qa_badge_lang('badges/badge_trigger_notify'),
+						'tags' => 'name="badge_trigger_notify"'.(qa_opt('badge_active')?'':' disabled="true"'),
+						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em><br/>',
+					),
 					array(
 						'label' => qa_badge_lang('badges/badge_reset_names'),
 						'tags' => 'NAME="badge_reset_names"',
@@ -260,11 +265,6 @@
 						'label' => qa_badge_lang('badges/badge_award_button'),
 						'tags' => 'NAME="badge_award_button"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_award_button_desc').'</em><br/><input type="checkbox" name="badge_award_delete"><b>'.qa_badge_lang('badges/badge_award_delete_desc').'</b><br/>',
-					),
-					array(
-						'label' => qa_badge_lang('badges/badge_trigger_notify'),
-						'tags' => 'name="badge_trigger_notify"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_trigger_notify_desc').'</em><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/save_settings'),
