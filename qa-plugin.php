@@ -191,16 +191,26 @@
 		foreach($badges as $badge_slug) {
 		
 			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-
-				$result = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
-						$uid, $badge_slug, $oid
-					),
-					true
-				);
-
+			error_log($uid.' '.$oid.' '.$badge_slug);
+				if($oid) {
+					$result = @qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$ AND object_id=#',
+							$uid, $badge_slug, $oid
+						)
+					);
+				}
+				else {
+					$result = @qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
+							$uid, $badge_slug
+						)
+					);				
+				}
+				
 				if ($result == null) { // not already awarded this badge
+					error_log('will award '.$badge_slug);
 					qa_db_query_sub(
 						'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
 						'VALUES (NOW(), #, #, #, #, 0)',
