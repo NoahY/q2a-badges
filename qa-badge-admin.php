@@ -413,7 +413,7 @@
 									true
 								);
 								
-								if (!$result) { // not already awarded this badge
+								if ($result == null) { // not already awarded this badge
 									$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
 									$awarded++;
 								}
@@ -439,7 +439,7 @@
 											),
 											true
 										);
-										if (!$result) { // not already awarded for this answer
+										if ($result == null) { // not already awarded for this answer
 											$this->award_badge($idv['id'], $uid, $badge_slug2);
 											$awarded++;
 										}

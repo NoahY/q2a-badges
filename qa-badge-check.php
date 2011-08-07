@@ -298,7 +298,7 @@
 						),
 						true
 					);
-					if (!$result) { // not already awarded for this answer
+					if ($result == null) { // not already awarded for this answer
 						$this->award_badge($id, $userid, $badge_slug);
 					}
 
@@ -518,7 +518,7 @@
 					true
 				);
 				
-				if ($result != $badge_slug) { // not already awarded this badge
+				if ($result == null) { // not already awarded this badge
 					$this->award_badge(null, $event_user, $badge_slug);
 				}
 			}
@@ -546,7 +546,7 @@
 						true
 					);
 					
-					if (!$result) { // not already awarded this badge
+					if ($result == null) { // not already awarded this badge
 						$this->award_badge(null, $uid, $badge_slug, true); // this is a "badge badge"
 					}
 				}
