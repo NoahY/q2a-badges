@@ -83,8 +83,6 @@
 			$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
 			$first_visit_diff = $todayj-$first_visitj;
 			
-			error_log($last_diff.' last, '.$oldest_consec_diff.' length, '.$first_visit_diff.' since first');
-			
 			if($last_diff < 2) { // one day or less, update last visit
 				
 				if($oldest_consec_diff > $user['longest_consec_visit']) {
