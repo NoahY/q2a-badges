@@ -2,6 +2,147 @@
 
 	class qa_html_theme_layer extends qa_html_theme_base {
 
+	// register default settings
+
+		function option_default($option)
+		{
+			
+			$badges = qa_get_badge_list();
+			
+			$var = preg_replace('/badge_(.*)_var',"$1",$option);
+			
+			if($badges[$var]) {
+				return $badges[$var]['var'];
+			}
+			
+			$name = preg_replace('/badge_(.*)_name',"$1",$option);
+			
+			if($badges[$name]) {
+				return $badges[$name]['name'];
+			}
+			
+			
+			switch($option) {
+				case 'badge_notify_time':
+					return 0;
+				case 'badge_admin_user_field':
+					return false;
+				case 'badge_admin_user_widget':
+					return false;
+				case 'badge_active':
+					return false;
+			
+		}
+
+	// init function
+	
+		function qa_html_theme_base($template, $content, $rooturl, $request) {
+			
+			qa_html_theme_base::qa_html_theme_base($template, $content, $rooturl, $request);
+			
+			$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
+
+			if(!$badges_exists) {		
+
+				qa_import_badge_list();
+			}
+
+			$userbadges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^userbadges'"),true);
+
+			if(!$userbadges_exists) {		
+				qa_db_query_sub(
+					'CREATE TABLE ^userbadges ('.
+						'awarded_at DATETIME NOT NULL,'.
+						'user_id INT(11) NOT NULL,'.
+						'notify TINYINT DEFAULT 0 NOT NULL,'.
+						'object_id INT(10),'.
+						'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
+						'id INT(11) NOT NULL AUTO_INCREMENT,'.
+						'PRIMARY KEY (id)'.
+					') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+				);
+				
+			}
+			
+			$achievements_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^achievements'"),true);
+
+			if(!$achievements_exists) {		
+				qa_db_query_sub(
+					'CREATE TABLE ^achievements ('.
+						'user_id INT(11) UNIQUE NOT NULL,'.
+						'first_visit DATETIME,'.
+						'oldest_consec_visit DATETIME,'.
+						'longest_consec_visit INT(10),'.
+						'last_visit DATETIME,'.
+						'total_days_visited INT(10),'.
+						'questions_read INT(10),'.
+						'posts_edited INT(10)'.
+					') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+				);
+				
+			}
+
+		// process per visit events 
+
+			$userid = qa_get_logged_in_userid();
+			if(!$userid) return; // not logged in?  die.
+			
+			// first visit check
+			
+			$user = @qa_db_read_one_assoc(
+				qa_db_query_sub(
+					'SELECT user_id,oldest_consec_visit,longest_consec_visit,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
+					$userid
+				),
+				true
+			);
+
+			if(!$user['user_id']) {
+				qa_db_query_sub(
+					'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
+					$userid, 1, 1, 0, 0
+				);
+				return;
+			}
+
+			// check lapse since last visit
+			
+			$result = round(abs(time()-strtotime($user['last_visit']))/60/60/24);
+			
+			if($result < 2) { // one day or less, update last visit
+				
+				$result2 = round(abs(time()-strtotime($user['oldest_consec_visit']))/60/60/24);
+				if($result2 > $user['longest_consec_visit']) {
+					$user['longest_consec_visit'] = $result2;
+					qa_db_query_sub(
+						'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
+						$result2, $result, $userid 
+					);		
+				}
+				else {
+					qa_db_query_sub(
+						'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
+						$result,$userid 
+					);		
+				}
+				$badges = array('dedicated','devoted','zealous');
+				qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
+			}
+			else { // 2+ days, reset consecutive days due to lapse
+				qa_db_query_sub(
+					'UPDATE ^achievements SET oldest_consec_visit=NOW(),total_days_visited=total_days_visited+1 WHERE user_id=#',
+					$userid
+				);		
+			}
+
+			$badges = array('visitor','trouper','veteran');
+			qa_badge_award_check($badges, $user['total_days_visited'], $userid);
+			
+			$badges = array('regular','old_timer','ancestor');
+			qa_badge_award_check($badges, round(abs(time()-strtotime($user['first_visit']))/60/60/24), $userid);
+
+		}
+		
 	// theme replacement functions
 
 		function head_script() {
