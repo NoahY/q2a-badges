@@ -212,6 +212,52 @@
 	}
 
 // initialize
+	function qa_badge_plugin_init() {
+	
+		$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
+
+		if(!$badges_exists) {		
+
+			qa_import_badge_list();
+		}
+
+		$userbadges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^userbadges'"),true);
+
+		if(!$userbadges_exists) {		
+			qa_db_query_sub(
+				'CREATE TABLE ^userbadges ('.
+					'awarded_at DATETIME NOT NULL,'.
+					'user_id INT(11) NOT NULL,'.
+					'notify TINYINT DEFAULT 0 NOT NULL,'.
+					'object_id INT(10),'.
+					'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
+					'id INT(11) NOT NULL AUTO_INCREMENT,'.
+					'PRIMARY KEY (id)'.
+				') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+			);
+			
+		}
+		
+		$achievements_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^achievements'"),true);
+
+		if(!$achievements_exists) {		
+			qa_db_query_sub(
+				'CREATE TABLE ^achievements ('.
+					'user_id INT(11) UNIQUE NOT NULL,'.
+					'first_visit DATETIME,'.
+					'oldest_consec_visit DATETIME,'.
+					'longest_consec_visit INT(10),'.
+					'last_visit DATETIME,'.
+					'total_days_visited INT(10),'.
+					'questions_read INT(10),'.
+					'posts_edited INT(10)'.
+				') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+			);
+			
+		}
+	}
+	
+	qa_badge_plugin_init();
 	
 	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
 	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
