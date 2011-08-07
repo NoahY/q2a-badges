@@ -131,7 +131,7 @@
 					}
 					
 					if($was_active) {
-						error_log($was_active.' was active, '.qa_opt('badge_active');
+						error_log($was_active.' was active, '.qa_opt('badge_active'));
 						// set badge names, vars and states
 						
 						foreach ($badges as $slug => $info) {
