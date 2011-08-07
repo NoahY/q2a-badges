@@ -488,7 +488,7 @@
 					true
 				);
 				
-				if (!$result) { // not already awarded this badge
+				if ($result != $badge_slug) { // not already awarded this badge
 					$this->award_badge(null, $event_user, $badge_slug);
 				}
 			}
