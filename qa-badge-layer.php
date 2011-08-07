@@ -72,23 +72,31 @@
 				
 				$last_visit = strtotime($user['last_visit']);
 				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+				$last_diff = $todayj-$lastj;
 				
-				$result = $todayj-$lastj;
-				error_log($result.' days');
-				if($result < 2) { // one day or less, update last visit
+				$oldest_consec = strtotime($user['oldest_consec_visit']);
+				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
+				$oldest_consec_diff = $todayj-$oldest_consecj;
+				
+				$first_visit = strtotime($user['first_visit']);
+				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+				$first_visit_diff = $todayj-$first_visitj;
+				
+				error_log($last_diff.' last, '.$oldest_consec_diff.' length, '.$first_visit_diff.' since first');
+				
+				if($last_diff < 2) { // one day or less, update last visit
 					
-					$result2 = round(abs(time()-strtotime($user['oldest_consec_visit']))/60/60/24);
-					if($result2 > $user['longest_consec_visit']) {
-						$user['longest_consec_visit'] = $result2;
+					if($oldest_consec_diff > $user['longest_consec_visit']) {
+						$user['longest_consec_visit'] = $oldest_consec_diff;
 						qa_db_query_sub(
 							'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
-							$result2, $result, $userid 
+							$oldest_consec_diff, $last_diff, $userid 
 						);		
 					}
 					else {
 						qa_db_query_sub(
 							'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
-							$result,$userid 
+							$last_diff,$userid 
 						);		
 					}
 					$badges = array('dedicated','devoted','zealous');
@@ -105,7 +113,7 @@
 				qa_badge_award_check($badges, $user['total_days_visited'], $userid);
 				
 				$badges = array('regular','old_timer','ancestor');
-				qa_badge_award_check($badges, round(abs(time()-strtotime($user['first_visit']))/60/60/24), $userid);
+				qa_badge_award_check($badges, $first_visit_diff, $userid);
 			}
 
 		}
