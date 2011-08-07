@@ -65,10 +65,16 @@
 					return;
 				}
 
-				// check lapse since last visit
+				// check lapse in days since last visit
+				// using julian days
 				
-				$result = round(abs(time()-strtotime($user['last_visit']))/60/60/24);
+				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
 				
+				$last_visit = strtotime($user['last_visit']);
+				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+				
+				$result = $todayj-$lastj;
+				error_log($result.' days');
 				if($result < 2) { // one day or less, update last visit
 					
 					$result2 = round(abs(time()-strtotime($user['oldest_consec_visit']))/60/60/24);
