@@ -20,7 +20,7 @@
 					error_log($option.' option default var: '.$badges[$slug]['var']);
 					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
-					return '1';
+					return '0';
 				case 'badge_notify_time':
 					return 0;
 				case 'badge_admin_user_field':
@@ -186,7 +186,13 @@
 						'label' => qa_badge_lang('badges/active_badges').':',
 						'type' => 'static',
 				);
-
+				
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_admin_select_all'),
+					'tags' => 'onclick="var isx = this.checked; jQuery(\'#badgelist > :checkbox\').prop(\'checked\',isx);"',
+					'value' => false,
+					'type' => 'checkbox',
+				);	
 
 				foreach ($badges as $slug => $info) {
 					$badge_name=qa_badge_lang('badges/'.$slug);
@@ -201,7 +207,7 @@
 
 					$fields[] = array(
 							'type' => 'static',
-							'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')" title="Click to edit badge name">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
+							'note' => '<table><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')" title="'.qa_badge_lang('badges/badge_admin_click_edit').'">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
 					);
 				}
 				$fields[] = array(
