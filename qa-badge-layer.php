@@ -4,8 +4,7 @@
 
 	// register default settings
 
-		function option_default($option)
-		{
+		function option_default($option) {
 			
 			$badges = qa_get_badge_list();
 			
@@ -31,6 +30,7 @@
 					return false;
 				case 'badge_active':
 					return false;
+			}
 			
 		}
 
