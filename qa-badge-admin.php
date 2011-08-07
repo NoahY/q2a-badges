@@ -85,36 +85,38 @@
 				$qa_content['test-notify'] = 1;
 			}
 			else if(qa_clicked('badge_save_settings')) {
-				foreach ($badges as $slug => $info) {
-					
-					// update var
-					
-					if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
-						qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
-					}
-
-					// toggle activation
-
-					if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
-						qa_opt('badge_'.$slug.'_enabled','0');
-					}
-					else qa_opt('badge_'.$slug.'_enabled','1');
-
-					// set custom names
-					
-					if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
-						qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
-						$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
-					}
-					
-				}
-				
-				// options
-				
-				qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
-				qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
-				qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
+				if (qa_opt('badge_active')) {
+					foreach ($badges as $slug => $info) {
+						
+						// update var
+						
+						if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
+							qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
+						}
+
+						// toggle activation
+
+						if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
+							qa_opt('badge_'.$slug.'_enabled','0');
+						}
+						else qa_opt('badge_'.$slug.'_enabled','1');
+
+						// set custom names
+						
+						if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
+							qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
+							$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
+						}
+						
+					}
+					
+					// options
+					
+					qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
+					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+					qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+				}
 				$ok = qa_badge_lang('badges/badge_admin_saved');
 			}
 			
