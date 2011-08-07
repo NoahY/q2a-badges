@@ -7,6 +7,7 @@
 		}
 
 		function option_default($option) {
+			error_log($option.' option default');
 			
 			$badges = qa_get_badge_list();
 
@@ -16,6 +17,7 @@
 				case 'badge_'.$slug.'_name':
 					return $badges[$slug]['name'];
 				case 'badge_'.$slug.'_var':
+					error_log($option.' option default var: '.$badges[$slug]['var']);
 					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '1';
@@ -83,7 +85,7 @@
 				$was_active = qa_opt('badge_active');
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
 				if (qa_opt('badge_active')) {
-					
+					error_log($was_active.' '.qa_opt('badge_active'));
 					// check databases
 					
 					$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
@@ -129,6 +131,7 @@
 					}
 					
 					if($was_active) {
+						error_log($was_active.' was active, '.qa_opt('badge_active');
 						// set badge names, vars and states
 						
 						foreach ($badges as $slug => $info) {
