@@ -324,7 +324,7 @@
 							),
 							true
 						);
-						if (!$result) { // not already awarded for this answer
+						if ($result == null) { // not already awarded for this answer
 							$this->award_badge($id, $userid, $badge_slug2);
 						}
 					}
