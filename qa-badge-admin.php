@@ -6,38 +6,33 @@
 			return ($template!='admin');
 		}
 
+		function option_default($option) {
+			
+			$badges = qa_get_badge_list();
+
+			$slug = preg_replace('/badge_(.*)_.+',"$1",$option);
+			
+			switch($option) {
+				case 'badge_'.$slug.'_name':
+					return $badges[$slug]['name'];
+				case 'badge_'.$slug.'_var':
+					return $badges[$slug]['var'];
+				case 'badge_'.$slug.'_enabled':
+					return '1';
+				case 'badge_notify_time':
+					return 0;
+				case 'badge_admin_user_field':
+					return false;
+				case 'badge_admin_user_widget':
+					return false;
+				case 'badge_active':
+					return false;
+			}
+			
+		}
+
 		function admin_form(&$qa_content)
 		{
-
-			function option_default($option) {
-				
-				$badges = qa_get_badge_list();
-				
-				$var = preg_replace('/badge_(.*)_var',"$1",$option);
-				
-				if($badges[$var]) {
-					return $badges[$var]['var'];
-				}
-				
-				$name = preg_replace('/badge_(.*)_name',"$1",$option);
-				
-				if($badges[$name]) {
-					return $badges[$name]['name'];
-				}
-				
-				
-				switch($option) {
-					case 'badge_notify_time':
-						return 0;
-					case 'badge_admin_user_field':
-						return false;
-					case 'badge_admin_user_widget':
-						return false;
-					case 'badge_active':
-						return false;
-				}
-				
-			}
 
 		//	Process form input
 
@@ -85,6 +80,7 @@
 				$qa_content['test-notify'] = 1;
 			}
 			else if(qa_clicked('badge_save_settings')) {
+				$was_active = qa_opt('badge_active');
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
 				if (qa_opt('badge_active')) {
 					
@@ -132,37 +128,39 @@
 						
 					}
 					
-					// set badge names, vars and states
-					
-					foreach ($badges as $slug => $info) {
+					if($was_active) {
+						// set badge names, vars and states
 						
-						// update var
-						
-						if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
-							qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
-						}
+						foreach ($badges as $slug => $info) {
+							
+							// update var
+							
+							if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
+								qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
+							}
 
-						// toggle activation
+							// toggle activation
 
-						if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
-							qa_opt('badge_'.$slug.'_enabled','0');
-						}
-						else qa_opt('badge_'.$slug.'_enabled','1');
+							if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
+								qa_opt('badge_'.$slug.'_enabled','0');
+							}
+							else qa_opt('badge_'.$slug.'_enabled','1');
 
-						// set custom names
-						
-						if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
-							qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
-							$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
+							// set custom names
+							
+							if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
+								qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
+								$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
+							}
+							
 						}
 						
+						// options
+						
+						qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
+						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 					}
-					
-					// options
-					
-					qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
-					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
-					qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 				}
 				$ok = qa_badge_lang('badges/badge_admin_saved');
 			}
