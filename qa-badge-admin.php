@@ -7,7 +7,6 @@
 		}
 
 		function option_default($option) {
-			error_log($option.' option default');
 			
 			$badges = qa_get_badge_list();
 
