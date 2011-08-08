@@ -361,6 +361,7 @@
 
 			$output='<span id="badge-medals-widget">';
 			for($x = 2; $x >= 0; $x--) {
+				if(!isset($result[$x])) continue;
 				$a = $result[$x];
 				$count = $a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'];
 				if($count == 0) continue;
