@@ -302,19 +302,14 @@
 
 					// total views check
 
-					$uid = $this->content['raw']['userid'];
-					$views = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT views FROM ^posts WHERE postid=# ',
-							$oid
-						),
-						true
-					);
+					$uid = $q_view['raw']['userid'];
+					$views = $q_view['raw']['views'];
+
 					$views++; // because we haven't incremented the views yet
 					
 					$badges = array('notable_question','popular_question','famous_question');
 
-					qa_badge_award_check($badges, $views, $uid);
+					qa_badge_award_check($badges, $views, $uid, $oid);
 
 				
 					// personal view count increase and badge check
