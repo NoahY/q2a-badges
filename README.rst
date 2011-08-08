@@ -9,7 +9,7 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 49 badges implemented (see Badge List below)
+- currently 49 badges implemented (see `Badge List`_ below)
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
 - public badge page displays awardable badges
@@ -18,7 +18,7 @@ Features
 - badge requirements are modifiable via admin page
 - badge system may be deactivated via admin page
 - badges may be individually deactivated via admin page
-- full translation table available (see Translation below)
+- full translation table available (see `Translation` below)
 
 ------------
 Installation
@@ -30,6 +30,8 @@ Installation
 5. Go to **Admin -> Plugins** on your q2a install and select the '**Activate badges**' option, then '**Save Changes**'.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
+
+.. _Translation:
 
 -----------
 Translation
@@ -65,12 +67,14 @@ Question2Answer is a free and open source platform for Q&A sites. For more infor
 
 http://www.question2answer.org/
 
+.. _Badge List:
+
 ----------
 Badge List
 ----------
 
 ==========   =================      ========================================
-Level [1]_   Title                  Description
+Level [#]_   Title                  Description
 ==========   =================      ========================================
 1            Verified Human         Successfully verified email address
 
@@ -139,4 +143,4 @@ Level [1]_   Title                  Description
 3            Olympian               Received total of # badges
 ==========   =================      ========================================
 
-.. [1]  Level refers to difficulty level (e.g. gold, silver, bronze).
+.. [#] Level refers to difficulty level (e.g. gold, silver, bronze).
