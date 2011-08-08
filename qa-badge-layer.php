@@ -78,11 +78,13 @@
 			
 			$oldest_consec = strtotime($user['oldest_consec_visit']);
 			$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
-			$oldest_consec_diff = $todayj-$oldest_consecj;
+			$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
 			
 			$first_visit = strtotime($user['first_visit']);
 			$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
 			$first_visit_diff = $todayj-$first_visitj;
+			
+			if($last_diff < 0) return; // error
 			
 			if($last_diff < 2) { // one day or less, update last visit
 				
@@ -104,7 +106,7 @@
 			}
 			else { // 2+ days, reset consecutive days due to lapse
 				qa_db_query_sub(
-					'UPDATE ^achievements SET oldest_consec_visit=NOW(),total_days_visited=total_days_visited+1 WHERE user_id=#',
+					'UPDATE ^achievements SET last_visit=NOW(), oldest_consec_visit=NOW(), total_days_visited=total_days_visited+1 WHERE user_id=#',
 					$userid
 				);		
 			}
