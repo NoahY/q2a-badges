@@ -257,7 +257,7 @@
 			
 				// add user badge list
 
-				if((bool)qa_opt('badge_admin_user_field') && preg_match('/^\.\.\/user\//',qa_self_html())) { 
+				if((bool)qa_opt('badge_admin_user_field') && !empty($content['form_activity'])) { 
 					if($content['q_list']) {  // paranoia
 					
 						// array splicing kungfu thanks to Stack Exchange
@@ -386,7 +386,7 @@
 
 			// displays badge list in user profile
 			
-			$handle = preg_replace('/^\.\.\/user\/([^\/]+)\/*$/',"$1",qa_self_html());
+			$handle = preg_replace('/.+([^=\/]+)$/',"$1",qa_self_html()); // better way?
 
 			$userid = $this->getuserfromhandle($handle);
 			if(!$userid) return;
@@ -481,7 +481,7 @@
 						$output .= '
 							<tr>
 								<td colspan="2" class="badge-source">
-									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).'#'.$anchor.'" class="badge-source-'.$slug.'" style="display:none">source</a>
+									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">source</a>
 								</td>
 							</tr>';
 					}
@@ -520,7 +520,7 @@
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 					
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle()).'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="$(this).parent().hide(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';

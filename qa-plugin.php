@@ -189,8 +189,6 @@
 		
 		foreach($badges as $badge_slug) {
 			
-			error_log($badge_slug.' '.$var.' '.$oid.' '.$uid);
-		
 			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 				if($oid) {
 					$result = @qa_db_read_one_value(

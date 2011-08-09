@@ -14,7 +14,6 @@
 				case 'badge_'.$slug.'_name':
 					return $badges[$slug]['name'];
 				case 'badge_'.$slug.'_var':
-					error_log($option.' option default var: '.$badges[$slug]['var']);
 					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '1';
@@ -263,7 +262,6 @@
 			$votes = $post['netvotes'];
 			$uid = $post['userid'];
 
-			error_log('question votes: '.$votes);
 			
 			// vote volume check
 			
