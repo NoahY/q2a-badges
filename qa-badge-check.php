@@ -279,14 +279,14 @@
 		// check number of votes on answer
 		
 		function answer_vote_up($event,$event_user,$params) {
-			$id = $params['postid'];
-			$post = $this->get_post_data($id);
+			$oid = $params['postid'];
+			$post = $this->get_post_data($oid);
 			$votes = $post['netvotes'];
 			$userid = $post['userid'];
 
 			// vote volume check
 			
-			if($event_user) $this->check_voter($event_user,$id);
+			if($event_user) $this->check_voter($event_user,$oid);
 
 			// post owner upvotes check
 
@@ -297,12 +297,12 @@
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-							$userid, $id, $badge_slug
+							$userid, $oid, $badge_slug
 						),
 						true
 					);
 					if ($result == null) { // not already awarded for this answer
-						$this->award_badge($id, $userid, $badge_slug);
+						$this->award_badge($oid, $userid, $badge_slug);
 					}
 
 					// self-answer vote checks TODO
@@ -323,12 +323,12 @@
 						$result = qa_db_read_one_value(
 							qa_db_query_sub(
 								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-								$userid, $id, $badge_slug2
+								$userid, $oid, $badge_slug2
 							),
 							true
 						);
 						if ($result == null) { // not already awarded for this answer
-							$this->award_badge($id, $userid, $badge_slug2);
+							$this->award_badge($oid, $userid, $badge_slug2);
 						}
 					}
 				}
