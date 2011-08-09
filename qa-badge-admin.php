@@ -83,7 +83,6 @@
 				$was_active = qa_opt('badge_active');
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
 				if (qa_opt('badge_active')) {
-					error_log($was_active.' '.qa_opt('badge_active'));
 					// check databases
 					
 					$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
@@ -207,13 +206,23 @@
 							'note' => '<table class="badge-listing"><tr><td><input type="checkbox" name="badge_'.$slug.'_enabled"'.(qa_opt('badge_'.$slug.'_enabled') !== '0' ? ' checked':'').'></td><td><input type="text" name="badge_'.$slug.'_edit" id="badge_'.$slug.'_edit" style="display:none" size="16" onblur="badgeEdit(\''.$slug.'\',true)" value="'.$name.'"><span id="badge_'.$slug.'_badge" class="badge-'.$types.'" onclick="badgeEdit(\''.$slug.'\')" title="'.qa_badge_lang('badges/badge_admin_click_edit').'">'.$name.'</span></td><td>'.$badge_desc.'</td></tr></table>'
 					);
 				}
+			
 				$fields[] = array(
-						'label' => '<hr/>'.qa_badge_lang('badges/notify_time').':',
+					'type' => 'blank',
+				);
+				
+				$fields[] = array(
+						'label' => qa_badge_lang('badges/notify_time').':',
 						'type' => 'number',
 						'value' => qa_opt('badge_notify_time'),
 						'tags' => 'NAME="badge_notify_time"',
 						'note' => '<em>'.qa_badge_lang('badges/notify_time_desc').'</em><hr/>',
 				);
+			
+				$fields[] = array(
+					'type' => 'blank',
+				);
+								
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_admin_user_field'),
 					'tags' => 'NAME="badge_admin_user_field"',
@@ -225,11 +234,15 @@
 					'tags' => 'NAME="badge_admin_user_widget"',
 					'value' => (bool)qa_opt('badge_admin_user_widget'),
 					'type' => 'checkbox',
-					'note' => '<hr/>',
 				);				
 				if (qa_clicked('badge_trigger_notify')) {
 					$fields['test-notify'] = 1;
 				}
+			
+				$fields[] = array(
+					'type' => 'blank',
+				);
+				
 			}
 			
 			return array(
@@ -335,7 +348,6 @@
 					'id'=>$pid,
 					'views'=>$post['views']
 				);
-				qa_error_log($users);
 				 
 			} 
 
