@@ -220,7 +220,7 @@
 		}
 	}
 	
-	function qa_badge_desc_replace($slug,$var) {
+	function qa_badge_desc_replace($slug,$var,$name) {
 		
 		// var replace
 		
@@ -232,10 +232,8 @@
 		
 		if(!$others) return $desc;
 		
-		$badges = qa_get_badge_list();
-		
 		foreach($others as $other) {
-			$desc = str_replace($other[0],qa_badge_lang('badges/'.$other[1]),$desc);
+			$desc = str_replace($other[0],$name,$desc);
 		}
 		return $desc;
 	}
