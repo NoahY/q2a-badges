@@ -380,7 +380,7 @@
 
 				$count = qa_db_read_one_value(
 					qa_db_query_sub(
-						'SELECT aselects FROM ^userpoints WHERE userid=#',
+						'SELECT aselecteds FROM ^userpoints WHERE userid=#',
 						$auid
 					),
 					true
@@ -397,7 +397,7 @@
 
 				$count = qa_db_read_one_value(
 					qa_db_query_sub(
-						'SELECT aselecteds FROM ^userpoints WHERE userid=#',
+						'SELECT aselects FROM ^userpoints WHERE userid=#',
 						$uid
 					),
 					true
