@@ -461,7 +461,7 @@
 							</tr>';
 					
 					// source row(s) if any	
-					if(is_array($oid)) {
+					if(is_array($oids)) {
 						foreach($oids as $oid) {
 							$post = qa_db_read_one_assoc(
 								qa_db_query_sub(
