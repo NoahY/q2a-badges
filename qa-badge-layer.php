@@ -442,7 +442,7 @@
 					$oids = $info['oid'];
 					
 					$var = qa_opt('badge_'.$slug.'_var');
-					$desc = qa_badge_desc_replace($slug,$var);
+					$desc = qa_badge_desc_replace($slug,$var,$name);
 					
 					// badge row
 					
