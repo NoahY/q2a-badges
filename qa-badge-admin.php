@@ -352,19 +352,15 @@
 			} 
 
 
-			$vote_result = qa_db_read_all_assoc(
+			$voter = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT * FROM ^uservotes WHERE vote <> 0'
-				)
+					'SELECT userid,qupvotes,qdownvotes,aupvotes,adownvotes FROM ^userpoints'
+				),
+				true
 			);
-			foreach ($vote_result as $vote) {
+			foreach ($voter as $vote) {
 				$user='user'.$vote['userid'];
-				$pid = $vote['postid'];
-				
-				// get vote count
-				
-				if(isset($users[$user]) && isset($users[$user]['votes'])) $users[$user]['votes']++;
-				else $users[$user]['votes'] = 1;
+				$users[$user]['votes'] = (int)$votes['qupvotes']+(int)$votes['qdownvotes']+(int)$votes['aupvotes']+(int)$votes['adownvotes'];
 			} 
 
 			// flags
