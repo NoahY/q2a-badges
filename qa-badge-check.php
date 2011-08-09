@@ -259,9 +259,9 @@
 		
 		function question_vote_up($event,$event_user,$params) {
 			$oid = $params['postid'];
-			$post = $this->get_post_data($id);
+			$post = $this->get_post_data($oid);
 			$votes = $post['netvotes'];
-			$userid = $post['userid'];
+			$uid = $post['userid'];
 
 			error_log('question votes: '.$votes);
 			
