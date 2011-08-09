@@ -360,8 +360,8 @@
 				),
 				true
 			);
-			foreach ($voter as $vote) {
-				$user='user'.$vote['userid'];
+			foreach ($voter as $votes) {
+				$user='user'.$votes['userid'];
 				
 				// votes
 				
