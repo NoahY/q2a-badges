@@ -232,10 +232,9 @@
 		
 		if(!$others) return $desc;
 		
-		
 		foreach($others as $other) {
 			if(!qa_opt('badge_'.$other[1].'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
-			$name = qa_opt('badge_'$other[1].'_name');
+			$name = qa_opt('badge_'.$other[1].'_name');
 
 			$desc = str_replace($other[0],$name,$desc);
 		}
