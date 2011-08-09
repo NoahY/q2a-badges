@@ -190,7 +190,7 @@
 	
 	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {
 		
-		
+		$awarded = 0;
 		foreach($badges as $badge_slug) {
 			
 			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
@@ -219,9 +219,11 @@
 						'VALUES (NOW(), #, #, #, #, 0)',
 						$notify, $oid, $uid, $badge_slug
 					);
+					$awarded++;
 				}
 			}
 		}
+		return $awarded;
 	}
 	
 	function qa_badge_desc_replace($slug,$var) {
