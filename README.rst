@@ -1,5 +1,5 @@
 ============================
-Question2Answer Badges v 0.5
+Question2Answer Badges v 0.6
 ============================
 -----------
 Description
@@ -13,7 +13,7 @@ Features
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
 - public badge page displays awardable badges
-- awarded badges are shown in individual profile pages
+- awarded badges are shown in individual profile pages, with links to source (if available)
 - awarded badge are shown as medals in individual posts
 - badge requirements are modifiable via admin page
 - badge system may be deactivated via admin page
