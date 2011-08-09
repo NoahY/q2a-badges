@@ -354,12 +354,12 @@
 			
 			$voter = qa_db_read_one_assoc(
 				qa_db_query_sub(
-					'SELECT upvoteds,downvoteds FROM ^userpoints WHERE userid=#',
+					'SELECT qupvotes,qdownvotes,aupvotes,adownvotes FROM ^userpoints WHERE userid=#',
 					$uid
 				),
 				true
 			);
-			$votes = (int)$voter['upvoteds']+(int)$voter['downvoteds'];
+			$votes = (int)$voter['qupvotes']+(int)$voter['qdownvotes']+(int)$voter['aupvotes']+(int)$voter['adownvotes'];
 			$badges = array('voter','avid_voter','devoted_voter');
 
 			qa_badge_award_check($badges, $votes, $uid);
