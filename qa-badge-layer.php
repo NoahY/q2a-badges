@@ -225,10 +225,10 @@
 						padding-left:8px;
 					}			
 					.badge-count {
-						cursor:pointer;
 						font-weight:bold;
 					}			
 					.badge-count-link {
+						cursor:pointer;
 						color:#992828;
 					}			
 					.badge-source {
