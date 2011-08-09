@@ -228,12 +228,12 @@
 		
 		// other badge reference replace
 		
-		preg_match_all('|\$(\S+)|',$desc,$others);
+		preg_match_all('|\$(\S+)|',$desc,$others,PREG_SET_ORDER);
 		
 		if(!$others) return $desc;
 		
 		foreach($others as $other) {
-			if(!qa_opt('badge_'.$other[1].'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
+			if(!qa_opt('badge_'.$other[1].'_name')) qa_opt('badge_'.$other[1].'_name',qa_badge_lang('badges/'.$other[1]));
 			$name = qa_opt('badge_'.$other[1].'_name');
 
 			$desc = str_replace($other[0],$name,$desc);
