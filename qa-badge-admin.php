@@ -312,6 +312,7 @@
 			);
 			
 			foreach ($post_result as $post) {
+				if(!$post['userid']) continue;
 				$user='user'.$post['userid'];
 				$pid = $post['postid'];
 				$pt = $post['type'];

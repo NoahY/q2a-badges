@@ -33,6 +33,7 @@
 // main event processing function
 		
 		function process_event($event, $userid, $handle, $cookieid, $params) {
+			
 			if (qa_opt('badge_active')) {
 				switch ($event) {
 
@@ -188,7 +189,7 @@
 
 			// asker check
 			
-			$this->check_question_number($event_user,$id);
+			if($event_user) $this->check_question_number($event_user,$id);
 			
 		}
 		
@@ -197,7 +198,7 @@
 
 			// answerer check
 			
-			$this->check_answer_number($event_user,$id);
+			if($event_user) $this->check_answer_number($event_user,$id);
 			
 		}
 		
@@ -206,7 +207,7 @@
 
 			// commenter check
 			
-			$this->check_comment_number($event_user,$id);
+			if($event_user) $this->check_comment_number($event_user,$id);
 			
 		}
 		
@@ -264,7 +265,7 @@
 			
 			// vote volume check
 			
-			$this->check_voter($event_user);
+			if($event_user) $this->check_voter($event_user);
 
 			// post owner upvotes check
 
@@ -283,7 +284,7 @@
 
 			// vote volume check
 			
-			$this->check_voter($event_user,$id);
+			if($event_user) $this->check_voter($event_user,$id);
 
 			// post owner upvotes check
 
@@ -337,7 +338,7 @@
 			
 			// vote volume check
 			
-			$this->check_voter($event_user);
+			if($event_user) $this->check_voter($event_user);
 		}
 
 		function answer_vote_down($event,$event_user,$params) {
@@ -345,7 +346,7 @@
 			
 			// vote volume check
 			
-			$this->check_voter($event_user);
+			if($event_user) $this->check_voter($event_user);
 		}
 
 		function check_voter($uid) {
@@ -372,34 +373,39 @@
 			$auid = $a['userid'];
 			
 
-			// sheer number of answerer's answers selected by others
+			if($auid) {
 
-			$count = qa_db_read_one_value(
-				qa_db_query_sub(
-					'SELECT aselects FROM ^userpoints WHERE userid=#',
-					$auid
-				),
-				true
-			);			
+				// sheer number of answerer's answers selected by others
 
-			$badges = array('gifted','wise','enlightened');
+				$count = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT aselects FROM ^userpoints WHERE userid=#',
+						$auid
+					),
+					true
+				);			
 
-			qa_badge_award_check($badges, $count, $auid);
+				$badges = array('gifted','wise','enlightened');
+
+				qa_badge_award_check($badges, $count, $auid);
+			}
+
+			if($uid) {
 			
-			// sheer number of answers selected by selecter
+				// sheer number of answers selected by selecter
 
-			$count = qa_db_read_one_value(
-				qa_db_query_sub(
-					'SELECT aselecteds FROM ^userpoints WHERE userid=#',
-					$uid
-				),
-				true
-			);
+				$count = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT aselecteds FROM ^userpoints WHERE userid=#',
+						$uid
+					),
+					true
+				);
 
-			$badges = array('grateful','respectful','reverential');
+				$badges = array('grateful','respectful','reverential');
 
-			qa_badge_award_check($badges, $count, $uid);
-			
+				qa_badge_award_check($badges, $count, $uid);
+			}
 		
 		}
 		
@@ -409,10 +415,10 @@
 
 			if($params['content'] == $params['oldcontent']) return;
 			
-			$this->add_edit_count($event_user);
+			if($event_user) $this->add_edit_count($event_user);
 			
 			// sheer edit volume
-			$this->check_editor($event_user);
+			if($event_user) $this->check_editor($event_user);
 			
 		}
 
@@ -420,11 +426,11 @@
 
 			if($params['content'] == $params['oldcontent']) return;
 			
-			$this->add_edit_count($event_user);
+			if($event_user) $this->add_edit_count($event_user);
 			
 			// sheer edit volume
 			
-			$this->check_editor($event_user);
+			if($event_user) $this->check_editor($event_user);
 			
 		}
 
@@ -432,11 +438,11 @@
 
 			if($params['content'] == $params['oldcontent']) return;
 			
-			$this->add_edit_count($event_user);
+			if($event_user) $this->add_edit_count($event_user);
 			
 			// sheer edit volume
 			
-			$this->check_editor($event_user);
+			if($event_user) $this->check_editor($event_user);
 			
 		}
 		
@@ -471,7 +477,7 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user);
+			if($event_user) $this->check_flagger($event_user);
 		}
 
 		function answer_flag($event,$event_user,$params) {
@@ -479,7 +485,7 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user);
+			if($event_user) $this->check_flagger($event_user);
 		}
 
 		function comment_flag($event,$event_user,$params) {
@@ -487,7 +493,7 @@
 			
 			// flag volume check
 			
-			$this->check_flagger($event_user);
+			if($event_user) $this->check_flagger($event_user);
 		}
 
 		function check_flagger($uid) {

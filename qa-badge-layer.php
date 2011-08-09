@@ -300,13 +300,15 @@
 
 			if (qa_opt('badge_active') && isset($this->content['inc_views_postid'])) {
 
+					$uid = $q_view['raw']['userid'];
+
+					if(!$uid) return; // anonymous
+
 					$oid = $this->content['inc_views_postid'];
 
 					// total views check
 
-					$uid = $q_view['raw']['userid'];
 					$views = $q_view['raw']['views'];
-
 					$views++; // because we haven't incremented the views yet
 					
 					$badges = array('notable_question','popular_question','famous_question');
@@ -388,7 +390,7 @@
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_slug, ^badges.badge_type FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					'SELECT ^badges.badge_slug, ^badges.badge_type, ^userbadges.object_id FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
 					$userid
 				)
 			);
@@ -407,9 +409,9 @@
 			foreach($result as $info) {
 				$type = $info['badge_type'];
 				$slug = $info['badge_slug'];
-				if(isset($badges[$type][$slug])) $badges[$type][$slug]++;
-				else $badges[$type][$slug] = 1;
-				
+				if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
+				else $badges[$type][$slug]['count'] = 1;
+				$badges[$type][$slug]['object_id'][] = $info['object_id']
 			}
 			
 			foreach($badges as $type => $badge) {
@@ -425,23 +427,40 @@
 									<h3 class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</span>
 								</td>
 							</tr>';				
-				foreach($badge as $slug => $count) {
+				foreach($badge as $slug => $info) {
 					$badge_name=qa_badge_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 					
+					$count = $info['count'];
+					$oids = $info['object_id'];
+					
 					$var = qa_opt('badge_'.$slug.'_var');
 					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+					
+					// badge row
 					
 					$output .= '
 							<tr>
 								<td class="qa-form-wide-label">
-									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')" onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()">'.$name.'</span>
 								</td>
 								<td class="qa-form-wide-data">
 									<span class="badge-count">x&nbsp;'.$count.'</span>
 								</td>
 							</tr>';
+					
+					// source row(s) if any	
+					
+					foreach($oids as $oid) {
+						
+						$output .= '
+							<tr>
+								<td colspan="2" class="qa-form-wide-label badge-source-'.$slug.'" style="display:none">
+									<a href="'.qa_path($oid).'">source</a>
+								</td>
+							</tr>';
+					}
 				}
 				$output .= '
 						</table>
