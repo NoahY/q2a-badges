@@ -262,6 +262,8 @@
 			$post = $this->get_post_data($id);
 			$votes = $post['netvotes'];
 			$userid = $post['userid'];
+
+			error_log('question votes: '.$votes);
 			
 			// vote volume check
 			

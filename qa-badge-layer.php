@@ -414,7 +414,7 @@
 				$slug = $info['badge_slug'];
 				if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
 				else $badges[$type][$slug]['count'] = 1;
-				$badges[$type][$slug]['object_id'][] = $info['object_id'];
+				if($info['object_id']) $badges[$type][$slug]['object_id'][] = $info['object_id'];
 			}
 			
 			foreach($badges as $type => $badge) {
@@ -465,8 +465,8 @@
 						);
 						$output .= '
 							<tr>
-								<td colspan="2" class="badge-source" style="display:none">
-									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).'" class="badge-source-'.$slug.'">source</a>
+								<td colspan="2" class="badge-source">
+									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).'" class="badge-source-'.$slug.'" style="display:none">source</a>
 								</td>
 							</tr>';
 					}
