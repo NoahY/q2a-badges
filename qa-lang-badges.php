@@ -86,9 +86,9 @@
 		'good_answer_desc'=>'Answer received +# upvote',
 		'great_answer_desc'=>'Answer received +# upvote',
 
-		'nice_answer_old_desc'=>'Received "Nice Answer" badge in response to a question more than # days old',
-		'good_answer_old_desc'=>'Received "Good Answer" badge in response to a question more than # days old',
-		'great_answer_old_desc'=>'Received "Great Answer" badge in response to a question more than # days old',
+		'nice_answer_old_desc'=>'Received $nice_answer badge in response to a question more than # days old',
+		'good_answer_old_desc'=>'Received $good_answer badge in response to a question more than # days old',
+		'great_answer_old_desc'=>'Received $great_answer badge in response to a question more than # days old',
 		
 		'voter_desc'=>'Voted # times',
 		'avid_voter_desc'=>'Voted # times',
@@ -159,6 +159,8 @@
 		'badge_admin'=>'Badge Admin',
 		'badges'=>'Badges',
 		'badge_list_title'=>'Badge List',
+		
+		'badge_count_click'=>'Click to see source(s)',
 		
 		'badge_list_pre'=>'The following is a list of all badges available on this site:',
 		'awarded'=>'awarded',
