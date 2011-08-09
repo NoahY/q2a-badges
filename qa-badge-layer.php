@@ -393,7 +393,7 @@
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_slug, ^badges.badge_type, ^userbadges.object_id FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					'SELECT ^badges.badge_slug AS slug, ^badges.badge_type AS type, ^userbadges.object_id AS oid FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
 					$userid
 				)
 			);
@@ -410,11 +410,11 @@
 			$badges;
 			
 			foreach($result as $info) {
-				$type = $info['badge_type'];
-				$slug = $info['badge_slug'];
+				$type = $info['type'];
+				$slug = $info['slug'];
 				if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
 				else $badges[$type][$slug]['count'] = 1;
-				if($info['object_id']) $badges[$type][$slug]['object_id'][] = $info['object_id'];
+				if($info['oid']) $badges[$type][$slug]['oid'][] = $info['oid'];
 			}
 			
 			foreach($badges as $type => $badge) {
