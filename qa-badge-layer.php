@@ -479,8 +479,8 @@
 								true
 							);	
 						}
-
-						if(strlen($title) > 20) $text = substr($title,0,20).'...';
+						
+						$text = (strlen($title) > 20 ? substr($title,0,20).'...' : $title);
 						
 						$output .= '
 							<tr>
