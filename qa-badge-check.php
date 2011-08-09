@@ -262,6 +262,9 @@
 			$votes = $post['netvotes'];
 			$uid = $post['userid'];
 
+			// voted volume check
+
+			$this->check_voted($uid);
 			
 			// vote volume check
 			
@@ -280,8 +283,12 @@
 			$oid = $params['postid'];
 			$post = $this->get_post_data($oid);
 			$votes = $post['netvotes'];
-			$userid = $post['userid'];
+			$uid = $post['userid'];
 
+			// voted volume check
+
+			$this->check_voted($uid);
+			
 			// vote volume check
 			
 			if($event_user) $this->check_voter($event_user,$oid);
@@ -295,12 +302,12 @@
 					$result = qa_db_read_one_value(
 						qa_db_query_sub(
 							'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-							$userid, $oid, $badge_slug
+							$uid, $oid, $badge_slug
 						),
 						true
 					);
 					if ($result == null) { // not already awarded for this answer
-						$this->award_badge($oid, $userid, $badge_slug);
+						$this->award_badge($oid, $uid, $badge_slug);
 					}
 
 					// self-answer vote checks TODO
@@ -322,12 +329,12 @@
 						$result = qa_db_read_one_value(
 							qa_db_query_sub(
 								'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-								$userid, $oid, $badge_slug2
+								$uid, $oid, $badge_slug2
 							),
 							true
 						);
 						if ($result == null) { // not already awarded for this answer
-							$this->award_badge($oid, $userid, $badge_slug2);
+							$this->award_badge($oid, $uid, $badge_slug2);
 						}
 					}
 				}
@@ -348,6 +355,22 @@
 			// vote volume check
 			
 			if($event_user) $this->check_voter($event_user);
+		}
+
+		function check_voted($uid) {
+			
+			// upvotes received
+			
+			$votes = qa_db_read_one_assoc(
+				qa_db_query_sub(
+					'SELECT upvoteds FROM ^userpoints WHERE userid=#',
+					$uid
+				),
+				true
+			);
+			$badges = array('liked','loved','revered');
+
+			qa_badge_award_check($badges, $votes, $uid);
 		}
 
 		function check_voter($uid) {

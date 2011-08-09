@@ -129,6 +129,10 @@
 		$badges['reverential'] = array('var'=>50, 'type'=>2);
 
 
+		$badges['liked'] = array('var'=>20, 'type'=>0);
+		$badges['loved'] = array('var'=>50, 'type'=>1);
+		$badges['revered'] = array('var'=>200, 'type'=>2);
+
 		$badges['voter'] = array('var'=>10, 'type'=>0);
 		$badges['avid_voter'] = array('var'=>25, 'type'=>1);
 		$badges['devoted_voter'] = array('var'=>50, 'type'=>2);
