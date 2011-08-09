@@ -479,11 +479,13 @@
 								true
 							);	
 						}
+
+						$text = substr($title,0,20).'...';
 						
 						$output .= '
 							<tr>
 								<td colspan="2" class="badge-source">
-									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">source</a>
+									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">'.$text.'</a>
 								</td>
 							</tr>';
 					}
