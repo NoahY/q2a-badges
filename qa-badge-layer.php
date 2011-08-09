@@ -463,7 +463,9 @@
 							),
 							true
 						);
-						$title=$post['title']
+						
+						$title=$post['title'];
+						
 						$anchor = '';
 						
 						if($post['parentid']) {
