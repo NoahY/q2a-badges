@@ -186,9 +186,10 @@
 	
 	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {
 		
-		error_log($var.' '.$oid.' '.$uid);
 		
 		foreach($badges as $badge_slug) {
+			
+			error_log($slug.' '.$var.' '.$oid.' '.$uid);
 		
 			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 				if($oid) {
