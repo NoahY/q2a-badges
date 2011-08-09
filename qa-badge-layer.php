@@ -393,7 +393,9 @@
 
 			// displays badge list in user profile
 			
-			$handle = preg_replace('/<[^>]+>/','',$this->content['loggedin']['data']);
+			global $qa_request;
+			
+			$handle = preg_replace('/^[^\/]+\/([^\/]+).*/',"$1",$qa_request);
 			
 			$userid = $this->getuserfromhandle($handle);
 			
