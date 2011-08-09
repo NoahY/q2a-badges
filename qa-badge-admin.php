@@ -312,8 +312,10 @@
 			);
 			
 			foreach ($post_result as $post) {
+				qa_error_log($post);
 				if(!$post['userid']) continue;
 				$user='user'.$post['userid'];
+				error_log($user);
 				$pid = $post['postid'];
 				$pt = $post['type'];
 				
@@ -383,8 +385,6 @@
 					'A' => array('answerer','lecturer','preacher'),
 					'C' => array('commenter','commentator','annotator')
 				);
-				
-				qa_error_log($user);
 				
 				foreach($badges as $pt => $slugs) {
 					if(!isset($data[$pt])) continue;
