@@ -417,7 +417,7 @@
 				<tr>';
 			// count badges
 			
-			$badges;
+			$badges = array();
 			
 			foreach($result as $info) {
 				$type = $info['type'];
