@@ -309,7 +309,7 @@
 			return $result;
 		}
 		
-	// post check
+	// badge check
 
 		function qa_check_all_users_badges() {
 
@@ -350,20 +350,30 @@
 				);
 				 
 			} 
-
+			
+		//votes received and given out
+	
 
 			$voter = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT userid,qupvotes,qdownvotes,aupvotes,adownvotes FROM ^userpoints'
+					'SELECT userid,qupvotes,qdownvotes,aupvotes,adownvotes,upvoteds FROM ^userpoints'
 				),
 				true
 			);
 			foreach ($voter as $vote) {
 				$user='user'.$vote['userid'];
+				
+				// votes
+				
 				$users[$user]['votes'] = (int)$votes['qupvotes']+(int)$votes['qdownvotes']+(int)$votes['aupvotes']+(int)$votes['adownvotes'];
+				
+				// voteds
+				
+				$users[$user]['voted'] = (int)$votes['upvoteds'];
+				
 			} 
 
-			// flags
+		// flags
 
 			$flag_result = qa_db_read_all_values(
 				qa_db_query_sub(
@@ -379,6 +389,8 @@
 				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags']++;
 				else $users[$user]['flags'] = 1;
 			}
+			
+		// per user loop
 			
 			foreach ($users as $user => $data) {
 				$uid = (int)substr($user,4);
@@ -464,6 +476,19 @@
 					$votes = $data['votes']; 
 					
 					$badges = array('voter','avid_voter','devoted_voter');
+
+					qa_badge_award_check($badges, $votes, $uid, null, 0);
+
+				}		
+						
+
+				// voted per user badges
+
+				if(isset($data['voted'])) {
+
+					$votes = $data['voted']; 
+					
+					$badges = array('liked','loved','revered');
 
 					qa_badge_award_check($badges, $votes, $uid, null, 0);
 

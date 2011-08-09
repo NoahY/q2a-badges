@@ -16,10 +16,6 @@
 		'nice_answer_old'=>'Renewal',
 		'good_answer_old'=>'Revival',
 		'great_answer_old'=>'Resurrection',
-				
-		'voter'=>'Voter',
-		'avid_voter'=>'Avid Voter',
-		'devoted_voter'=>'Devoted Voter',
 
 		'asker'=>'Asker',
 		'questioner'=>'Questioner',
@@ -32,6 +28,14 @@
 		'commenter'=>'Commenter',
 		'commentator'=>'Commentator',
 		'annotator'=>'Annotator',
+				
+		'liked'=>'Liked',
+		'loved'=>'Loved',
+		'revered'=>'Revered',
+				
+		'voter'=>'Voter',
+		'avid_voter'=>'Avid Voter',
+		'devoted_voter'=>'Devoted Voter',
 
 		'watchdog'=>'Watchdog',
 		'bloodhound'=>'Bloodhound',
@@ -48,10 +52,6 @@
 		'grateful'=>'Grateful',
 		'respectful'=>'Respectful',
 		'reverential'=>'Reverential',
-		
-		'medalist'=>'Medalist',
-		'champion'=>'Champion',
-		'olympian'=>'Olympian',
 
 		'editor'=>'Editor',
 		'copy_editor'=>'Copy Editor',
@@ -70,6 +70,11 @@
 		'regular'=>'Regular',
 		'old_timer'=>'Old-Timer',
 		'ancestor'=>'Ancestor',
+		
+		
+		'medalist'=>'Medalist',
+		'champion'=>'Champion',
+		'olympian'=>'Olympian',
 
 		'verified'=>'Verified Human',
 
@@ -89,10 +94,6 @@
 		'nice_answer_old_desc'=>'Received $nice_answer badge in response to a question more than # days old',
 		'good_answer_old_desc'=>'Received $good_answer badge in response to a question more than # days old',
 		'great_answer_old_desc'=>'Received $great_answer badge in response to a question more than # days old',
-		
-		'voter_desc'=>'Voted # times',
-		'avid_voter_desc'=>'Voted # times',
-		'devoted_voter_desc'=>'Voted # times',
 
 		'asker_desc'=>'Asked # questions',
 		'questioner_desc'=>'Asked # questions',
@@ -105,14 +106,6 @@
 		'commenter_desc'=>'Posted # comments',
 		'commentator_desc'=>'Posted # comments',
 		'annotator_desc'=>'Posted # comments',
-
-		'watchdog_desc'=>'flagged # posts as inappropriate',
-		'bloodhound_desc'=>'flagged # posts as inappropriate',
-		'pitbull_desc'=>'flagged # posts as inappropriate',
-
-		'dedicated_desc'=>'Visited every day for # consecutive days',
-		'devoted_desc'=>'Visited every day for # consecutive days',
-		'zealous_desc'=>'Visited every day for # consecutive days',
 		
 		'gifted_desc'=>'# answers selected as best answer',
 		'wise_desc'=>'# answers selected as best answer',
@@ -122,19 +115,29 @@
 		'respectful_desc'=>'Selected # answers as best answer',
 		'reverential_desc'=>'Selected # answers as best answer',
 
-		'medalist_desc'=>'Received total of # badges',
-		'champion_desc'=>'Received total of # badges',
-		'olympian_desc'=>'Received total of # badges',
+		'liked_desc'=>'Received # total upvotes',
+		'loved_desc'=>'Received # total upvotes',
+		'revered_desc'=>'Received # total upvotes',
+		
+		'voter_desc'=>'Voted # times',
+		'avid_voter_desc'=>'Voted # times',
+		'devoted_voter_desc'=>'Voted # times',
+
+		'watchdog_desc'=>'flagged # posts as inappropriate',
+		'bloodhound_desc'=>'flagged # posts as inappropriate',
+		'pitbull_desc'=>'flagged # posts as inappropriate',
+
+		'dedicated_desc'=>'Visited every day for # consecutive days',
+		'devoted_desc'=>'Visited every day for # consecutive days',
+		'zealous_desc'=>'Visited every day for # consecutive days',
 
 		'editor_desc'=>'Performed total of # edits',
 		'copy_editor_desc'=>'Performed total of # edits',
 		'senior_editor_desc'=>'Performed total of # edits',
 
-
 		'reader_desc'=>'Read total of # questions',
 		'avid_reader_desc'=>'Read total of # questions',
 		'devoted_reader_desc'=>'Read total of # questions',
-
 
 		'visitor_desc'=>'Visited site on total of # days',
 		'trouper_desc'=>'Visited site on total of # days',
@@ -143,6 +146,10 @@
 		'regular_desc'=>'First visited more than # days ago',
 		'old_timer_desc'=>'First visited more than # days ago',
 		'ancestor_desc'=>'First visited more than # days ago',
+
+		'medalist_desc'=>'Received total of # badges',
+		'champion_desc'=>'Received total of # badges',
+		'olympian_desc'=>'Received total of # badges',
 
 		'verified_desc'=>'Successfully verified email address',
 

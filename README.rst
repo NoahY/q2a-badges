@@ -9,7 +9,7 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 49 badges implemented (see `Badge List`_ below)
+- currently 52 badges implemented (see `Badge List`_ below)
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
 - public badge page displays awardable badges
@@ -117,6 +117,10 @@ Level [#]_   Title                  Description
 1            Voter                  Voted # times
 2            Avid Voter             Voted # times
 3            Devoted Voter          Voted # times
+
+1            Liked                  Received # total upvotes
+2            Loved                  Received # total upvotes
+3            Revered                Received # total upvotes
 
 1            Watchdog               Flagged # posts as inappropriate
 2            Bloodhound             Flagged # posts as inappropriate
