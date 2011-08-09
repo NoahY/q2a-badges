@@ -60,7 +60,7 @@
 				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
 				$name = qa_opt('badge_'.$slug.'_name');
 				$var = qa_opt('badge_'.$slug.'_var');
-				$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+				$desc = qa_badge_desc_replace($slug,$var);
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
 				$typen = $type['name']; 

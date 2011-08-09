@@ -307,9 +307,10 @@
 
 					// old question answer vote checks
 					
-					$qid = $params['parentid'];
 					$create = strtotime($post['created']);
 					
+					$qid = $post['parentid'];
+
 					$parent = $this->get_post_data($qid);
 					$pcreate = strtotime($parent['created']);
 					

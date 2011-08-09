@@ -187,7 +187,6 @@
 					}
 					.badge-bronze,.badge-silver, .badge-gold {
 						margin-right:4px;
-						cursor:pointer;
 						color: #000;
 						font-weight:bold;
 						text-align:center;
@@ -224,6 +223,10 @@
 					}				
 					.badge-desc {
 						padding-left:8px;
+					}			
+					.badge-count {
+						cursor:pointer;
+						font-weight:bold;
 					}			
 					.badge-source {
 						padding:0;
@@ -439,17 +442,17 @@
 					$oids = $info['oid'];
 					
 					$var = qa_opt('badge_'.$slug.'_var');
-					$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+					$desc = qa_badge_desc_replace($slug,$var);
 					
 					// badge row
 					
 					$output .= '
 							<tr>
 								<td class="qa-form-wide-label">
-									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')" onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()">'.$name.'</span>
+									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
 								</td>
 								<td class="qa-form-wide-data">
-									<span class="badge-count">x&nbsp;'.$count.'</span>
+									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count" title="'.(!empty($oids)?qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
 								</td>
 							</tr>';
 					

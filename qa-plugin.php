@@ -219,6 +219,26 @@
 			}
 		}
 	}
+	
+	function qa_badge_desc_replace($slug,$var) {
+		
+		// var replace
+		
+		$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+		
+		// other badge reference replace
+		
+		preg_match_all('|\$(\S+)|',$desc,$others);
+		
+		if(!$others) return $desc;
+		
+		$badges = qa_get_badge_list();
+		
+		foreach($others as $other) {
+			$desc = str_replace($other[0],qa_badge_lang('badges/'.$other[1]),$desc);
+		}
+		return $desc;
+	}
 
 	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
 	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
