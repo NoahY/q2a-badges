@@ -455,16 +455,16 @@
 					
 					$output .= '
 							<tr>
-								<td class="qa-form-wide-label">
-									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
-								</td>
-								<td class="qa-form-wide-data">
-									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
-								</td>
-							</tr>';
+								<td class="badge-container">
+									<div class="badge-container-badge">
+										<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+										<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
+									</div>';
 					
 					// source row(s) if any	
 					if(is_array($oids)) {
+					$output .= '
+									<div class="badge-container-sources">';
 						foreach($oids as $oid) {
 							$post = qa_db_read_one_assoc(
 								qa_db_query_sub(
@@ -495,13 +495,13 @@
 							$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
 							
 							$output .= '
-								<tr>
-									<td colspan="2" class="badge-source">
-										<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">'.$text.'</a>
-									</td>
-								</tr>';
+										<div class="badge-source-'.$slug.'" style="display:none"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.$text.'</a></div>';
 						}
+						
 					}
+					$output .= '
+								</td>
+							</tr>';
 				}
 				$output .= '
 						</table>
