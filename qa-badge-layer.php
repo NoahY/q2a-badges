@@ -411,7 +411,7 @@
 				$slug = $info['badge_slug'];
 				if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
 				else $badges[$type][$slug]['count'] = 1;
-				$badges[$type][$slug]['object_id'][] = $info['object_id']
+				$badges[$type][$slug]['object_id'][] = $info['object_id'];
 			}
 			
 			foreach($badges as $type => $badge) {
