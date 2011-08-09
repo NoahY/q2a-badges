@@ -16,7 +16,6 @@
 				case 'badge_'.$slug.'_name':
 					return $badges[$slug]['name'];
 				case 'badge_'.$slug.'_var':
-					error_log($option.' option default var: '.$badges[$slug]['var']);
 					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '0';
@@ -130,7 +129,6 @@
 					}
 					
 					if($was_active) {
-						error_log($was_active.' was active, '.qa_opt('badge_active'));
 						// set badge names, vars and states
 						
 						foreach ($badges as $slug => $info) {
@@ -312,10 +310,8 @@
 			);
 			
 			foreach ($post_result as $post) {
-				qa_error_log($post);
 				if(!$post['userid']) continue;
 				$user='user'.$post['userid'];
-				error_log($user);
 				$pid = $post['postid'];
 				$pt = $post['type'];
 				
@@ -339,6 +335,7 @@
 					'id'=>$pid,
 					'views'=>$post['views']
 				);
+				qa_error_log($users);
 				 
 			} 
 
