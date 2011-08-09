@@ -225,6 +225,9 @@
 					.badge-desc {
 						padding-left:8px;
 					}			
+					.badge-source {
+						padding:0;
+					}			
 				</style>');
 			}
 		}
@@ -453,11 +456,17 @@
 					// source row(s) if any	
 					
 					foreach($oids as $oid) {
-						
+						$title = qa_db_read_one_value(
+							qa_db_query_sub(
+								'SELECT title FROM ^posts WHERE postid=#',
+								$oid
+							),
+							true
+						);
 						$output .= '
 							<tr>
-								<td colspan="2" class="qa-form-wide-label badge-source-'.$slug.'" style="display:none">
-									<a href="'.qa_path($oid).'">source</a>
+								<td colspan="2" class="badge-source" style="display:none">
+									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).'" class="badge-source-'.$slug.'">source</a>
 								</td>
 							</tr>';
 					}
