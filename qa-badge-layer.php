@@ -456,47 +456,48 @@
 									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
 								</td>
 								<td class="qa-form-wide-data">
-									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count'.(!empty($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
+									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
 								</td>
 							</tr>';
 					
 					// source row(s) if any	
-					
-					foreach($oids as $oid) {
-						$post = qa_db_read_one_assoc(
-							qa_db_query_sub(
-								'SELECT title,type,parentid FROM ^posts WHERE postid=#',
-								$oid
-							),
-							true
-						);
-						
-						$title=$post['title'];
-						
-						$anchor = '';
-						
-						if($post['parentid']) {
-							$anchor = urlencode(qa_anchor($post['type'],$oid));
-							$oid = $post['parentid'];
-							$title = qa_db_read_one_value(
+					if(is_array($oid)) {
+						foreach($oids as $oid) {
+							$post = qa_db_read_one_assoc(
 								qa_db_query_sub(
-									'SELECT title FROM ^posts WHERE postid=#',
+									'SELECT title,type,parentid FROM ^posts WHERE postid=#',
 									$oid
 								),
 								true
-							);	
+							);
+							
+							$title=$post['title'];
+							
+							$anchor = '';
+							
+							if($post['parentid']) {
+								$anchor = urlencode(qa_anchor($post['type'],$oid));
+								$oid = $post['parentid'];
+								$title = qa_db_read_one_value(
+									qa_db_query_sub(
+										'SELECT title FROM ^posts WHERE postid=#',
+										$oid
+									),
+									true
+								);	
+							}
+							
+							$length = 30;
+							
+							$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
+							
+							$output .= '
+								<tr>
+									<td colspan="2" class="badge-source">
+										<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">'.$text.'</a>
+									</td>
+								</tr>';
 						}
-						
-						$length = 30;
-						
-						$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
-						
-						$output .= '
-							<tr>
-								<td colspan="2" class="badge-source">
-									<a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'" class="badge-source-'.$slug.'" style="display:none">'.$text.'</a>
-								</td>
-							</tr>';
 					}
 				}
 				$output .= '
