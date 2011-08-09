@@ -186,6 +186,8 @@
 	
 	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {
 		
+		error_log($var.' '.$oid.' '.$uid);
+		
 		foreach($badges as $badge_slug) {
 		
 			if((int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
@@ -225,7 +227,16 @@
 	qa_register_plugin_module('module', 'qa-badge-admin.php', 'qa_badge_admin', qa_badge_lang('badges/badge_admin'));
 
 	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', qa_badge_lang('badges/badges'));
-
+	
+	// dev dump
+	
+	function qa_error_log($x) {
+		ob_start();
+		var_dump($x);
+		$contents = ob_get_contents();
+		ob_end_clean();
+		error_log($contents);
+	}
 
 /*
 	Omit PHP closing tag to help avoid accidental output
