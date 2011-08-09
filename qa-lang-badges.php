@@ -15,7 +15,7 @@
 
 		'nice_answer_old'=>'Renewal',
 		'good_answer_old'=>'Revival',
-		'great_answer_old'=>'Ressurection',
+		'great_answer_old'=>'Resurrection',
 				
 		'voter'=>'Voter',
 		'avid_voter'=>'Avid Voter',
