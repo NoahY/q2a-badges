@@ -264,7 +264,7 @@
 			
 				// add user badge list
 
-				if((bool)qa_opt('badge_admin_user_field') && !empty($content['form_activity'])) { 
+				if((bool)qa_opt('badge_admin_user_field') && $this->template == 'user') { 
 					if($content['q_list']) {  // paranoia
 					
 						// array splicing kungfu thanks to Stack Exchange
