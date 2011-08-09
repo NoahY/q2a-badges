@@ -228,6 +228,9 @@
 						cursor:pointer;
 						font-weight:bold;
 					}			
+					.badge-count-link {
+						color:#992828;
+					}			
 					.badge-source {
 						padding:0;
 					}			
@@ -452,7 +455,7 @@
 									<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
 								</td>
 								<td class="qa-form-wide-data">
-									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count" title="'.(!empty($oids)?qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
+									<span onclick="jQuery(\'.badge-source-'.$slug.'\').slideToggle()" class="badge-count'.(!empty($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
 								</td>
 							</tr>';
 					

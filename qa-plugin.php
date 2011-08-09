@@ -120,13 +120,13 @@
 		$badges['great_answer_old'] = array('var'=>120, 'type'=>2);
 
 
-		$badges['gifted'] = array('var'=>10, 'type'=>0);
-		$badges['wise'] = array('var'=>20, 'type'=>1);
-		$badges['enlightened'] = array('var'=>50, 'type'=>2);
+		$badges['gifted'] = array('var'=>1, 'type'=>0);
+		$badges['wise'] = array('var'=>10, 'type'=>1);
+		$badges['enlightened'] = array('var'=>30, 'type'=>2);
 
 		$badges['grateful'] = array('var'=>1, 'type'=>0);
-		$badges['respectful'] = array('var'=>8, 'type'=>1);
-		$badges['reverential'] = array('var'=>20, 'type'=>2);
+		$badges['respectful'] = array('var'=>20, 'type'=>1);
+		$badges['reverential'] = array('var'=>50, 'type'=>2);
 
 
 		$badges['voter'] = array('var'=>10, 'type'=>0);
