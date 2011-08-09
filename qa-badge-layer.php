@@ -232,6 +232,7 @@
 						color:#992828;
 					}			
 					.badge-source {
+						text-align:center;
 						padding:0;
 					}			
 				</style>');
@@ -486,7 +487,9 @@
 							);	
 						}
 						
-						$text = (strlen($title) > 20 ? substr($title,0,20).'...' : $title);
+						$length = 30;
+						
+						$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
 						
 						$output .= '
 							<tr>
