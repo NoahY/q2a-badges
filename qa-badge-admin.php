@@ -383,7 +383,9 @@
 					'A' => array('answerer','lecturer','preacher'),
 					'C' => array('commenter','commentator','annotator')
 				);
-			
+				
+				qa_error_log($user);
+				
 				foreach($badges as $pt => $slugs) {
 					if(!isset($data[$pt])) continue;
 
