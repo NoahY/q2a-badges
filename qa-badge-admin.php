@@ -228,12 +228,19 @@
 				);
 								
 				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_admin_user_field'),
+					'tags' => 'NAME="badge_admin_user_field"',
+					'value' => (bool)qa_opt('badge_admin_user_field'),
+					'type' => 'checkbox',
+				);				
+								
+				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_show_source_posts'),
 					'tags' => 'NAME="badge_show_source_posts"',
 					'value' => (bool)qa_opt('badge_show_source_posts'),
 					'type' => 'checkbox',
-				);				
-			
+				);			
+				
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_show_source_users'),
 					'tags' => 'NAME="badge_show_source_users"',
@@ -241,16 +248,6 @@
 					'type' => 'checkbox',
 				);				
 			
-				$fields[] = array(
-					'type' => 'blank',
-				);
-								
-				$fields[] = array(
-					'label' => qa_badge_lang('badges/badge_admin_user_field'),
-					'tags' => 'NAME="badge_admin_user_field"',
-					'value' => (bool)qa_opt('badge_admin_user_field'),
-					'type' => 'checkbox',
-				);				
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_admin_user_widget'),
 					'tags' => 'NAME="badge_admin_user_widget"',
