@@ -57,6 +57,8 @@
 				if(isset($count[$r['badge_slug']][$r['user_id']])) $count[$r['badge_slug']][$r['user_id']]++;
 				else $count[$r['badge_slug']][$r['user_id']] = 1;
 				$totalawarded++;
+				if(isset($count[$r['badge_slug']]['count'])) $count[$r['badge_slug']]['count']++;
+				else $count[$r['badge_slug']]['count'] = 1;
 			}
 			
 
@@ -69,7 +71,7 @@
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
 				$typen = $type['name']; 
-				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.(count($count[$slug],COUNT_RECURSIVE)-count($count[$slug])).' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.(count($count[$slug],COUNT_RECURSIVE)-count($count[$slug])).'</span>':'').'</div>';
+				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.$count[$slug]['count'].' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.$count[$slug]['count'].'</span>':'').'</div>';
 				
 				// source users
 
@@ -78,7 +80,8 @@
 
 					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
 					foreach($count[$slug] as $uid => $ucount) {
-
+						if($uid == 'count') continue;
+						
 						if (QA_FINAL_EXTERNAL_USERS) {
 							$handles=qa_get_public_from_userids(array($uid));
 							$handle=@$handles[$uid];
@@ -89,7 +92,9 @@
 							);
 							$handle=@$useraccount['handle'];
 						}
-
+						
+						if(!$handle) continue;
+						
 						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.' x'.$ucount.'</a>';
 					}
 					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
