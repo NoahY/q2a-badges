@@ -46,15 +46,18 @@
 			
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT COUNT(id),badge_slug  FROM ^userbadges GROUP BY badge_slug'
+					'SELECT user_id,badge_slug  FROM ^userbadges'
 				)
 			);
 			
-			foreach($result as $r) {
-				if($r['COUNT(id)'] > 0) $count[$r['badge_slug']] = $r['COUNT(id)'];
-				$totalawarded = (int)$totalawarded+(int)$r['COUNT(id)'];
-			}
+			$count = array();
 			
+			foreach($result as $r) {
+				if(qa_opt('badge_'.$r['badge_slug'].'_enabled') == '0') continue;
+				$count[$r['badge_slug']][] = $r['user_id'];
+				$totalawarded++;
+			}
+
 			foreach($badges as $slug => $info) {
 				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
 				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',qa_badge_lang('badges/'.$slug));
@@ -64,15 +67,51 @@
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
 				$typen = $type['name']; 
-				$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='badge-name'><span class='badge-$types' title='".$typen."'>$name</span></td><td class='badge-desc'>$desc</td>".(isset($count[$slug]) ? "<td class='badge-count'>".$count[$slug]." ".qa_badge_lang('badges/awarded')."</td>":"<td></td>")."</tr>";
-			
+				$qa_content['custom'.++$c]='<tr><td><div class="badge-entry"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>&nbsp;<span title="'.count($count[$slug]).' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.count($count[$slug]).'</span></div>';
+
+				if(qa_opt('badge_show_source_users')) {
+
+					$qa_content['custom'.++$c]='<div style="display:none" class="badge-users-'.$slug.'">';
+					foreach($count[$slug] as $uid) {
+						$userid = $this->getuserfromhandle($handle);
+						
+						if(!$userid) continue;
+						$handle = qa_get_public_from_userids($userid);
+						$users[] = '<a href="'.qa_path_html('user/'.$handle.'">'.$handle.'</a>';
+					}
+					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
+				}
 			}
-			$qa_content['custom'.++$c]="<tr class='badge-entry'><td class='total-badges'>".count($badges)." ".qa_badge_lang('badges/badges_total')."</td><td></td>".($totalawarded > 0 ? "<td class='total-badge-count'>".$totalawarded." ".qa_badge_lang('badges/awarded_total')."</td>":"<td></td>")."</tr>";
+			
+			$qa_content['custom'.$c] .= '</td></tr>';
+			
+			$qa_content['custom'.++$c]='<tr class="badge-entry"><td class="total-badges">'.count($badges).' '.qa_badge_lang('badges/badges_total').'</td><td></td>'.($totalawarded > 0 ? '<td class="total-badge-count">'.$totalawarded.' '.qa_badge_lang('badges/awarded_total').'</td>':'<td></td>').'</tr>';
 
 			$qa_content['custom'.++$c]='</table>';
 			if(isset($qa_content['navigation']['main']['custom-2'])) $qa_content['navigation']['main']['custom-2']['selected'] = true;
 
 			return $qa_content;
+		}
+		
+		function getuserfromhandle($handle) {
+			require_once QA_INCLUDE_DIR.'qa-app-users.php';
+			
+			if (QA_FINAL_EXTERNAL_USERS) {
+				$publictouserid=qa_get_userids_from_public(array($handle));
+				$userid=@$publictouserid[$handle];
+				
+			} 
+			else {
+				$userid = qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT userid FROM ^users WHERE handle = $',
+						$handle
+					),
+					true
+				);
+			}
+			if (!isset($userid)) return;
+			return $userid;
 		}
 	
 	};
