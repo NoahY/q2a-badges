@@ -106,7 +106,7 @@
 			}
 			
 			
-			$qa_content['custom'.++$c]='<tr><td class="badge-entry"><span class="total-badges">'.count($badges).' '.qa_badge_lang('badges/badges_total').'</span>'.($totalawarded > 0 ? '<span class="total-badge-count">'.$totalawarded.' '.qa_badge_lang('badges/awarded_total').'</span>':'').'</td></tr></table>';
+			$qa_content['custom'.++$c]='<tr><td class="badge-entry"><span class="total-badges">'.count($badges).' '.qa_badge_lang('badges/badges_total').'</span>'.($totalawarded > 0 ? ', <span class="total-badge-count">'.$totalawarded.' '.qa_badge_lang('badges/awarded_total').'</span>':'').'</td></tr></table>';
 
 			if(isset($qa_content['navigation']['main']['custom-2'])) $qa_content['navigation']['main']['custom-2']['selected'] = true;
 
