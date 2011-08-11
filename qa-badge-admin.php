@@ -29,6 +29,8 @@
 					return false;
 				case 'badge_show_source_users':
 					return false;
+				case 'badge_show_users_badges':
+					return false;
 				case 'badge_active':
 					return false;
 			}
@@ -161,10 +163,11 @@
 						// options
 						
 						qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
-						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 						qa_opt('badge_show_source_posts',(bool)qa_post_text('badge_show_source_posts'));
 						qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
-						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+						qa_opt('badge_show_users_badges',(bool)qa_post_text('badge_show_users_badges'));
 					}
 				}
 				$ok = qa_badge_lang('badges/badge_admin_saved');
@@ -254,6 +257,13 @@
 					'label' => qa_badge_lang('badges/badge_admin_user_widget'),
 					'tags' => 'NAME="badge_admin_user_widget"',
 					'value' => (bool)qa_opt('badge_admin_user_widget'),
+					'type' => 'checkbox',
+				);				
+			
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_show_users_badges'),
+					'tags' => 'NAME="badge_show_users_badges"',
+					'value' => (bool)qa_opt('badge_show_users_badges'),
 					'type' => 'checkbox',
 				);				
 				if (qa_clicked('badge_trigger_notify')) {

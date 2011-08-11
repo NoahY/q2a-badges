@@ -18,8 +18,6 @@
 			exit;
 	}
 
-// init functions
-
 	//	Language support ala qa-base.php
 
 	function qa_badge_lang($identifier) {
@@ -54,9 +52,6 @@
 		return '['.$identifier.']'; // as a last resort, return the identifier to help in development
 	}
 	
-// worker functions
-
-
 	function qa_import_badge_list() {
 
 		// import our list of badge types 
