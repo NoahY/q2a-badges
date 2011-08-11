@@ -209,7 +209,6 @@
 						border:2px solid #5F5908;
 					}				
 					.badge-bronze-medal, .badge-silver-medal, .badge-gold-medal  {
-						cursor:pointer;
 						font-size: 14px;
 						font-family:sans-serif;
 					}
@@ -221,6 +220,9 @@
 					}				
 					.badge-gold-medal {
 						color: #EEDD0F;
+					}
+					.badge-pointer {
+						cursor:pointer;
 					}				
 					.badge-desc {
 						padding-left:8px;
@@ -398,7 +400,7 @@
 				$types = $type['slug'];
 				$typed = $type['name'];
 
-				$output.='<span class="badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-'.$types.'-count" title="'.$count.' '.$typed.'"> '.$count.'</span> ';
+				$output.='<span class="badge-pointer badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-pointer badge-'.$types.'-count" title="'.$count.' '.$typed.'"> '.$count.'</span> ';
 			}
 			$output = substr($output,0,-1);  // lazy remove space
 			$output.='</span>';
