@@ -54,7 +54,8 @@
 			
 			foreach($result as $r) {
 				if(qa_opt('badge_'.$r['badge_slug'].'_enabled') == '0') continue;
-				$count[$r['badge_slug']][] = $r['user_id'];
+				if(isset($count[$r['badge_slug']][$r['user_id']])) $count[$r['badge_slug']][$r['user_id']]++;
+				else $count[$r['badge_slug']][$r['user_id']] = 1;
 				$totalawarded++;
 			}
 			
@@ -74,12 +75,9 @@
 				if(qa_opt('badge_show_source_users') && isset($count[$slug])) {
 					error_log($slug);
 					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
-					foreach($count[$slug] as $uid) {
-						$userid = $this->getuserfromhandle($handle);
-						
-						if(!$userid) continue;
-						$handle = qa_get_public_from_userids($userid);
-						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.'</a>';
+					foreach($count[$slug] as $uid => $ucount) {
+						$handle = qa_get_public_from_userids($$uid);
+						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.' x'.$ucount.'</a>';
 					}
 					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
 				}
