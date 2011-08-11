@@ -162,6 +162,8 @@
 						
 						qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
 						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+						qa_opt('badge_show_source_posts',(bool)qa_post_text('badge_show_source_posts'));
+						qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
 						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 					}
 				}
