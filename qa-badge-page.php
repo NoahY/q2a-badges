@@ -69,7 +69,7 @@
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
 				$typen = $type['name']; 
-				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.count($count[$slug]).' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.count($count[$slug]).'</span>':'').'</div>';
+				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.(count($count[$slug],1)-count($count[$slug])).' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.(count($count[$slug],1)-count($count[$slug])).'</span>':'').'</div>';
 				
 				// source users
 
