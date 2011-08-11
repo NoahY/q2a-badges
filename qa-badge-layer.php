@@ -357,9 +357,9 @@
 			
 			if(@$ranking['type']=='users' && qa_opt('badge_show_users_badges')) {
 				foreach($ranking['items'] as $idx => $item) {
-					$handle = preg_replace('/<[^>]+>/', '', $item['label']);
+					$handle = preg_replace('/ *<[^>]+> */', '', $item['label']);
 					
-					if(isset($ranking['items'][$idx]['points'])) $ranking['items'][$idx]['points'] .= $this->user_badge_widget($handle);
+					if(isset($ranking['items'][$idx]['points'])) $ranking['items'][$idx]['points'] .= ' '.$this->user_badge_widget($handle);
 				}
 			}
 			qa_html_theme_base::ranking($ranking);
