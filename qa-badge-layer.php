@@ -35,89 +35,89 @@
 		}
 
 	// init function, after page loads
-	
-	function finish() {
 		
-		qa_html_theme_base::finish();
-		
-		// process per visit events 
-		
-		if (qa_opt('badge_active')) {
+		function finish() {
 			
-			require_once QA_INCLUDE_DIR.'qa-app-users.php';
-
-			$userid = qa_get_logged_in_userid();
-			if(!$userid) return; // not logged in?  die.
+			qa_html_theme_base::finish();
 			
-			// first visit check
+			// process per visit events 
 			
-			$user = @qa_db_read_one_assoc(
-				qa_db_query_sub(
-					'SELECT user_id,oldest_consec_visit,longest_consec_visit,total_days_visited,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
-					$userid
-				),
-				true
-			);
-
-			if(!$user['user_id']) {
-				qa_db_query_sub(
-					'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
-					$userid, 1, 1, 0, 0
-				);
-				return;
-			}
-
-			// check lapse in days since last visit
-			// using julian days
-			
-			$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
-			
-			$last_visit = strtotime($user['last_visit']);
-			$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
-			$last_diff = $todayj-$lastj;
-			
-			$oldest_consec = strtotime($user['oldest_consec_visit']);
-			$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
-			$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
-			
-			$first_visit = strtotime($user['first_visit']);
-			$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
-			$first_visit_diff = $todayj-$first_visitj;
-			
-			if($last_diff < 0) return; // error
-			
-			if($last_diff < 2) { // one day or less, update last visit
+			if (qa_opt('badge_active')) {
 				
-				if($oldest_consec_diff > $user['longest_consec_visit']) {
-					$user['longest_consec_visit'] = $oldest_consec_diff;
-					qa_db_query_sub(
-						'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
-						$oldest_consec_diff, $last_diff, $userid 
-					);		
-				}
-				else {
-					qa_db_query_sub(
-						'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
-						$last_diff,$userid 
-					);		
-				}
-				$badges = array('dedicated','devoted','zealous');
-				qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
-			}
-			else { // 2+ days, reset consecutive days due to lapse
-				qa_db_query_sub(
-					'UPDATE ^achievements SET last_visit=NOW(), oldest_consec_visit=NOW(), total_days_visited=total_days_visited+1 WHERE user_id=#',
-					$userid
-				);		
-			}
+				require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
-			$badges = array('visitor','trouper','veteran');
-			qa_badge_award_check($badges, $user['total_days_visited'], $userid);
-			
-			$badges = array('regular','old_timer','ancestor');
-			qa_badge_award_check($badges, $first_visit_diff, $userid);
+				$userid = qa_get_logged_in_userid();
+				if(!$userid) return; // not logged in?  die.
+				
+				// first visit check
+				
+				$user = @qa_db_read_one_assoc(
+					qa_db_query_sub(
+						'SELECT user_id,oldest_consec_visit,longest_consec_visit,total_days_visited,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
+						$userid
+					),
+					true
+				);
+
+				if(!$user['user_id']) {
+					qa_db_query_sub(
+						'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
+						$userid, 1, 1, 0, 0
+					);
+					return;
+				}
+
+				// check lapse in days since last visit
+				// using julian days
+				
+				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
+				
+				$last_visit = strtotime($user['last_visit']);
+				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+				$last_diff = $todayj-$lastj;
+				
+				$oldest_consec = strtotime($user['oldest_consec_visit']);
+				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
+				$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
+				
+				$first_visit = strtotime($user['first_visit']);
+				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+				$first_visit_diff = $todayj-$first_visitj;
+				
+				if($last_diff < 0) return; // error
+				
+				if($last_diff < 2) { // one day or less, update last visit
+					
+					if($oldest_consec_diff > $user['longest_consec_visit']) {
+						$user['longest_consec_visit'] = $oldest_consec_diff;
+						qa_db_query_sub(
+							'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
+							$oldest_consec_diff, $last_diff, $userid 
+						);		
+					}
+					else {
+						qa_db_query_sub(
+							'UPDATE ^achievements SET last_visit=NOW(), total_days_visited=total_days_visited+# WHERE user_id=#',
+							$last_diff,$userid 
+						);		
+					}
+					$badges = array('dedicated','devoted','zealous');
+					qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
+				}
+				else { // 2+ days, reset consecutive days due to lapse
+					qa_db_query_sub(
+						'UPDATE ^achievements SET last_visit=NOW(), oldest_consec_visit=NOW(), total_days_visited=total_days_visited+1 WHERE user_id=#',
+						$userid
+					);		
+				}
+
+				$badges = array('visitor','trouper','veteran');
+				qa_badge_award_check($badges, $user['total_days_visited'], $userid);
+				
+				$badges = array('regular','old_timer','ancestor');
+				qa_badge_award_check($badges, $first_visit_diff, $userid);
+			}
 		}
-	}
 	
 		
 	// theme replacement functions
@@ -349,6 +349,21 @@
 				
 				}
 		}
+
+		// add badges to users list
+
+		function ranking($ranking) {
+			
+			if(@$ranking['type']=='users' && qa_opt('badge_show_users_badges')) {
+				foreach($ranking['items'] as $idx => $item) {
+					$handle = preg_replace('/<[^>]+>/', '', $item['label']);
+					
+					if(isset($ranking['items'][$idx]['points'])) $ranking['items'][$idx]['points'] .= $this->user_badge_widget($handle);
+				}
+			}
+			qa_html_theme_base::ranking($ranking);
+		}
+
 
 // worker functions
 
