@@ -203,6 +203,8 @@
 		'notify_time_desc'=>'Duration in seconds before hiding badge notification (0 = off)',
 		'badge_trigger_notify'=>'Test Notify',
 		'badge_trigger_notify_desc'=>'show a sample notification box',
+		'badge_show_source_posts'=>'Show list of source posts for each badge on user profile',
+		'badge_show_source_users'=>'Show list of rewarded users for each badge on badge page',
 		'badge_admin_user_widget'=>'Add badges to profile pages',
 		'badge_admin_user_field'=>'Show badge widget beside points',
 		'save_settings'=>'Save',
