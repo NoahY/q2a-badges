@@ -74,12 +74,22 @@
 				// source users
 
 				if(qa_opt('badge_show_source_users') && isset($count[$slug])) {
-
 					require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
 					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
 					foreach($count[$slug] as $uid => $ucount) {
-						$handle = qa_get_public_from_userids($$uid);
+
+						if (QA_FINAL_EXTERNAL_USERS) {
+							$handles=qa_get_public_from_userids(array($uid));
+							$handle=@$handles[$uid];
+						} 
+						else {
+							$useraccount=qa_db_select_with_pending(
+								qa_db_user_account_selectspec($uid, true)
+							);
+							$handle=@$useraccount['handle'];
+						}
+
 						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.' x'.$ucount.'</a>';
 					}
 					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
