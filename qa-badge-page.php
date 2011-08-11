@@ -77,7 +77,7 @@
 						
 						if(!$userid) continue;
 						$handle = qa_get_public_from_userids($userid);
-						$users[] = '<a href="'.qa_path_html('user/'.$handle.'">'.$handle.'</a>';
+						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.'</a>';
 					}
 					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
 				}
