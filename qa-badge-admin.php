@@ -25,6 +25,10 @@
 					return false;
 				case 'badge_admin_user_widget':
 					return false;
+				case 'badge_show_source_posts':
+					return false;
+				case 'badge_show_source_users':
+					return false;
 				case 'badge_active':
 					return false;
 			}
@@ -218,6 +222,24 @@
 						'tags' => 'NAME="badge_notify_time"',
 						'note' => '<em>'.qa_badge_lang('badges/notify_time_desc').'</em><hr/>',
 				);
+			
+				$fields[] = array(
+					'type' => 'blank',
+				);
+								
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_show_source_posts'),
+					'tags' => 'NAME="badge_show_source_posts"',
+					'value' => (bool)qa_opt('badge_show_source_posts'),
+					'type' => 'checkbox',
+				);				
+			
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_show_source_users'),
+					'tags' => 'NAME="badge_show_source_users"',
+					'value' => (bool)qa_opt('badge_show_source_users'),
+					'type' => 'checkbox',
+				);				
 			
 				$fields[] = array(
 					'type' => 'blank',

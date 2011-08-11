@@ -446,7 +446,10 @@
 					$name = qa_opt('badge_'.$slug.'_name');
 					
 					$count = $info['count'];
-					$oids = @$info['oid'];
+					
+					if(qa_opt('badge_show_source_posts')) {
+						$oids = @$info['oid'];
+					}
 					
 					$var = qa_opt('badge_'.$slug.'_var');
 					$desc = qa_badge_desc_replace($slug,$var,$name);
@@ -463,7 +466,7 @@
 					
 					// source row(s) if any	
 					if(is_array($oids)) {
-					$output .= '
+						$output .= '
 									<div class="badge-container-sources-'.$slug.'" style="display:none">';
 						foreach($oids as $oid) {
 							$post = qa_db_read_one_assoc(
