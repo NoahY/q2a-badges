@@ -71,7 +71,7 @@
 				$type = qa_get_badge_type($info['type']);
 				$types = $type['slug']; 
 				$typen = $type['name']; 
-				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.$count[$slug]['count'].' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.$count[$slug]['count'].'</span>':'').'&nbsp;<span class="badge-entry-desc">'.$desc.'</span></div>';
+				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.$count[$slug]['count'].' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'#badge-users-'.$slug.'\').slideToggle()">x'.$count[$slug]['count'].'</span>':'').'&nbsp;<span class="badge-entry-desc">'.$desc.'</span></div>';
 				
 				// source users
 
@@ -81,7 +81,7 @@
 					
 					require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
-					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
+					$qa_content['custom'.$c] .='<div style="display:none" id="badge-users-'.$slug.'" class="badge-users">';
 					foreach($count[$slug] as $uid => $ucount) {
 						if($uid == 'count') continue;
 						
