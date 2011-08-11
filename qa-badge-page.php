@@ -59,7 +59,6 @@
 				$totalawarded++;
 			}
 			
-			qa_error_log($count);
 
 			foreach($badges as $slug => $info) {
 				if(qa_opt('badge_'.$slug.'_enabled') == '0') continue;
@@ -72,8 +71,12 @@
 				$typen = $type['name']; 
 				$qa_content['custom'.++$c]='<tr><td class="badge-entry"><div class="badge-entry-badge"><span class="badge-'.$types.'" title="'.$typen.'">'.$name.'</span>'.(isset($count[$slug])?'&nbsp;<span title="'.count($count[$slug]).' '.qa_badge_lang('badges/awarded').'" class="badge-count-link" onclick="jQuery(\'.badge-users-'.$slug.'\').slideToggle()">x'.count($count[$slug]).'</span>':'').'</div>';
 				
+				// source users
+
 				if(qa_opt('badge_show_source_users') && isset($count[$slug])) {
-					error_log($slug);
+
+					require_once QA_INCLUDE_DIR.'qa-app-users.php';
+
 					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
 					foreach($count[$slug] as $uid => $ucount) {
 						$handle = qa_get_public_from_userids($$uid);
