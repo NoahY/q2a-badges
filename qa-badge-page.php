@@ -76,6 +76,9 @@
 				// source users
 
 				if(qa_opt('badge_show_source_users') && isset($count[$slug])) {
+					
+					$users = array();
+					
 					require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
 					$qa_content['custom'.$c] .='<div style="display:none" class="badge-users-'.$slug.'">';
