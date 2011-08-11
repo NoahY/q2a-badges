@@ -98,7 +98,7 @@
 						
 						if(!$handle) continue;
 						
-						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.' x'.$ucount.'</a>';
+						$users[] = '<a href="'.qa_path_html('user/'.$handle).'">'.$handle.($ucount>1?' x'.$ucount:'').'</a>';
 					}
 					$qa_content['custom'.$c] .= implode('<br/>',$users).'</div>';
 				}
