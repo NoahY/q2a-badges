@@ -591,7 +591,7 @@
 		function getuserfromhandle($handle) {
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 			
-			if (isset(QA_FINAL_EXTERNAL_USERS)) {
+			if (QA_FINAL_EXTERNAL_USERS) {
 				$publictouserid=qa_get_userids_from_public(array($handle));
 				$userid=@$publictouserid[$handle];
 				
