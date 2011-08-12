@@ -124,6 +124,7 @@
 		$badges['reverential'] = array('var'=>50, 'type'=>2);
 
 
+
 		$badges['liked'] = array('var'=>20, 'type'=>0);
 		$badges['loved'] = array('var'=>50, 'type'=>1);
 		$badges['revered'] = array('var'=>200, 'type'=>2);
@@ -158,6 +159,10 @@
 		$badges['old_timer'] = array('var'=>180, 'type'=>1);
 		$badges['ancestor'] = array('var'=>365, 'type'=>2);
 
+
+		$badges['100_club'] = array('var'=>100, 'type'=>0);
+		$badges['1000_club'] = array('var'=>1000, 'type'=>1);
+		$badges['10000_club'] = array('var'=>10000, 'type'=>2);
 
 		$badges['medalist'] = array('var'=>10, 'type'=>0);
 		$badges['champion'] = array('var'=>30, 'type'=>1);

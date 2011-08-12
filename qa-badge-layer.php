@@ -54,13 +54,13 @@
 				
 				$user = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT user_id,oldest_consec_visit,longest_consec_visit,total_days_visited,last_visit,first_visit FROM ^achievements WHERE user_id=# ',
+						'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv, ^userpoints.points AS points FROM ^achievements, ^userpoints WHERE ^achievements.user_id=^userpoints.userid AND ^achievements.user_id=# ',
 						$userid
 					),
 					true
 				);
 
-				if(!$user['user_id']) {
+				if(!$user['uid']) {
 					qa_db_query_sub(
 						'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #)',
 						$userid, 1, 1, 0, 0
@@ -73,15 +73,15 @@
 				
 				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
 				
-				$last_visit = strtotime($user['last_visit']);
+				$last_visit = strtotime($user['lv']);
 				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
 				$last_diff = $todayj-$lastj;
 				
-				$oldest_consec = strtotime($user['oldest_consec_visit']);
+				$oldest_consec = strtotime($user['ocv']);
 				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
 				$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
 				
-				$first_visit = strtotime($user['first_visit']);
+				$first_visit = strtotime($user['fv']);
 				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
 				$first_visit_diff = $todayj-$first_visitj;
 				
@@ -89,8 +89,8 @@
 				
 				if($last_diff < 2) { // one day or less, update last visit
 					
-					if($oldest_consec_diff > $user['longest_consec_visit']) {
-						$user['longest_consec_visit'] = $oldest_consec_diff;
+					if($oldest_consec_diff > $user['lcv']) {
+						$user['lcv'] = $oldest_consec_diff;
 						qa_db_query_sub(
 							'UPDATE ^achievements SET last_visit=NOW(), longest_consec_visit=#, total_days_visited=total_days_visited+#  WHERE user_id=#',
 							$oldest_consec_diff, $last_diff, $userid 
@@ -103,7 +103,7 @@
 						);		
 					}
 					$badges = array('dedicated','devoted','zealous');
-					qa_badge_award_check($badges, $user['longest_consec_visit'], $userid);
+					qa_badge_award_check($badges, $user['lcv'], $userid);
 				}
 				else { // 2+ days, reset consecutive days due to lapse
 					qa_db_query_sub(
@@ -113,10 +113,15 @@
 				}
 
 				$badges = array('visitor','trouper','veteran');
-				qa_badge_award_check($badges, $user['total_days_visited'], $userid);
+				qa_badge_award_check($badges, $user['tdv'], $userid);
 				
 				$badges = array('regular','old_timer','ancestor');
 				qa_badge_award_check($badges, $first_visit_diff, $userid);
+				
+				// check points
+				
+				$badges = array('100_club','1000_club','10000_club');
+				qa_badge_award_check($badges, $user['points'], $userid);	
 			}
 		}
 	
@@ -586,7 +591,7 @@
 		function getuserfromhandle($handle) {
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 			
-			if (QA_FINAL_EXTERNAL_USERS) {
+			if (isset(QA_FINAL_EXTERNAL_USERS)) {
 				$publictouserid=qa_get_userids_from_public(array($handle));
 				$userid=@$publictouserid[$handle];
 				
