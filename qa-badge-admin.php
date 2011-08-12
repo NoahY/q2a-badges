@@ -14,9 +14,9 @@
 			
 			switch($option) {
 				case 'badge_'.$slug.'_name':
-					return qa_opt('badge_'.$slug.'_name');
+					return qa_badge_lang('badges/badge_'.$slug);
 				case 'badge_'.$slug.'_var':
-					return qa_opt('badge_'.$slug.'_var');
+					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '0';
 				case 'badge_notify_time':
