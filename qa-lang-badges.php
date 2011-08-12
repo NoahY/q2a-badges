@@ -1,6 +1,18 @@
 <?php
 	return array(
 
+		'asker'=>'Asker',
+		'questioner'=>'Questioner',
+		'inquisitor'=>'Inquisitor',
+
+		'answerer'=>'Answerer',
+		'lecturer'=>'Lecturer',
+		'preacher'=>'Preacher',
+
+		'commenter'=>'Commenter',
+		'commentator'=>'Commentator',
+		'annotator'=>'Annotator',
+		
 		'nice_question'=>'Nice Question',
 		'good_question'=>'Good Question',
 		'great_question'=>'Great Question',
@@ -17,18 +29,15 @@
 		'good_answer_old'=>'Revival',
 		'great_answer_old'=>'Resurrection',
 
-		'asker'=>'Asker',
-		'questioner'=>'Questioner',
-		'inquisitor'=>'Inquisitor',
 
-		'answerer'=>'Answerer',
-		'lecturer'=>'Lecturer',
-		'preacher'=>'Preacher',
+		'gifted'=>'Gifted',
+		'wise'=>'Wise',
+		'enlightened'=>'Enlightened',
 
-		'commenter'=>'Commenter',
-		'commentator'=>'Commentator',
-		'annotator'=>'Annotator',
-				
+		'grateful'=>'Grateful',
+		'respectful'=>'Respectful',
+		'reverential'=>'Reverential',
+						
 		'liked'=>'Liked',
 		'loved'=>'Loved',
 		'revered'=>'Revered',
@@ -45,13 +54,6 @@
 		'devoted'=>'Devoted',
 		'zealous'=>'Zealous',
 
-		'gifted'=>'Gifted',
-		'wise'=>'Wise',
-		'enlightened'=>'Enlightened',
-
-		'grateful'=>'Grateful',
-		'respectful'=>'Respectful',
-		'reverential'=>'Reverential',
 
 		'editor'=>'Editor',
 		'copy_editor'=>'Copy Editor',
@@ -72,12 +74,29 @@
 		'ancestor'=>'Ancestor',
 		
 		
+		'100_club'=>'100 Club',
+		'1000_club'=>'1,000 Club',
+		'10000_club'=>'10,000 Club',
+		
 		'medalist'=>'Medalist',
 		'champion'=>'Champion',
 		'olympian'=>'Olympian',
 
 		'verified'=>'Verified Human',
+		
+		
 
+		'asker_desc'=>'Asked # questions',
+		'questioner_desc'=>'Asked # questions',
+		'inquisitor_desc'=>'Asked # questions',
+
+		'answerer_desc'=>'Posted # answers',
+		'lecturer_desc'=>'Posted # answers',
+		'preacher_desc'=>'Posted # answers',
+
+		'commenter_desc'=>'Posted # comments',
+		'commentator_desc'=>'Posted # comments',
+		'annotator_desc'=>'Posted # comments',
 
 		'nice_question_desc'=>'Question received +# upvote',
 		'good_question_desc'=>'Question received +# upvote',
@@ -94,18 +113,6 @@
 		'nice_answer_old_desc'=>'Received $nice_answer badge in response to a question more than # days old',
 		'good_answer_old_desc'=>'Received $good_answer badge in response to a question more than # days old',
 		'great_answer_old_desc'=>'Received $great_answer badge in response to a question more than # days old',
-
-		'asker_desc'=>'Asked # questions',
-		'questioner_desc'=>'Asked # questions',
-		'inquisitor_desc'=>'Asked # questions',
-
-		'answerer_desc'=>'Posted # answers',
-		'lecturer_desc'=>'Posted # answers',
-		'preacher_desc'=>'Posted # answers',
-
-		'commenter_desc'=>'Posted # comments',
-		'commentator_desc'=>'Posted # comments',
-		'annotator_desc'=>'Posted # comments',
 		
 		'gifted_desc'=>'# answers selected as best answer',
 		'wise_desc'=>'# answers selected as best answer',
@@ -146,6 +153,10 @@
 		'regular_desc'=>'First visited more than # days ago',
 		'old_timer_desc'=>'First visited more than # days ago',
 		'ancestor_desc'=>'First visited more than # days ago',
+
+		'100_club_desc'=>'Received total of # points',
+		'1000_club_desc'=>'Received total of # points',
+		'10000_club_desc'=>'Received total of # points',
 
 		'medalist_desc'=>'Received total of # badges',
 		'champion_desc'=>'Received total of # badges',
