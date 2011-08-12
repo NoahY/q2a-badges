@@ -45,6 +45,7 @@
 			$ok = null;
 
 			$badges = qa_get_badge_list();
+			
 			if (qa_clicked('badge_rebuild_button')) {
 				qa_import_badge_list();
 				$ok = qa_badge_lang('badges/badge_list_rebuilt');
