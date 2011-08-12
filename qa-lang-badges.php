@@ -1,17 +1,6 @@
 <?php
 	return array(
 
-		'asker'=>'Asker',
-		'questioner'=>'Questioner',
-		'inquisitor'=>'Inquisitor',
-
-		'answerer'=>'Answerer',
-		'lecturer'=>'Lecturer',
-		'preacher'=>'Preacher',
-
-		'commenter'=>'Commenter',
-		'commentator'=>'Commentator',
-		'annotator'=>'Annotator',
 		
 		'nice_question'=>'Nice Question',
 		'good_question'=>'Good Question',
@@ -41,29 +30,40 @@
 		'liked'=>'Liked',
 		'loved'=>'Loved',
 		'revered'=>'Revered',
-				
+	
+		'asker'=>'Asker',
+		'questioner'=>'Questioner',
+		'inquisitor'=>'Inquisitor',
+
+		'answerer'=>'Answerer',
+		'lecturer'=>'Lecturer',
+		'preacher'=>'Preacher',
+
+		'commenter'=>'Commenter',
+		'commentator'=>'Commentator',
+		'annotator'=>'Annotator',
+					
 		'voter'=>'Voter',
 		'avid_voter'=>'Avid Voter',
 		'devoted_voter'=>'Devoted Voter',
 
-		'watchdog'=>'Watchdog',
-		'bloodhound'=>'Bloodhound',
-		'pitbull'=>'Pitbull',
-
-		'dedicated'=>'Dedicated',
-		'devoted'=>'Devoted',
-		'zealous'=>'Zealous',
-
-
 		'editor'=>'Editor',
 		'copy_editor'=>'Copy Editor',
 		'senior_editor'=>'Senior Editor',
-
+		
+		'watchdog'=>'Watchdog',
+		'bloodhound'=>'Bloodhound',
+		'pitbull'=>'Pitbull',
 
 		'reader'=>'Reader',
 		'avid_reader'=>'Avid Reader',
 		'devoted_reader'=>'Devoted Reader',
 		
+
+		'dedicated'=>'Dedicated',
+		'devoted'=>'Devoted',
+		'zealous'=>'Zealous',
+
 
 		'visitor'=>'Visitor',
 		'trouper'=>'Trouper',
@@ -84,19 +84,7 @@
 
 		'verified'=>'Verified Human',
 		
-		
-
-		'asker_desc'=>'Asked # questions',
-		'questioner_desc'=>'Asked # questions',
-		'inquisitor_desc'=>'Asked # questions',
-
-		'answerer_desc'=>'Posted # answers',
-		'lecturer_desc'=>'Posted # answers',
-		'preacher_desc'=>'Posted # answers',
-
-		'commenter_desc'=>'Posted # comments',
-		'commentator_desc'=>'Posted # comments',
-		'annotator_desc'=>'Posted # comments',
+	
 
 		'nice_question_desc'=>'Question received +# upvote',
 		'good_question_desc'=>'Question received +# upvote',
@@ -125,26 +113,41 @@
 		'liked_desc'=>'Received # total upvotes',
 		'loved_desc'=>'Received # total upvotes',
 		'revered_desc'=>'Received # total upvotes',
+	
+
+		'asker_desc'=>'Asked # questions',
+		'questioner_desc'=>'Asked # questions',
+		'inquisitor_desc'=>'Asked # questions',
+
+		'answerer_desc'=>'Posted # answers',
+		'lecturer_desc'=>'Posted # answers',
+		'preacher_desc'=>'Posted # answers',
+
+		'commenter_desc'=>'Posted # comments',
+		'commentator_desc'=>'Posted # comments',
+		'annotator_desc'=>'Posted # comments',
 		
+				
 		'voter_desc'=>'Voted # times',
 		'avid_voter_desc'=>'Voted # times',
 		'devoted_voter_desc'=>'Voted # times',
 
+		'editor_desc'=>'Performed total of # edits',
+		'copy_editor_desc'=>'Performed total of # edits',
+		'senior_editor_desc'=>'Performed total of # edits',
+		
 		'watchdog_desc'=>'flagged # posts as inappropriate',
 		'bloodhound_desc'=>'flagged # posts as inappropriate',
 		'pitbull_desc'=>'flagged # posts as inappropriate',
 
-		'dedicated_desc'=>'Visited every day for # consecutive days',
-		'devoted_desc'=>'Visited every day for # consecutive days',
-		'zealous_desc'=>'Visited every day for # consecutive days',
-
-		'editor_desc'=>'Performed total of # edits',
-		'copy_editor_desc'=>'Performed total of # edits',
-		'senior_editor_desc'=>'Performed total of # edits',
-
 		'reader_desc'=>'Read total of # questions',
 		'avid_reader_desc'=>'Read total of # questions',
 		'devoted_reader_desc'=>'Read total of # questions',
+		
+		
+		'dedicated_desc'=>'Visited every day for # consecutive days',
+		'devoted_desc'=>'Visited every day for # consecutive days',
+		'zealous_desc'=>'Visited every day for # consecutive days',
 
 		'visitor_desc'=>'Visited site on total of # days',
 		'trouper_desc'=>'Visited site on total of # days',

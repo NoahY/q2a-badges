@@ -9,13 +9,13 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 52 badges implemented (see `Badge List`_ below)
+- currently 55 badges implemented (see `Badge List`_ below)
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
 - public badge page displays awardable badges
-- awarded badges are shown in individual profile pages, with links to source (if available)
-- awarded badge are shown as medals in individual posts
-- badge requirements are modifiable via admin page
+- awarded badges may be shown in individual profile pages, with links to source (if available)
+- awarded badge may be shown as medals in individual posts and on global users lists
+- badge names and requirements are modifiable via admin page
 - badge system may be deactivated via admin page
 - badges may be individually deactivated via admin page
 - full translation table available (see `Translation` below)
@@ -84,18 +84,6 @@ Level [#]_   Title                  Description
 ==========   =================      ========================================
 1            Verified Human         Successfully verified email address
 
-1            Asker                  Asked # questions
-2            Questioner             Asked # questions
-3            Inquisitor             Asked # questions
- 
-1            Answerer               Posted # answers
-2            Lecturer               Posted # answers
-3            Preacher               Posted # answers
-
-1            Commenter              Posted # comments
-2            Commentator            Posted # comments
-3            Annotator              Posted # comments
-
 1            Nice Question          Question received +# upvote
 2            Good Question          Question received +# upvote
 3            Great Question         Question received +# upvote
@@ -120,21 +108,37 @@ Level [#]_   Title                  Description
 2            Respectful             Selected # answers as best answer
 3            Reverential            Selected # answers as best answer
 
+1            Liked                  Received # total upvotes
+2            Loved                  Received # total upvotes
+3            Revered                Received # total upvotes
+
+1            Asker                  Asked # questions
+2            Questioner             Asked # questions
+3            Inquisitor             Asked # questions
+ 
+1            Answerer               Posted # answers
+2            Lecturer               Posted # answers
+3            Preacher               Posted # answers
+
+1            Commenter              Posted # comments
+2            Commentator            Posted # comments
+3            Annotator              Posted # comments
+
 1            Voter                  Voted # times
 2            Avid Voter             Voted # times
 3            Devoted Voter          Voted # times
 
-1            Liked                  Received # total upvotes
-2            Loved                  Received # total upvotes
-3            Revered                Received # total upvotes
+1            Editor                 Performed total of # edits
+2            Copy Editor            Performed total of # edits
+3            Senior Editor          Performed total of # edits
 
 1            Watchdog               Flagged # posts as inappropriate
 2            Bloodhound             Flagged # posts as inappropriate
 3            Pitbull                Flagged # posts as inappropriate
 
-1            Editor                 Performed total of # edits
-2            Copy Editor            Performed total of # edits
-3            Senior Editor          Performed total of # edits
+1            Reader                 Read total of # questions
+2            Avid Reader            Read total of # questions
+3            Devoted Reader         Read total of # questions
 
 1            Dedicated              Visited every day for # consecutive days
 2            Devoted                Visited every day for # consecutive days
@@ -147,6 +151,10 @@ Level [#]_   Title                  Description
 1            Regular                First visited more than # days ago
 2            Old Timer              First visited more than # days ago
 3            ancestor               First visited more than # days ago
+
+1            100 Club               Received total of # points
+2            1,000 Club             Received total of # points
+3            10,000 Club            Received total of # points
 
 1            Medalist               Received total of # badges
 2            Champion               Received total of # badges
