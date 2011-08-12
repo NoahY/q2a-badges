@@ -225,7 +225,7 @@
 						'type' => 'number',
 						'value' => qa_opt('badge_notify_time'),
 						'tags' => 'NAME="badge_notify_time"',
-						'note' => '<em>'.qa_badge_lang('badges/notify_time_desc').'</em><hr/>',
+						'note' => '<em>'.qa_badge_lang('badges/notify_time_desc').'</em>',
 				);
 			
 				$fields[] = array(
@@ -608,7 +608,7 @@
 			foreach ($badgelist as $medal) {
 				$user='user'.$medal;
 				
-				// get flag count
+				// get badge count
 				
 				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals']++;
 				else $users[$user]['medals'] = 1;
@@ -629,7 +629,51 @@
 
 				}
 			}
+			
+		// on-sign-in badges
+		
+			$users = array();
 
+			$users = qa_db_read_all_assoc(
+				qa_db_query_sub(
+					'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv, ^userpoints.points AS points FROM ^achievements, ^userpoints WHERE ^achievements.user_id=^userpoints.userid',
+					$userid
+				)
+			);
+
+			foreach ($users as $user) {
+
+				// check lapse in days since last visit
+				// using julian days
+				
+				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
+				
+				$last_visit = strtotime($user['lv']);
+				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+				$last_diff = $todayj-$lastj;
+				
+				$oldest_consec = strtotime($user['ocv']);
+				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
+				$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
+				
+				$first_visit = strtotime($user['fv']);
+				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+				$first_visit_diff = $todayj-$first_visitj;
+				
+				$badges = array('dedicated','devoted','zealous');
+				$awarded += qa_badge_award_check($badges, $oldest_consec_diff, $user['uid']);
+
+				$badges = array('visitor','trouper','veteran');
+				$awarded += qa_badge_award_check($badges, $user['tdv'], $user['uid']);
+				
+				$badges = array('regular','old_timer','ancestor');
+				$awarded += qa_badge_award_check($badges, $first_visit_diff, $user['uid']);
+				
+				// check points
+				
+				$badges = array('100_club','1000_club','10000_club');
+				$awarded += qa_badge_award_check($badges, $user['points'], $user['uid']);			
+			}
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
 	}
