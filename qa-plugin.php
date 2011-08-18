@@ -281,7 +281,7 @@
 			'^site_url'=> $site_url,
 		);
 		
-		error_log(qa_send_notification($uid, '@', $handle, $subject, $body, $subs));
+		error_log(qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
 	function qa_badge_desc_replace($slug,$var) {
