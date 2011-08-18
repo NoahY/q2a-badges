@@ -23,7 +23,7 @@
 					return 0;
 				case 'badge_email_subject':
 					return '['.qa_opt('site_title').'] ';
-				case 'badge_email_subject':
+				case 'badge_email_body':
 					return 'Dear ^handle,\n\nYou have earned a "^badge_name" badge from ['.qa_opt('site_title').']!  Please log in and visit your profile:\n\n^profile_url';
 				default:
 					return false;
