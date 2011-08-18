@@ -245,7 +245,8 @@
 		$subject = qa_opt('badge_email_subject');
 		$body = qa_opt('badge_email_body');
 		
-		$profile_url = qa_path_html(qa_opt('site_url').'user/'.$handle);
+		$site_url = qa_opt('site_url');
+		$profile_url = qa_path_html('user/'.$handle, null, $site_url);
 		
 		if($oid) $post = qa_db_read_one_assoc(
 			qa_db_query_sub(
@@ -277,6 +278,7 @@
 			'^post_title'=> $post_title,
 			'^post_url'=> $post_url,
 			'^profile_url'=> $profile_url,
+			'^site_url'=> $site_url,
 		);
 		
 		error_log(qa_send_notification($uid, '@', $handle, $subject, $body, $subs));
