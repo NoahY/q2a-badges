@@ -121,9 +121,9 @@
 							') ENGINE=MyISAM DEFAULT CHARSET=utf8'
 						);
 						foreach($badges as $slug=>$info) {
-							qa_opt('badge_'.$slug.'_enabled', option_default('badge_'.$slug.'_enabled'));
-							qa_opt('badge_'.$slug.'_var', option_default('badge_'.$slug.'_var'));
-							qa_opt('badge_'.$slug.'_name', option_default('badge_'.$slug.'_name'));
+							qa_opt('badge_'.$slug.'_enabled', $this->option_default('badge_'.$slug.'_enabled'));
+							qa_opt('badge_'.$slug.'_var', $this->option_default('badge_'.$slug.'_var'));
+							qa_opt('badge_'.$slug.'_name', $this->option_default('badge_'.$slug.'_name'));
 						}
 					}
 					else {
