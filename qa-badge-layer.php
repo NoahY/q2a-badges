@@ -514,7 +514,6 @@
 			$buttons = array();
 			
 			if((bool)qa_opt('badge_email_notify') && qa_get_logged_in_handle() == $handle) {
-
 			// add badge notify checkbox
 
 				
