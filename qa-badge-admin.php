@@ -21,17 +21,11 @@
 					return '0';
 				case 'badge_notify_time':
 					return 0;
-				case 'badge_admin_user_field':
-					return false;
-				case 'badge_admin_user_widget':
-					return false;
-				case 'badge_show_source_posts':
-					return false;
-				case 'badge_show_source_users':
-					return false;
-				case 'badge_show_users_badges':
-					return false;
-				case 'badge_active':
+				case 'badge_email_subject':
+					return '['.qa_opt('site_title').'] ';
+				case 'badge_email_subject':
+					return 'Dear ^handle,\n\nYou have earned a "^badge_name" badge from ['.qa_opt('site_title').']!  Please log in and visit your profile:\n\n^profile_url';
+				default:
 					return false;
 			}
 			
@@ -90,20 +84,19 @@
 				$was_active = qa_opt('badge_active');
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
 				if (qa_opt('badge_active')) {
-					// check databases
-					
-					$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
 
-					if(!$badges_exists) {		
+					if(!$was_active) {
+						// check databases
+						
+						$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
 
-						qa_import_badge_list();
-					}
+						if(!$badges_exists) {		
 
-					$userbadges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^userbadges'"),true);
+							qa_import_badge_list();
+						}
 
-					if(!$userbadges_exists) {		
 						qa_db_query_sub(
-							'CREATE TABLE ^userbadges ('.
+							'CREATE TABLE IF NOT EXISTS ^userbadges ('.
 								'awarded_at DATETIME NOT NULL,'.
 								'user_id INT(11) NOT NULL,'.
 								'notify TINYINT DEFAULT 0 NOT NULL,'.
@@ -113,14 +106,10 @@
 								'PRIMARY KEY (id)'.
 							') ENGINE=MyISAM DEFAULT CHARSET=utf8'
 						);
-						
-					}
-					
-					$achievements_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^achievements'"),true);
+							
 
-					if(!$achievements_exists) {		
 						qa_db_query_sub(
-							'CREATE TABLE ^achievements ('.
+							'CREATE TABLE IF NOT EXISTS ^achievements ('.
 								'user_id INT(11) UNIQUE NOT NULL,'.
 								'first_visit DATETIME,'.
 								'oldest_consec_visit DATETIME,'.
@@ -133,8 +122,7 @@
 						);
 						
 					}
-					
-					if($was_active) {
+					else {
 						// set badge names, vars and states
 						
 						foreach ($badges as $slug => $info) {
@@ -164,11 +152,16 @@
 						// options
 						
 						qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));			
-						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+						qa_opt('badge_show_users_badges',(bool)qa_post_text('badge_show_users_badges'));
 						qa_opt('badge_show_source_posts',(bool)qa_post_text('badge_show_source_posts'));
 						qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
+						
 						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
-						qa_opt('badge_show_users_badges',(bool)qa_post_text('badge_show_users_badges'));
+						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+						
+						qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
+						qa_opt('badge_email_subject',qa_post_text('badge_email_subject'));
+						qa_opt('badge_email_body',qa_post_text('badge_email_body'));
 					}
 				}
 				$ok = qa_badge_lang('badges/badge_admin_saved');
@@ -271,6 +264,33 @@
 					$fields['test-notify'] = 1;
 				}
 			
+				$fields[] = array(
+					'type' => 'blank',
+				);
+								
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_email_notify'),
+					'tags' => 'NAME="badge_email_notify"',
+					'value' => (bool)qa_opt('badge_email_notify'),
+					'type' => 'checkbox',
+				);				
+								
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_email_subject'),
+					'tags' => 'NAME="badge_email_subject"',
+					'value' => qa_opt('badge_email_subject'),
+					'type' => 'text',
+				);				
+
+				$fields[] = array(
+					'label' =>  a_badge_lang('badges/badge_email_body'),
+					'tags' => 'name="badge_email_body"',
+					'value' => qa_opt('badge_email_body'),
+					'type' => 'textarea',
+					'rows' => 20,
+					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url</i>',
+				),
+
 				$fields[] = array(
 					'type' => 'blank',
 				);
