@@ -29,6 +29,31 @@
 
 			return false;
 		}
+
+		function option_default($option) {
+			
+			$badges = qa_get_badge_list();
+
+			$slug = preg_replace('/badge_(.+)_.+/',"$1",$option);
+			
+			switch($option) {
+				case 'badge_'.$slug.'_name':
+					return qa_badge_lang('badges/badge_'.$slug);
+				case 'badge_'.$slug.'_var':
+					return $badges[$slug]['var'];
+				case 'badge_'.$slug.'_enabled':
+					return '0';
+				case 'badge_notify_time':
+					return 0;
+				case 'badge_email_subject':
+					return '['.qa_opt('site_title').'] ';
+				case 'badge_email_subject':
+					return 'Dear ^handle,\n\nYou have earned a "^badge_name" badge from ['.qa_opt('site_title').']!  Please log in and visit your profile:\n\n^profile_url';
+				default:
+					return false;
+			}
+			
+		}
 		
 		function process_request($request)
 		{
