@@ -596,7 +596,7 @@
 				'VALUES (NOW(), #, #, #, #, 0)',
 				1, $object_id, $user_id, $badge_slug
 			);
-			
+			qa_badge_notification($user_id, $object_id, $badge_slug);		
 			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
 			if(!$badge_badge) $this->check_badges($user_id);
 		}

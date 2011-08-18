@@ -218,7 +218,7 @@
 						$notify, $oid, $uid, $badge_slug
 					);
 					
-					if(qa_opt('badge_email_notify')) qa_badge_notification($uid, $oid, $badge_slug);
+					if(qa_opt('badge_email_notify') && $notify == 1) qa_badge_notification($uid, $oid, $badge_slug);
 					
 					$awarded++;
 				}
@@ -279,7 +279,7 @@
 			'^profile_url'=> $profile_url,
 		);
 		
-		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
+		error_log(qa_send_notification($uid, '@', $handle, $subject, $body, $subs));
 	}
 	
 	function qa_badge_desc_replace($slug,$var) {
