@@ -21,6 +21,7 @@
 	//	Language support ala qa-base.php
 
 	function qa_badge_lang($identifier) {
+		
 		$languagecode=qa_opt('site_language');
 		
 		list($group, $label)=explode('/', $identifier, 2);
@@ -273,6 +274,8 @@
 			$post_url = qa_path_html(qa_q_request($post['postid'], $post['title']), null, qa_opt('site_url'));
 		}
 		
+		$body = preg_replace('/\^if_post_text="([^"]*)"/','$1',$body);
+		
 		$subs = array(
 			'^badge_name'=> qa_opt('badge_'.$badge_slug.'_name'),
 			'^post_title'=> $post_title,
@@ -306,11 +309,12 @@
 	}
 
 	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
-	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
-	
-	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', qa_badge_lang('badges/badge_admin'));
 
-	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', qa_badge_lang('badges/badges'));
+	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
+
+	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
+
+	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
 	
 	// dev dump
 	
