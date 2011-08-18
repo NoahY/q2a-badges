@@ -24,7 +24,16 @@
 				case 'badge_email_subject':
 					return '['.qa_opt('site_title').'] ';
 				case 'badge_email_body':
-					return 'Dear ^handle,\n\nYou have earned a "^badge_name" badge from ['.qa_opt('site_title').']!  Please log in and visit your profile:\n\n^profile_url';
+					return 'Dear ^handle,
+					
+You have earned a "^badge_name" badge from ['.qa_opt('site_title').'] ^if_post_text="for the following post:
+
+^post_title
+^post_url"
+
+Please log in and visit your profile:
+
+^profile_url';
 				default:
 					return false;
 			}
@@ -288,7 +297,7 @@
 					'value' => qa_opt('badge_email_body'),
 					'type' => 'textarea',
 					'rows' => 20,
-					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url<br/>^site_url</i>',
+					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url<br/>^site_url<br/>^if_post_text="text"</i>',
 				);
 
 				$fields[] = array(
