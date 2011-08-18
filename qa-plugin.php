@@ -230,6 +230,7 @@
 	function qa_badge_notification($uid, $oid, $badge_slug) {
 		
 		require_once QA_INCLUDE_DIR.'qa-app-users.php';
+		require_once QA_INCLUDE_DIR.'qa-app-emails.php';
 		
 		if (QA_FINAL_EXTERNAL_USERS) {
 			$publictohandle=qa_get_public_from_userids(array($uid));
