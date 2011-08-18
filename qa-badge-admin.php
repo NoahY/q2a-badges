@@ -289,7 +289,7 @@
 					'type' => 'textarea',
 					'rows' => 20,
 					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url</i>',
-				),
+				);
 
 				$fields[] = array(
 					'type' => 'blank',

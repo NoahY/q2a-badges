@@ -298,7 +298,7 @@
 				
 				
 
-					if((bool)qa_opt('badge_admin_user_field') { 
+					if((bool)qa_opt('badge_admin_user_field')) { 
 
 					// add user badge list
 
