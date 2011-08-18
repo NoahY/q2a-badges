@@ -120,7 +120,11 @@
 								'posts_edited INT(10)'.
 							') ENGINE=MyISAM DEFAULT CHARSET=utf8'
 						);
-						
+						foreach($badges as $slug=>$info) {
+							qa_opt('badge_'.$slug.'_enabled', option_default('badge_'.$slug.'_enabled'));
+							qa_opt('badge_'.$slug.'_var', option_default('badge_'.$slug.'_var'));
+							qa_opt('badge_'.$slug.'_name', option_default('badge_'.$slug.'_name'));
+						}
 					}
 					else {
 						// set badge names, vars and states
