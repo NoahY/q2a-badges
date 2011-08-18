@@ -91,7 +91,8 @@ Please log in and visit your profile:
 			}
 			else if(qa_clicked('badge_save_settings')) {
 				$was_active = qa_opt('badge_active');
-				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));			
+				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));
+
 				if (qa_opt('badge_active')) {
 
 					if(!$was_active) {
