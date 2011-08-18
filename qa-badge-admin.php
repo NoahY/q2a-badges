@@ -283,7 +283,7 @@
 				);				
 
 				$fields[] = array(
-					'label' =>  a_badge_lang('badges/badge_email_body'),
+					'label' =>  qa_badge_lang('badges/badge_email_body'),
 					'tags' => 'name="badge_email_body"',
 					'value' => qa_opt('badge_email_body'),
 					'type' => 'textarea',

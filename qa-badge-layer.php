@@ -460,7 +460,6 @@
 			if(count($result) == 0) return;
 			
 			$output = '
-		<h2>'.qa_badge_lang('badges/badges').'</h2>
 		<table class="qa-form-wide-table badge-table">
 			<tbody>
 				<tr>';
@@ -568,7 +567,11 @@
 					'label' => $output,
 					'type' => 'static',
 			);
-			return array('fields'=>$fields);
+			return array(				
+				'style' => 'tall',
+				'title' => qa_badge_lang('badges/badges'),
+				'fields'=>$fields,
+			);
 			
 		}
 
@@ -576,6 +579,8 @@
 
 		function user_badge_notify_form() {
 			// displays notify checkbox in user profile
+			
+			$ok = null;
 			
 			global $qa_request;
 			
@@ -609,7 +614,8 @@
 						'type' => 'checkbox',
 						'tags' => 'NAME="badge_notify_email_me"',
 					),
-				),				
+				),
+								
 				'buttons' => array(
 					array(
 						'label' => qa_lang_html('main/save_button'),
