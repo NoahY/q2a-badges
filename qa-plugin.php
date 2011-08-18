@@ -217,11 +217,68 @@
 						'VALUES (NOW(), #, #, #, #, 0)',
 						$notify, $oid, $uid, $badge_slug
 					);
+					
+					if(qa_opt('badge_email_notify')) qa_badge_notification($uid, $oid, $badge_slug);
+					
 					$awarded++;
 				}
 			}
 		}
 		return $awarded;
+	}
+	
+	function qa_badge_notification($uid, $oid, $badge_slug) {
+		
+		require_once QA_INCLUDE_DIR.'qa-app-users.php';
+		
+		if (QA_FINAL_EXTERNAL_USERS) {
+			$publictohandle=qa_get_public_from_userids(array($uid));
+			$handle=@$publictohandle[$uid];
+			
+		} 
+		else {
+			$user = qa_db_single_select(qa_db_user_account_selectspec($uid, true));
+			$handle = @$user['handle'];
+		}
+
+		$subject = qa_opt('badge_email_subject');
+		$body = qa_opt('badge_email_body');
+		
+		$profile_url = qa_path_html('user/'.$handle);
+		
+		if($oid) $post = qa_db_read_one_assoc(
+			qa_db_query_sub(
+				'SELECT * FROM ^posts WHERE postid=#',
+				$oid
+			),
+			true
+		);
+		if($post['parentid']) $parent = qa_db_read_one_assoc(
+			qa_db_query_sub(
+				'SELECT * FROM ^posts WHERE postid=#',
+				$post['parentid']
+			),
+			true
+		);
+		if(isset($parent)) {
+			$anchor = urlencode(qa_anchor($post['basetype'], $oid));
+
+			$post_title = $parent['title'];
+			$post_url = qa_path_html(qa_q_request($parent['postid'], $parent['title']), null, qa_opt('site_url'),null, $anchor);
+		}
+		else {
+			$post_title = $post['title'];
+			$post_url = qa_path_html(qa_q_request($post['postid'], $post['title']), null, qa_opt('site_url'));
+		}
+		
+		$subs = array(
+			'^badge_name'=> qa_opt('badge_'.$badge_slug.'_name'),
+			'^post_title'=> $post_title,
+			'^post_url'=> $post_url,
+			'^profile_url'=> $profile_url,
+		);
+		
+		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
 	function qa_badge_desc_replace($slug,$var) {

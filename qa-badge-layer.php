@@ -124,7 +124,6 @@
 				qa_badge_award_check($badges, $user['points'], $userid);	
 			}
 		}
-	
 		
 	// theme replacement functions
 
@@ -270,29 +269,56 @@
 		{
 			if (qa_opt('badge_active')) {
 			
-				// add user badge list
-
-				if((bool)qa_opt('badge_admin_user_field') && $this->template == 'user') { 
-					if($content['q_list']) {  // paranoia
+				if($this->template == 'user') {
 					
-						// array splicing kungfu thanks to Stack Exchange
+					if((bool)qa_opt('badge_email_notify')) {
+
+					// add badge notify checkbox
+
+						$badge_form = $this->user_badge_notify_form();
+
+					 
+						if($this->content['q_list']) {  // paranoia
 						
-						// This adds custom-badges before q_list
-					
-						$keys = array_keys($content);
-						$vals = array_values($content);
+							$keys = array_keys($this->content);
+							$vals = array_values($this->content);
 
-						$insertBefore = array_search('q_list', $keys);
+							$insertBefore = array_search('q_list', $keys);
 
-						$keys2 = array_splice($keys, $insertBefore);
-						$vals2 = array_splice($vals, $insertBefore);
+							$keys2 = array_splice($keys, $insertBefore);
+							$vals2 = array_splice($vals, $insertBefore);
 
-						$keys[] = 'custom-badges';
-						$vals[] = $this->user_badge_form();
+							$keys[] = 'form-badge-notify';
+							$vals[] = $badge_form;
 
-						$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+							$this->content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+						}
+						else $this->content['form-badge-notify'] = $badge_form;  // this shouldn't happen
 					}
-					else $content['custom'] = $this->user_badge_form();  // this shouldn't happen
+				
+				
+
+					if((bool)qa_opt('badge_admin_user_field') { 
+
+					// add user badge list
+
+						if($content['q_list']) {  // paranoia
+						
+							$keys = array_keys($content);
+							$vals = array_values($content);
+
+							$insertBefore = array_search('q_list', $keys);
+
+							$keys2 = array_splice($keys, $insertBefore);
+							$vals2 = array_splice($vals, $insertBefore);
+
+							$keys[] = 'form-badges-list';
+							$vals[] = $this->user_badge_form();
+
+							$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+						}
+						else $content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
+					}
 
 				}
 			}
@@ -537,12 +563,65 @@
 				</tr>
 			</tbody>
 		</table>';
-			
-			return $output;
+
+			$fields[] = array(
+					'label' => $output,
+					'type' => 'static',
+			);
+			return array('fields'=>$fields);
 			
 		}
 
-	// badge notification
+	// badge email notification
+
+		function user_badge_notify_form() {
+			// displays notify checkbox in user profile
+			
+			global $qa_request;
+			
+			$handle = preg_replace('/^[^\/]+\/([^\/]+).*/',"$1",$qa_request);
+			
+			$userid = $this->getuserfromhandle($handle);
+			
+			if(!$userid || qa_get_logged_in_handle() != $handle) return;
+
+			if(qa_clicked('badge_email_notify_save')) {
+				qa_opt('badge_email_notify_id_'.$userid, (bool)qa_post_text('badge_notify_email_me'));
+				$ok = qa_badge_lang('badges/badge_notified_email_me');
+			}
+
+			$select = qa_opt('badge_email_notify_id_'.$userid);
+			
+
+			$form=array(
+			
+				'ok' => ($ok && !isset($error)) ? $ok : null,
+				
+				'style' => 'tall',
+				
+				'title' => '<a name="signature_text">Signature</a>',
+
+				'tags' =>  'action="'.qa_self_html().'#signature_text" method="POST"',
+				
+				'fields' => array(
+					array(
+						'label' => qa_badge_lang('badges/badge_notify_email_me'),
+						'type' => 'checkbox',
+						'tags' => 'NAME="badge_notify_email_me"',
+					),
+				),				
+				'buttons' => array(
+					array(
+						'label' => qa_lang_html('main/save_button'),
+						'tags' => 'NAME="badge_email_notify_save"',
+					),
+				),
+			);
+			return $form;
+			
+		}
+
+	// badge popup notification
 
 		function badge_notify() {
 			$userid = qa_get_logged_in_userid();
