@@ -278,10 +278,10 @@
 						$badge_form = $this->user_badge_notify_form();
 
 					 
-						if($this->content['q_list']) {  // paranoia
+						if($content['q_list']) {  // paranoia
 						
-							$keys = array_keys($this->content);
-							$vals = array_values($this->content);
+							$keys = array_keys($content);
+							$vals = array_values($content);
 
 							$insertBefore = array_search('q_list', $keys);
 
@@ -291,9 +291,9 @@
 							$keys[] = 'form-badge-notify';
 							$vals[] = $badge_form;
 
-							$this->content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
+							$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
 						}
-						else $this->content['form-badge-notify'] = $badge_form;  // this shouldn't happen
+						else $content['form-badge-notify'] = $badge_form;  // this shouldn't happen
 					}
 				
 				
@@ -460,7 +460,7 @@
 			if(count($result) == 0) return;
 			
 			$output = '
-		<table class="qa-form-wide-table badge-table">
+		<table>
 			<tbody>
 				<tr>';
 			// count badges
@@ -568,7 +568,7 @@
 					'type' => 'static',
 			);
 			return array(				
-				'style' => 'tall',
+				'style' => 'wide',
 				'title' => qa_badge_lang('badges/badges'),
 				'fields'=>$fields,
 			);
