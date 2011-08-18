@@ -270,33 +270,6 @@
 			if (qa_opt('badge_active')) {
 			
 				if($this->template == 'user') {
-					
-					if((bool)qa_opt('badge_email_notify')) {
-
-					// add badge notify checkbox
-
-						$badge_form = $this->user_badge_notify_form();
-
-					 
-						if($content['q_list']) {  // paranoia
-						
-							$keys = array_keys($content);
-							$vals = array_values($content);
-
-							$insertBefore = array_search('q_list', $keys);
-
-							$keys2 = array_splice($keys, $insertBefore);
-							$vals2 = array_splice($vals, $insertBefore);
-
-							$keys[] = 'form-badge-notify';
-							$vals[] = $badge_form;
-
-							$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
-						}
-						else $content['form-badge-notify'] = $badge_form;  // this shouldn't happen
-					}
-				
-				
 
 					if((bool)qa_opt('badge_admin_user_field')) { 
 
@@ -319,8 +292,8 @@
 						}
 						else $content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
 					}
-
 				}
+					
 			}
 
 			qa_html_theme_base::main_parts($content);
@@ -344,44 +317,44 @@
 
 			if (qa_opt('badge_active') && isset($this->content['inc_views_postid'])) {
 
-					$uid = $q_view['raw']['userid'];
+				$uid = $q_view['raw']['userid'];
 
-					if(!$uid) return; // anonymous
+				if(!$uid) return; // anonymous
 
-					$oid = $this->content['inc_views_postid'];
+				$oid = $this->content['inc_views_postid'];
 
-					// total views check
+				// total views check
 
-					$views = $q_view['raw']['views'];
-					$views++; // because we haven't incremented the views yet
-					
-					$badges = array('notable_question','popular_question','famous_question');
-
-					qa_badge_award_check($badges, $views, $uid, $oid);
-
+				$views = $q_view['raw']['views'];
+				$views++; // because we haven't incremented the views yet
 				
-					// personal view count increase and badge check
-					
-					$uid = qa_get_logged_in_userid();
-					
+				$badges = array('notable_question','popular_question','famous_question');
+
+				qa_badge_award_check($badges, $views, $uid, $oid);
+
+			
+				// personal view count increase and badge check
+				
+				$uid = qa_get_logged_in_userid();
+				
+				qa_db_query_sub(
+					'UPDATE ^achievements SET questions_read=questions_read+1 WHERE user_id=# ',
+					$uid
+				);
+				
+				$views = qa_db_read_one_value(
 					qa_db_query_sub(
-						'UPDATE ^achievements SET questions_read=questions_read+1 WHERE user_id=# ',
+						'SELECT questions_read FROM ^achievements WHERE user_id=# ',
 						$uid
-					);
-					
-					$views = qa_db_read_one_value(
-						qa_db_query_sub(
-							'SELECT questions_read FROM ^achievements WHERE user_id=# ',
-							$uid
-						),
-						true
-					);		
-							
-					$badges = array('reader','avid_reader','devoted_reader');
+					),
+					true
+				);		
+						
+				$badges = array('reader','avid_reader','devoted_reader');
 
-					qa_badge_award_check($badges, $views, $uid);
-				
-				}
+				qa_badge_award_check($badges, $views, $uid);
+			
+			}
 		}
 
 		// add badges to users list
@@ -567,63 +540,52 @@
 					'label' => $output,
 					'type' => 'static',
 			);
-			return array(				
-				'style' => 'wide',
-				'title' => qa_badge_lang('badges/badges'),
-				'fields'=>$fields,
-			);
-			
-		}
 
-	// badge email notification
-
-		function user_badge_notify_form() {
-			// displays notify checkbox in user profile
-			
 			$ok = null;
+			$tags = null;
+			$buttons = array();
 			
-			global $qa_request;
-			
-			$handle = preg_replace('/^[^\/]+\/([^\/]+).*/',"$1",$qa_request);
-			
-			$userid = $this->getuserfromhandle($handle);
-			
-			if(!$userid || qa_get_logged_in_handle() != $handle) return;
+			if((bool)qa_opt('badge_email_notify') && qa_get_logged_in_handle() == $handle) {
 
-			if(qa_clicked('badge_email_notify_save')) {
-				qa_opt('badge_email_notify_id_'.$userid, (bool)qa_post_text('badge_notify_email_me'));
-				$ok = qa_badge_lang('badges/badge_notified_email_me');
+			// add badge notify checkbox
+
+				
+				if(qa_clicked('badge_email_notify_save')) {
+					qa_opt('badge_email_notify_id_'.$userid, (bool)qa_post_text('badge_notify_email_me'));
+					$ok = qa_badge_lang('badges/badge_notified_email_me');
+				}
+
+				$select = (bool)qa_opt('badge_email_notify_id_'.$userid);
+				
+				$tags = 'action="'.qa_self_html().'#signature_text" method="POST"';
+				
+				$fields[] = array(
+					'type' => 'blank',
+				);
+				
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_notify_email_me'),
+					'type' => 'checkbox',
+					'tags' => 'NAME="badge_notify_email_me"',
+					'value' => $select,
+				);
+									
+				$buttons[] = array(
+					'label' => qa_lang_html('main/save_button'),
+					'tags' => 'NAME="badge_email_notify_save"',
+				);
 			}
 
-			$select = qa_opt('badge_email_notify_id_'.$userid);
-			
 
-			$form=array(
-			
+
+			return array(				
 				'ok' => ($ok && !isset($error)) ? $ok : null,
-				
-				'style' => 'tall',
-				
-				'title' => '<a name="signature_text">Signature</a>',
-
-				'tags' =>  'action="'.qa_self_html().'#signature_text" method="POST"',
-				
-				'fields' => array(
-					array(
-						'label' => qa_badge_lang('badges/badge_notify_email_me'),
-						'type' => 'checkbox',
-						'tags' => 'NAME="badge_notify_email_me"',
-					),
-				),
-								
-				'buttons' => array(
-					array(
-						'label' => qa_lang_html('main/save_button'),
-						'tags' => 'NAME="badge_email_notify_save"',
-					),
-				),
+				'style' => 'wide',
+				'tags' => $tags,
+				'title' => qa_badge_lang('badges/badges'),
+				'fields'=>$fields,
+				'buttons'=>$buttons,
 			);
-			return $form;
 			
 		}
 
