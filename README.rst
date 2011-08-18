@@ -12,6 +12,7 @@ Features
 - currently 55 badges implemented (see `Badge List`_ below)
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
+- option to notify users of badge awarding by email (fully customizable)
 - public badge page displays awardable badges
 - awarded badges may be shown in individual profile pages, with links to source (if available)
 - awarded badge may be shown as medals in individual posts and on global users lists
