@@ -430,116 +430,117 @@
 				)
 			);
 			
-			if(count($result) == 0) return;
-			
-			$output = '
-		<table>
-			<tbody>
-				<tr>';
-			// count badges
-			
-			$badges = array();
-			
-			foreach($result as $info) {
-				$type = $info['type'];
-				$slug = $info['slug'];
-				if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
-				else $badges[$type][$slug]['count'] = 1;
-				if($info['oid']) $badges[$type][$slug]['oid'][] = $info['oid'];
-			}
-			
-			foreach($badges as $type => $badge) {
-				$typea = qa_get_badge_type($type);
-				$types = $typea['slug'];
-				$typed = $typea['name'];
+			if(count($result) > 0) {
+				
+				$output = '
+			<table>
+				<tbody>
+					<tr>';
+				// count badges
+				
+				$badges = array();
+				
+				foreach($result as $info) {
+					$type = $info['type'];
+					$slug = $info['slug'];
+					if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
+					else $badges[$type][$slug]['count'] = 1;
+					if($info['oid']) $badges[$type][$slug]['oid'][] = $info['oid'];
+				}
+				
+				foreach($badges as $type => $badge) {
+					$typea = qa_get_badge_type($type);
+					$types = $typea['slug'];
+					$typed = $typea['name'];
 
-				$output .= '
-					<td class="badge-table-col">
-						<table>
-							<tr>
-								<td class="qa-form-wide-label">
-									<h3 class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</span>
-								</td>
-							</tr>';				
-				foreach($badge as $slug => $info) {
-					$badge_name=qa_badge_lang('badges/'.$slug);
-					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-					$name = qa_opt('badge_'.$slug.'_name');
-					
-					$count = $info['count'];
-					
-					if(qa_opt('badge_show_source_posts')) {
-						$oids = @$info['oid'];
-					}
-					
-					$var = qa_opt('badge_'.$slug.'_var');
-					$desc = qa_badge_desc_replace($slug,$var,$name);
-					
-					// badge row
-					
 					$output .= '
-							<tr>
-								<td class="badge-container">
-									<div class="badge-container-badge">
-										<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
-										<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
-									</div>';
-					
-					// source row(s) if any	
-					if(is_array($oids)) {
+						<td class="badge-table-col">
+							<table>
+								<tr>
+									<td class="qa-form-wide-label">
+										<h3 class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</span>
+									</td>
+								</tr>';				
+					foreach($badge as $slug => $info) {
+						$badge_name=qa_badge_lang('badges/'.$slug);
+						if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
+						$name = qa_opt('badge_'.$slug.'_name');
+						
+						$count = $info['count'];
+						
+						if(qa_opt('badge_show_source_posts')) {
+							$oids = @$info['oid'];
+						}
+						
+						$var = qa_opt('badge_'.$slug.'_var');
+						$desc = qa_badge_desc_replace($slug,$var,$name);
+						
+						// badge row
+						
 						$output .= '
-									<div class="badge-container-sources-'.$slug.'" style="display:none">';
-						foreach($oids as $oid) {
-							$post = qa_db_read_one_assoc(
-								qa_db_query_sub(
-									'SELECT title,type,parentid FROM ^posts WHERE postid=#',
-									$oid
-								),
-								true
-							);
-							
-							$title=$post['title'];
-							
-							$anchor = '';
-							
-							if($post['parentid']) {
-								$anchor = urlencode(qa_anchor($post['type'],$oid));
-								$oid = $post['parentid'];
-								$title = qa_db_read_one_value(
+								<tr>
+									<td class="badge-container">
+										<div class="badge-container-badge">
+											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+											<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
+										</div>';
+						
+						// source row(s) if any	
+						if(is_array($oids)) {
+							$output .= '
+										<div class="badge-container-sources-'.$slug.'" style="display:none">';
+							foreach($oids as $oid) {
+								$post = qa_db_read_one_assoc(
 									qa_db_query_sub(
-										'SELECT title FROM ^posts WHERE postid=#',
+										'SELECT title,type,parentid FROM ^posts WHERE postid=#',
 										$oid
 									),
 									true
-								);	
+								);
+								
+								$title=$post['title'];
+								
+								$anchor = '';
+								
+								if($post['parentid']) {
+									$anchor = urlencode(qa_anchor($post['type'],$oid));
+									$oid = $post['parentid'];
+									$title = qa_db_read_one_value(
+										qa_db_query_sub(
+											'SELECT title FROM ^posts WHERE postid=#',
+											$oid
+										),
+										true
+									);	
+								}
+								
+								$length = 30;
+								
+								$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
+								
+								$output .= '
+											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.$text.'</a></div>';
 							}
 							
-							$length = 30;
-							
-							$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
-							
-							$output .= '
-										<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.$text.'</a></div>';
 						}
-						
+						$output .= '
+									</td>
+								</tr>';
 					}
 					$output .= '
-								</td>
-							</tr>';
+							</table>
+						</td>';
 				}
 				$output .= '
-						</table>
-					</td>';
-			}
-			$output .= '
-				</tr>
-			</tbody>
-		</table>';
+					</tr>
+				</tbody>
+			</table>';
 
-			$fields[] = array(
-					'label' => $output,
-					'type' => 'static',
-			);
+				$fields[] = array(
+						'label' => $output,
+						'type' => 'static',
+				);
+			}
 
 			$ok = null;
 			$tags = null;
