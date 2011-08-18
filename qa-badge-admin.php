@@ -288,7 +288,7 @@
 					'value' => qa_opt('badge_email_body'),
 					'type' => 'textarea',
 					'rows' => 20,
-					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url</i>',
+					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url<br/>^site_url</i>',
 				);
 
 				$fields[] = array(
