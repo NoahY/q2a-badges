@@ -7,6 +7,10 @@
 		}
 
 		function option_default($option) {
+
+			if(strpos($option,'badge_email_notify_id_') === 0) {
+				return (qa_opt('badge_email_notify_on')?true:false);
+			}
 			
 			$badges = qa_get_badge_list();
 
@@ -282,6 +286,14 @@ Please log in and visit your profile:
 					'label' => qa_badge_lang('badges/badge_email_notify'),
 					'tags' => 'NAME="badge_email_notify"',
 					'value' => (bool)qa_opt('badge_email_notify'),
+					'type' => 'checkbox',
+				);				
+								
+								
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_email_notify_on'),
+					'tags' => 'NAME="badge_email_notify_on"',
+					'value' => (bool)qa_opt('badge_email_notify_on'),
 					'type' => 'checkbox',
 				);				
 								
