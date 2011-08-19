@@ -26,11 +26,11 @@
 				case 'badge_notify_time':
 					return 0;
 				case 'badge_email_subject':
-					return '['.qa_opt('site_title').'] ';
+					return '[^site_title] ';
 				case 'badge_email_body':
 					return 'Dear ^handle,
 					
-You have earned a "^badge_name" badge from ['.qa_opt('site_title').'] ^if_post_text="for the following post:
+You have earned a "^badge_name" badge from ^site_title ^if_post_text="for the following post:
 
 ^post_title
 ^post_url"
@@ -287,7 +287,7 @@ Please log in and visit your profile:
 					'tags' => 'NAME="badge_email_notify" onclick="if(this.checked) jQuery(\'#badge_email_container\').fadeIn(); else jQuery(\'#badge_email_container\').fadeOut();"',
 					'value' => (bool)qa_opt('badge_email_notify'),
 					'type' => 'checkbox',
-					'note' => '<table id="badge_email_container"><tr><td>',
+					'note' => '<table id="badge_email_container" style="display:'.(qa_opt('badge_email_notify')?'block':'none').'"><tr><td>',
 				);				
 								
 				$fields[] = array(
