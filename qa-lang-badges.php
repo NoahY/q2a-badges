@@ -224,6 +224,7 @@
 		'badge_show_users_badges'=>'Show badge widget beside user name on users list page',
 
 		'badge_email_notify'=>'Notify users of awarded badges by email',
+		'badge_email_notify_on'=>'Email notification on by default',
 		'badge_email_subject'=>'Message subject',
 		'badge_email_body'=>'Message body',
 		'badge_notify_email_me'=>'Notify of new badges by email?',
