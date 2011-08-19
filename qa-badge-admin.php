@@ -284,33 +284,33 @@ Please log in and visit your profile:
 								
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_email_notify'),
-					'tags' => 'NAME="badge_email_notify"',
+					'tags' => 'NAME="badge_email_notify" onclick="if(this.checked) jQuery(\'#badge_email_container\').show(\'fast\'); else jQuery(\'#badge_email_container\').hide(\'fast\');"',
 					'value' => (bool)qa_opt('badge_email_notify'),
 					'type' => 'checkbox',
+					'note' => '<table id="badge_email_container"><tr><td>',
 				);				
-								
 								
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_email_notify_on'),
-					'tags' => 'NAME="badge_email_notify_on"',
+					'tags' => 'NAME="badge_email_notify_on" id="badge_email_notify_on"',
 					'value' => (bool)qa_opt('badge_email_notify_on'),
 					'type' => 'checkbox',
 				);				
 								
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_email_subject'),
-					'tags' => 'NAME="badge_email_subject"',
+					'tags' => 'NAME="badge_email_subject" id="badge_email_subject"',
 					'value' => qa_opt('badge_email_subject'),
 					'type' => 'text',
 				);				
 
 				$fields[] = array(
 					'label' =>  qa_badge_lang('badges/badge_email_body'),
-					'tags' => 'name="badge_email_body"',
+					'tags' => 'name="badge_email_body" id="badge_email_body"',
 					'value' => qa_opt('badge_email_body'),
 					'type' => 'textarea',
 					'rows' => 20,
-					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url<br/>^site_url<br/>^if_post_text="text"</i>',
+					'note' => 'Available replacement text:<br/><br/><i>^site_title<br/>^handle<br/>^email<br/>^open<br/>^close<br/>^badge_name<br/>^post_title<br/>^post_url<br/>^profile_url<br/>^site_url<br/>^if_post_text="text"</i></td></tr></table>',
 				);
 
 				$fields[] = array(
