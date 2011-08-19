@@ -284,7 +284,7 @@ Please log in and visit your profile:
 								
 				$fields[] = array(
 					'label' => qa_badge_lang('badges/badge_email_notify'),
-					'tags' => 'NAME="badge_email_notify" onclick="if(this.checked) jQuery(\'#badge_email_container\').show(\'fast\'); else jQuery(\'#badge_email_container\').hide(\'fast\');"',
+					'tags' => 'NAME="badge_email_notify" onclick="if(this.checked) jQuery(\'#badge_email_container\').fadeIn(); else jQuery(\'#badge_email_container\').fadeOut();"',
 					'value' => (bool)qa_opt('badge_email_notify'),
 					'type' => 'checkbox',
 					'note' => '<table id="badge_email_container"><tr><td>',
