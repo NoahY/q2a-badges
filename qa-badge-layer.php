@@ -130,7 +130,7 @@
 						width: 100%;
 						z-index: 10000;
 					}
-						.badge-notify {
+					.badge-notify {
 						background-color: #F6DF30;
 						color: #444444;
 						font-weight: bold;
