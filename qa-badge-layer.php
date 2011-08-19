@@ -397,6 +397,8 @@
 				)
 			);
 			
+			$fields = array();
+			
 			if(count($result) > 0) {
 				
 				$output = '
