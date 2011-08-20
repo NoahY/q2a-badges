@@ -245,14 +245,15 @@
 
 		$subject = qa_opt('badge_email_subject');
 		$body = qa_opt('badge_email_body');
+
+		$body = preg_replace('/\^if_post_text="([^"]*)"/',($oid?'$1':''),$body); // if post text
 		
 		$site_url = qa_opt('site_url');
 		$profile_url = qa_path_html('user/'.$handle, null, $site_url);
 		
+
+
 		if($oid) {
-			
-			$body = preg_replace('/\^if_post_text="([^"]*)"/','$1',$body); // if post text
-			
 			$post = qa_db_read_one_assoc(
 				qa_db_query_sub(
 					'SELECT * FROM ^posts WHERE postid=#',
