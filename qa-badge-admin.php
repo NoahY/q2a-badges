@@ -37,7 +37,9 @@ You have earned a "^badge_name" badge from ^site_title ^if_post_text="for the fo
 
 Please log in and visit your profile:
 
-^profile_url';
+^profile_url
+
+You may cancel these notices at any time by visiting your profile at the link above.';
 				default:
 					return false;
 			}
