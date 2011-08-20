@@ -316,7 +316,7 @@
 
 	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
 
-	qa_register_plugin_module('widget', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
+	qa_register_plugin_module('module', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
 
 	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
 
