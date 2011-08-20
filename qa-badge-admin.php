@@ -41,7 +41,7 @@ Please log in and visit your profile:
 
 You may cancel these notices at any time by visiting your profile at the link above.';
 				default:
-					return false;
+					return null;
 			}
 			
 		}
