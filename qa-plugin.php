@@ -321,16 +321,6 @@
 	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
 
 	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
-	
-	// dev dump
-	
-	function qa_error_log($x) {
-		ob_start();
-		var_dump($x);
-		$contents = ob_get_contents();
-		ob_end_clean();
-		error_log($contents);
-	}
 
 /*
 	Omit PHP closing tag to help avoid accidental output
