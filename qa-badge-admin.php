@@ -176,6 +176,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 						
 						qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
+						qa_opt('badge_email_notify_on',(bool)qa_post_text('badge_email_notify_on'));
 						qa_opt('badge_email_subject',qa_post_text('badge_email_subject'));
 						qa_opt('badge_email_body',qa_post_text('badge_email_body'));
 					}
