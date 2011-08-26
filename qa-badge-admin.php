@@ -701,18 +701,18 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				$first_visit_diff = $todayj-$first_visitj;
 				
 				$badges = array('dedicated','devoted','zealous');
-				$awarded += qa_badge_award_check($badges, $oldest_consec_diff, $uid);
+				$awarded += qa_badge_award_check($badges, $oldest_consec_diff, $uid, null, 0);
 
 				$badges = array('visitor','trouper','veteran');
-				$awarded += qa_badge_award_check($badges, $user['tdv'], $uid);
+				$awarded += qa_badge_award_check($badges, $user['tdv'], $uid, null, 0);
 				
 				$badges = array('regular','old_timer','ancestor');
-				$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid);
+				$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0);
 				
 				// check points
 				
 				$badges = array('100_club','1000_club','10000_club');
-				$awarded += qa_badge_award_check($badges, $user['points'], $uid);			
+				$awarded += qa_badge_award_check($badges, $user['points'], $uid, null, 0);			
 			}
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
