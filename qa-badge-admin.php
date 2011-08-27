@@ -578,7 +578,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$badges = array('notable_question','popular_question','famous_question');
 
 					foreach($data['views'] as $idv) {
-						$awarded += qa_badge_award_check($badges, $idv['views'], $idv['id'], null, 0);
+						$awarded += qa_badge_award_check($badges, $idv['views'], $uid, $idv['id'], 0);
 					}
 				}
 				
