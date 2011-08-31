@@ -5,7 +5,6 @@
 	// init function, after page loads
 		
 		function finish() {
-			
 			qa_html_theme_base::finish();
 			
 			// process per visit events 
@@ -280,7 +279,7 @@
 		function q_view_main($q_view) {
 			qa_html_theme_base::q_view_main($q_view);
 
-				// badge check on view update
+		// badge check on view update
 
 			if (qa_opt('badge_active') && isset($this->content['inc_views_postid'])) {
 
