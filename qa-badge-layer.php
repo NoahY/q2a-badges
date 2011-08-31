@@ -69,7 +69,7 @@
 						);		
 					}
 					$badges = array('dedicated','devoted','zealous');
-					qa_badge_award_check($badges, $user['lcv'], $userid);
+					qa_badge_award_check($badges, $user['lcv'], $userid,null,2);
 				}
 				else { // 2+ days, reset consecutive days due to lapse
 					qa_db_query_sub(
@@ -79,15 +79,15 @@
 				}
 
 				$badges = array('visitor','trouper','veteran');
-				qa_badge_award_check($badges, $user['tdv'], $userid);
+				qa_badge_award_check($badges, $user['tdv'], $userid,null,2);
 				
 				$badges = array('regular','old_timer','ancestor');
-				qa_badge_award_check($badges, $first_visit_diff, $userid);
+				qa_badge_award_check($badges, $first_visit_diff, $userid,null,2);
 				
 				// check points
 				
 				$badges = array('100_club','1000_club','10000_club');
-				qa_badge_award_check($badges, $user['points'], $userid);	
+				qa_badge_award_check($badges, $user['points'], $userid,null,2);	
 			}
 		}
 		
@@ -296,7 +296,7 @@
 				
 				$badges = array('notable_question','popular_question','famous_question');
 
-				qa_badge_award_check($badges, $views, $uid, $oid);
+				qa_badge_award_check($badges, $views, $uid, $oid,null,2);
 
 			
 				// personal view count increase and badge check
@@ -318,7 +318,7 @@
 						
 				$badges = array('reader','avid_reader','devoted_reader');
 
-				qa_badge_award_check($badges, $views, $uid);
+				qa_badge_award_check($badges, $views, $uid,null,2);
 			
 			}
 		}
@@ -564,7 +564,7 @@
 			
 			$result = qa_db_read_all_values(
 				qa_db_query_sub(
-					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify=1',
+					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify>=1',
 					$userid
 				)
 			);
