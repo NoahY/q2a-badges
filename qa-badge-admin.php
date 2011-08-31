@@ -692,16 +692,12 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
 				$last_diff = $todayj-$lastj;
 				
-				$oldest_consec = strtotime($user['ocv']);
-				$oldest_consecj = GregorianToJD(date('n',$oldest_consec),date('j',$oldest_consec),date('Y',$oldest_consec));
-				$oldest_consec_diff = $todayj-$oldest_consecj+1; // include the first day
-				
 				$first_visit = strtotime($user['fv']);
 				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
 				$first_visit_diff = $todayj-$first_visitj;
 				
 				$badges = array('dedicated','devoted','zealous');
-				$awarded += qa_badge_award_check($badges, $oldest_consec_diff, $uid, null, 0);
+				$awarded += qa_badge_award_check($badges, $user['lcv'], $uid, null, 0);
 
 				$badges = array('visitor','trouper','veteran');
 				$awarded += qa_badge_award_check($badges, $user['tdv'], $uid, null, 0);
