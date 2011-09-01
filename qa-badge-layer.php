@@ -296,7 +296,7 @@
 				
 				$badges = array('notable_question','popular_question','famous_question');
 
-				qa_badge_award_check($badges, $views, $uid, $oid,null,2);
+				qa_badge_award_check($badges, $views, $uid, $oid,2);
 
 			
 				// personal view count increase and badge check
