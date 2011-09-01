@@ -216,7 +216,7 @@
 		{
 			qa_html_theme_base::body_prefix();
 			
-			if (qa_opt('badge_active')) {
+			if (qa_opt('badge_active') && $this->template != 'admin') {
 				$this->badge_notify();
 			}
 			
@@ -569,6 +569,7 @@
 					$userid
 				)
 			);
+			
 			if(count($result) > 0) {
 
 				$notice = '<div class="notify-container">';
