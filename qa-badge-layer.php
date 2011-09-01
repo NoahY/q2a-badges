@@ -439,6 +439,7 @@
 						if(qa_opt('badge_show_source_posts')) {
 							$oids = @$info['oid'];
 						}
+						else $oids = null;
 						
 						$var = qa_opt('badge_'.$slug.'_var');
 						$desc = qa_badge_desc_replace($slug,$var,$name);
