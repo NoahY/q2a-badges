@@ -62,7 +62,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			else if (qa_clicked('badge_award_button')) {
 				if((bool)qa_post_text('badge_award_delete')) {
 					qa_db_query_sub(
-						'DROP TABLE ^userbadges'
+						'DROP TABLE IF EXISTS ^userbadges'
 					);
 					qa_db_query_sub(
 						'CREATE TABLE ^userbadges ('.
