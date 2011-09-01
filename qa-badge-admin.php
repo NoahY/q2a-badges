@@ -393,13 +393,13 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			$awarded = 0;
 			$users;
 		
-			$post_result = qa_db_read_all_assoc(
-				qa_db_query_sub(
-					'SELECT * FROM ^posts'
-				)
+			$temp = qa_db_query_sub(
+				'SELECT * FROM ^posts'
 			);
-			
-			foreach ($post_result as $post) {
+
+			$post_result = qa_db_read_all_assoc($temp);
+
+			foreach ($post_result as $idx => $post) {
 				if(!$post['userid']) continue;
 				$user='user'.$post['userid'];
 				$pid = $post['postid'];
@@ -425,18 +425,17 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					'id'=>$pid,
 					'views'=>$post['views']
 				);
-				 
+				unset($post_result[$idx]);
 			} 
-			
+
 		//votes received and given out
-	
 
 			$voter = qa_db_read_all_assoc(
 				qa_db_query_sub(
 					'SELECT userid,qupvotes,qdownvotes,aupvotes,adownvotes,upvoteds FROM ^userpoints'
 				)
 			);
-			foreach ($voter as $votes) {
+			foreach ($voter as $idx => $votes) {
 				$user='user'.$votes['userid'];
 				
 				// votes
@@ -446,7 +445,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				// voteds
 				
 				$users[$user]['voted'] = (int)$votes['upvoteds'];
-				
+				unset($voter[$idx]);
 			} 
 
 		// flags
@@ -457,13 +456,14 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				)
 			);
 
-			foreach ($flag_result as $flag) {
+			foreach ($flag_result as $idx => $flag) {
 				$user='user'.$flag;
 				
 				// get flag count
 				
 				if(isset($users[$user]) && isset($users[$user]['flags'])) $users[$user]['flags']++;
 				else $users[$user]['flags'] = 1;
+				unset($flag_result[$idx]);
 			}
 			
 		// per user loop
@@ -591,9 +591,8 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$awarded += qa_badge_award_check($badges, $flags, $uid, null, 0);
 
 				}
+				unset($users[$user]);
 			}
-
-
 
 		// selects, selecteds
 			
@@ -603,7 +602,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				)
 			);
 			
-			foreach($selects as $s) {
+			foreach($selects as $idx => $s) {
 
 				$uid = $s['userid'];
 
@@ -622,6 +621,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
 
 				}
+				unset($selects[$idx]);
 			}
 			
 		// badges
@@ -634,13 +634,14 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			
 			$users = array();
 			
-			foreach ($badgelist as $medal) {
+			foreach ($badgelist as $idx => $medal) {
 				$user='user'.$medal;
 				
 				// get badge count
 				
 				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals']++;
 				else $users[$user]['medals'] = 1;
+				unset($badgelist[$idx]);
 			} 
 			foreach($users as $user => $data) {
 				$uid = (int)substr($user,4);
@@ -657,6 +658,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
 
 				}
+				unset($users[$user]);
 			}
 			
 		// achievements table
@@ -669,7 +671,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				)
 			);
 			
-			foreach ($users as $user) {
+			foreach ($users as $idx => $user) {
 
 				$uid = $user['uid'];
 
@@ -709,6 +711,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				
 				$badges = array('100_club','1000_club','10000_club');
 				$awarded += qa_badge_award_check($badges, $user['points'], $uid, null, 0);			
+				unset($users[$idx]);
 			}
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
