@@ -586,7 +586,7 @@
 				// remove notification flag
 				
 				qa_db_query_sub(
-					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify=1',
+					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify>=1',
 					$userid
 				);
 				$this->output($notice);
