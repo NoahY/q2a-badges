@@ -293,7 +293,7 @@
 		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
-	function qa_badge_desc_replace($slug,$var) {
+	function qa_badge_desc_replace($slug,$var=null) {
 		
 		$desc = qa_badge_lang('badges/'.$slug.'_desc');
 		
