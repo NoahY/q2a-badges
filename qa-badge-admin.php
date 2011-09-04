@@ -28,9 +28,7 @@
 				case 'badge_email_subject':
 					return '[^site_title] ';
 				case 'badge_email_body':
-					return 'Dear ^handle,
-
-You have earned a "^badge_name" badge from ^site_title ^if_post_text="for the following post:
+					return 'Congratulations!  You have earned a "^badge_name" badge from ^site_title ^if_post_text="for the following post:
 
 ^post_title
 ^post_url"
