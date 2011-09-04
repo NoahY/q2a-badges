@@ -295,9 +295,11 @@
 	
 	function qa_badge_desc_replace($slug,$var) {
 		
+		$desc = qa_badge_lang('badges/'.$slug.'_desc');
+		
 		// var replace
 		
-		$desc = str_replace('#',$var,qa_badge_lang('badges/'.$slug.'_desc'));
+		if($var) $desc = str_replace('#',$var,$desc);
 		
 		// other badge reference replace
 		
