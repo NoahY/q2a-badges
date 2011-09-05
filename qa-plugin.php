@@ -17,7 +17,7 @@
 			header('Location: ../../');
 			exit;
 	}
-
+	
 	//	Language support ala qa-base.php
 
 	function qa_badge_lang($identifier) {
