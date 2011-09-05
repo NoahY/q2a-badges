@@ -510,21 +510,8 @@
 		// verified email check for badge 
 		function check_email_award($event,$event_user,$params) {
 			
-			$badge_slug = 'verified';
-			
-			if(qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-				$result = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND badge_slug=$',
-						$event_user, $badge_slug
-					),
-					true
-				);
-				
-				if ($result == null) { // not already awarded this badge
-					$this->award_badge(null, $event_user, $badge_slug);
-				}
-			}
+			$badges = array('verified');
+			qa_badge_award_check($badges, false, $event_user);
 		}
 
 	// check on badges

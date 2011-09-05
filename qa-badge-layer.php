@@ -401,7 +401,7 @@
 			if(count($result) > 0) {
 				
 				$output = '
-			<table>
+			<table class="badge-table">
 				<tbody>
 					<tr>';
 				// count badges
@@ -549,7 +549,7 @@
 
 			return array(				
 				'ok' => ($ok && !isset($error)) ? $ok : null,
-				'style' => 'wide',
+				'style' => 'tall',
 				'tags' => $tags,
 				'title' => qa_badge_lang('badges/badges'),
 				'fields'=>$fields,
