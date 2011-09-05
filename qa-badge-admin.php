@@ -656,21 +656,15 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				unset($users[$user]);
 			}
 
-		// achievements, etc
+		// achievements
 
-			$users = array();
 
-			if(QA_FINAL_EXTERNAL_USERS) {
-				$userq = qa_db_query_sub(
-					'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv,^achievements.posts_edited AS pe, ^userpoints.points AS points FROM ^achievements, ^userpoints WHERE ^achievements.user_id=^userpoints.userid'
-				);
-			}
-			else {
-				// include email verification
-				$userq = qa_db_query_sub(
-					'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv,^achievements.posts_edited AS pe, ^userpoints.points AS points, ^users.flags AS flags FROM ^achievements, ^userpoints, ^users WHERE ^achievements.user_id=^userpoints.userid AND ^achievements.user_id=^users.userid'
-				);
-			}
+			$userq = qa_db_query_sub(
+				'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv,posts_edited AS pe FROM ^achievements'
+			);
+
+
+
 
 			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
 
@@ -706,20 +700,32 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 				$badges = array('regular','old_timer','ancestor');
 				$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0);
-
-			// points
-			
-				$badges = array('100_club','1000_club','10000_club');
-				$awarded += qa_badge_award_check($badges, $user['points'], $uid, null, 0);
-				
-			// verified
-				
-				if(isset($user['flags']) && 1&(int)$user['flags']) {
-					$badges = array('verified');
-					$awarded += qa_badge_award_check($badges, false, $uid, null, 0);				
-				}
 			
 			}
+
+
+		// points
+		
+			$userq = qa_db_query_sub('SELECT userid, points FROM ^userpoints');
+			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+				$badges = array('100_club','1000_club','10000_club');
+				$awarded += qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0);
+			}
+				
+		// verified
+
+			if(!QA_FINAL_EXTERNAL_USERS) {
+
+				$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
+				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+					qa_error_log($user);
+					$badges = array('verified');
+					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
+				}
+			}
+			
+		// return ok text
+		
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
 		}
 	}
