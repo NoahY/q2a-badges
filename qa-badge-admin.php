@@ -718,7 +718,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 				$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
 				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-					qa_error_log($user);
 					$badges = array('verified');
 					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
 				}
