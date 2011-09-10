@@ -450,7 +450,7 @@
 								<tr>
 									<td class="badge-container">
 										<div class="badge-container-badge">
-											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.$name.'</span>
+											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'</span>
 											<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
 										</div>';
 						
@@ -480,7 +480,7 @@
 								
 								$length = 30;
 								
-								$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
+								$text = (strlen($title) > $length ? mb_substr($title,0,$length).'...' : $title);
 								
 								$output .= '
 											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.qa_html($text).'</a></div>';
