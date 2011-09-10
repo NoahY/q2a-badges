@@ -488,7 +488,7 @@
 								$text = (strlen($title) > $length ? substr($title,0,$length).'...' : $title);
 								
 								$output .= '
-											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.$text.'</a></div>';
+											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.qa_html($text).'</a></div>';
 							}
 							
 						}
