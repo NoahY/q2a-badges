@@ -471,7 +471,7 @@
 									$oid = $post['parentid'];
 									$title = qa_db_read_one_value(
 										qa_db_query_sub(
-											'SELECT BINARY title FROM ^posts WHERE postid=#',
+											'SELECT BINARY title as title FROM ^posts WHERE postid=#',
 											$oid
 										),
 										true
