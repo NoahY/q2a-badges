@@ -459,14 +459,9 @@
 							$output .= '
 										<div class="badge-container-sources-'.$slug.'" style="display:none">';
 							foreach($oids as $oid) {
-								$post = qa_db_read_one_assoc(
-									qa_db_query_sub(
-										'SELECT title,type,parentid FROM ^posts WHERE postid=#',
-										$oid
-									),
-									true
-								);
-								
+								$post = qa_db_select_with_pending(
+									qa_db_full_post_selectspec(null, $oid)
+								);								
 								$title=$post['title'];
 								
 								$anchor = '';
