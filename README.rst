@@ -20,6 +20,7 @@ Features
 - badge system may be deactivated via admin page
 - badges may be individually deactivated via admin page
 - full translation table available (see `Translation`_ below)
+- all css fully customizable
 
 ------------
 Installation
