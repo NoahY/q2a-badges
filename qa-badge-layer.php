@@ -119,96 +119,7 @@
 			qa_html_theme_base::head_css();
 			if (qa_opt('badge_active')) {
 				$this->output('
-				<style>
-					.notify-container {
-						left: 0;
-						right: 0;
-						top: 0;
-						padding: 0;
-						position: fixed;
-						width: 100%;
-						z-index: 10000;
-					}
-					.badge-notify {
-						background-color: #F6DF30;
-						color: #444444;
-						font-weight: bold;
-						width: 100%;
-						text-align: center;
-						font-family: sans-serif;
-						font-size: 14px;
-						padding: 10px 0;
-						position:relative;
-					}
-					.notify-close {
-						color: #735005;
-						cursor: pointer;
-						font-size: 18px;
-						line-height: 18px;
-						padding: 0 3px;
-						position: absolute;
-						right: 8px;
-						text-decoration: none;
-						top: 8px;
-					}				
-					.badge-table {
-					}
-					.badge-table-col {
-						vertical-align:top;
-					}
-					.badge-bronze,.badge-silver, .badge-gold {
-						margin-right:4px;
-						color: #000;
-						font-weight:bold;
-						text-align:center;
-						border-radius:4px;
-						width:120px;
-						padding: 0 10px;
-						display: inline-block;
-					}
-					.badge-bronze {
-						background-color: #CB9114;
-						border:2px solid #6C582C;
-					}				
-					.badge-silver {
-						background-color: #CDCDCD;
-						border:2px solid #737373;
-					}				
-					.badge-gold {
-						background-color: #EEDD0F;
-						border:2px solid #5F5908;
-					}				
-					.badge-bronze-medal, .badge-silver-medal, .badge-gold-medal  {
-						font-size: 14px;
-						font-family:sans-serif;
-					}
-					.badge-bronze-medal {
-						color: #CB9114;
-					}				
-					.badge-silver-medal {
-						color: #CDCDCD;
-					}				
-					.badge-gold-medal {
-						color: #EEDD0F;
-					}
-					.badge-pointer {
-						cursor:pointer;
-					}				
-					.badge-desc {
-						padding-left:8px;
-					}			
-					.badge-count {
-						font-weight:bold;
-					}			
-					.badge-count-link {
-						cursor:pointer;
-						color:#992828;
-					}			
-					.badge-source {
-						text-align:center;
-						padding:0;
-					}			
-				</style>');
+				<style>',qa_opt('badge_css'),'</style>');
 			}
 		}
 
@@ -378,7 +289,7 @@
 		}
 
 		function user_badge_form() {
-
+			qa_error_log($this->content);
 			// displays badge list in user profile
 			
 			global $qa_request;
