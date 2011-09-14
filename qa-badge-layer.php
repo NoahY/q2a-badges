@@ -119,7 +119,7 @@
 			qa_html_theme_base::head_css();
 			if (qa_opt('badge_active')) {
 				$this->output('
-				<style>',qa_opt('badge_css'),'</style>');
+				<style>',qa_opt('badges_css'),'</style>');
 			}
 		}
 
