@@ -267,7 +267,9 @@
 			if($event_user) $this->check_voter($event_user,$oid);
 
 			// post owner upvotes check
-
+			
+			if($this->poll) return; // poll plugin integration
+			
 			$badges = array('nice_answer','good_answer','great_answer');
 
 			foreach($badges as $badge_slug) {
