@@ -289,7 +289,6 @@
 		}
 
 		function user_badge_form() {
-			qa_error_log($this->content);
 			// displays badge list in user profile
 			
 			global $qa_request;
