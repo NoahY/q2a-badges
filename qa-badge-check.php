@@ -268,7 +268,7 @@
 
 			// post owner upvotes check
 			
-			if($this->poll) return; // poll plugin integration
+			if(@$this->poll) return; // poll plugin integration
 			
 			$badges = array('nice_answer','good_answer','great_answer');
 
