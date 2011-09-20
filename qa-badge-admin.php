@@ -70,9 +70,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 	text-decoration: none;
 	top: 8px;
 }				
-.badge-table {
-}
-.badge-table-col {
+#badge-form td {
 	vertical-align:top;
 }
 .badge-bronze,.badge-silver, .badge-gold {
