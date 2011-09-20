@@ -310,10 +310,6 @@
 			
 			if(count($result) > 0) {
 				
-				$output = '
-			<table class="badge-table">
-				<tbody>
-					<tr>';
 				// count badges
 				
 				$badges = array();
@@ -327,12 +323,12 @@
 				}
 				
 				foreach($badges as $type => $badge) {
+
 					$typea = qa_get_badge_type($type);
 					$types = $typea['slug'];
 					$typed = $typea['name'];
 
-					$output .= '
-						<td class="badge-table-col">
+					$output = '
 							<table>
 								<tr>
 									<td class="qa-form-wide-label">
@@ -340,6 +336,7 @@
 									</td>
 								</tr>';				
 					foreach($badge as $slug => $info) {
+						
 						$badge_name=qa_badge_lang('badges/'.$slug);
 						if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 						$name = qa_opt('badge_'.$slug.'_name');
@@ -402,16 +399,13 @@
 								</tr>';
 					}
 					$output .= '
-							</table>
-						</td>';
+							</table>';
+					
+					$outa[] = $output;
 				}
-				$output .= '
-					</tr>
-				</tbody>
-			</table>';
 
 				$fields[] = array(
-						'label' => $output,
+						'label' => implode('</td><td class="qa-form-wide-label">',$outa),
 						'type' => 'static',
 				);
 			}
@@ -431,7 +425,7 @@
 
 				$select = (bool)qa_opt('badge_email_notify_id_'.$userid);
 				
-				$tags = 'action="'.qa_self_html().'#signature_text" method="POST"';
+				$tags = 'id="badge-form" action="'.qa_self_html().'#signature_text" method="POST"';
 				
 				$fields[] = array(
 					'type' => 'blank',
@@ -454,7 +448,7 @@
 
 			return array(				
 				'ok' => ($ok && !isset($error)) ? $ok : null,
-				'style' => 'tall',
+				'style' => 'wide',
 				'tags' => $tags,
 				'title' => qa_badge_lang('badges/badges'),
 				'fields'=>$fields,
