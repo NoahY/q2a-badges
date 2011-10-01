@@ -27,7 +27,7 @@
 				);
 				$usera = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT points FROM ^userpoints WHERE ^achievements.user_id=# ',
+						'SELECT points FROM ^userpoints WHERE userid=# ',
 						$userid
 					),
 					true
