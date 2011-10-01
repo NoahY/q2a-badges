@@ -20,11 +20,20 @@
 				
 				$user = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv, ^userpoints.points AS points FROM ^achievements, ^userpoints WHERE ^achievements.user_id=^userpoints.userid AND ^achievements.user_id=# ',
+						'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv FROM ^achievements WHERE ^achievements.user_id=# ',
 						$userid
 					),
 					true
 				);
+				$usera = @qa_db_read_one_assoc(
+					qa_db_query_sub(
+						'SELECT points FROM ^userpoints WHERE ^achievements.user_id=# ',
+						$userid
+					),
+					true
+				);
+				
+				if($usera) $user = array_merge($user, $usera);
 
 				if(!$user['uid']) {
 					qa_db_query_sub(
