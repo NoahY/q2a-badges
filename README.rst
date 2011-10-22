@@ -9,7 +9,7 @@ This is a plugin for **Question2Answer** that provides basic badge functionality
 --------
 Features
 --------
-- currently 55 badges implemented (see `Badge List`_ below)
+- currently 57 badges implemented (see `Badge List`_ below)
 - badges are categorized into types (e.g. gold, silver, bronze)
 - badge notification system triggers jquery notice when awardee accesses the site
 - option to notify users of badge awarding by email (fully customizable)
@@ -88,6 +88,8 @@ Badge List
 Level [#]_   Title                  Description
 ==========   =================      ========================================
 1            Verified Human         Successfully verified email address
+1            Autobiographer         Filled out all profile fields
+1            Photogenic             Uploaded an avatar image
 
 1            Nice Question          Question received +# upvote
 2            Good Question          Question received +# upvote
