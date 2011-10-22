@@ -121,6 +121,7 @@
 					// when a user saves (and has possibly changed) their Q2A account details.
 						// check for full details
 					case 'u_save':
+						$this->check_user_fields($userid,$params);
 						break;
 
 					// when a user sets (and has possibly changed) their Q2A password.
@@ -514,6 +515,39 @@
 			
 			$badges = array('verified');
 			qa_badge_award_check($badges, false, $event_user);
+		}
+		
+		// user field changes
+		function check_user_fields($userid,$params) {
+			list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
+				qa_db_user_account_selectspec($userid, true),
+				qa_db_user_profile_selectspec($userid, true),
+				qa_db_userfields_selectspec()
+			);
+				
+			// avatar badge
+			
+			if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
+				$badges = array('avatar');
+				qa_badge_award_check($badges, false, $userid);				
+			}
+			
+			// profile completion
+			
+			$missing = false;
+			
+			foreach ($userfields as $userfield) {
+				if(!$userprofile[$userfield['title']]) {
+					$missing = true;
+					break;
+				}
+			}
+			
+			if(!$missing) {
+				$badges = array('profiler');
+				qa_badge_award_check($badges, false, $userid);			
+			}
+			
 		}
 
 	// check on badges

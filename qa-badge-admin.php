@@ -821,15 +821,53 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				$awarded += qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0);
 			}
 				
-		// verified
 
 			if(!QA_FINAL_EXTERNAL_USERS) {
+
+				// verified
 
 				$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
 				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
 					$badges = array('verified');
 					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
 				}
+
+				list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
+					qa_db_user_account_selectspec($userid, true),
+					qa_db_user_profile_selectspec($userid, true),
+					qa_db_userfields_selectspec()
+				);
+					
+				$userq = qa_db_query_sub('SELECT userid FROM ^users');
+				
+				// profile stuff
+
+				while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
+					
+					// avatar badge
+					
+					if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
+						$badges = array('avatar');
+						qa_badge_award_check($badges, false, $userid);				
+					}
+					
+					// profile completion
+					
+					$missing = false;
+					
+					foreach ($userfields as $userfield) {
+						if(!$userprofile[$userfield['title']]) {
+							$missing = true;
+							break;
+						}
+					}
+					
+					if(!$missing) {
+						$badges = array('profiler');
+						qa_badge_award_check($badges, false, $userid);			
+					}
+				}
+
 			}
 			
 		// return ok text

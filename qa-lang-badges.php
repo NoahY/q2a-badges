@@ -83,6 +83,8 @@
 		'olympian'=>'Olympian',
 
 		'verified'=>'Verified Human',
+		'profiler'=>'Autobiographer',
+		'avatar'=>'Photogenic',
 		
 	
 
@@ -166,6 +168,8 @@
 		'olympian_desc'=>'Received total of # badges',
 
 		'verified_desc'=>'Successfully verified email address',
+		'profiler_desc'=>'Filled out all profile fields',
+		'avatar_desc'=>'Uploaded an avatar image',
 
 
 		
