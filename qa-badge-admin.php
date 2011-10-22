@@ -848,7 +848,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					
 					if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
 						$badges = array('avatar');
-						qa_badge_award_check($badges, false, $userid, null, 0);				
+						$awarded += qa_badge_award_check($badges, false, $userid, null, 0);				
 					}
 					
 					// profile completion
@@ -864,7 +864,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					
 					if(!$missing) {
 						$badges = array('profiler');
-						qa_badge_award_check($badges, false, $userid, null, 0);			
+						$awarded += qa_badge_award_check($badges, false, $userid, null, 0);			
 					}
 				}
 
