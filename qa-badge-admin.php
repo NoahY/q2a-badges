@@ -832,11 +832,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
 				}
 
-				list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
-					qa_db_user_account_selectspec($userid, true),
-					qa_db_user_profile_selectspec($userid, true),
-					qa_db_userfields_selectspec()
-				);
 					
 				$userq = qa_db_query_sub('SELECT userid FROM ^users');
 				
@@ -844,6 +839,12 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 				while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
 					
+					list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
+						qa_db_user_account_selectspec($userid, true),
+						qa_db_user_profile_selectspec($userid, true),
+						qa_db_userfields_selectspec()
+					);
+
 					// avatar badge
 					
 					if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
