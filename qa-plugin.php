@@ -84,9 +84,11 @@
 		
 		$badges = array();
 
-		$badges['verified'] = array('type'=>0);
-		$badges['profiler'] = array('type'=>0);
-		$badges['avatar'] = array('type'=>0);
+		if(!QA_FINAL_EXTERNAL_USERS) {
+			$badges['verified'] = array('type'=>0);
+			$badges['profiler'] = array('type'=>0);
+			$badges['avatar'] = array('type'=>0);
+		}
 
 		$badges['nice_question'] = array('var'=>2, 'type'=>0);
 		$badges['good_question'] = array('var'=>5, 'type'=>1);
