@@ -832,10 +832,9 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
 				}
 
-					
-				$userq = qa_db_query_sub('SELECT userid FROM ^users');
-				
 				// profile stuff
+
+				$userq = qa_db_query_sub('SELECT userid FROM ^users');
 
 				while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
 					
