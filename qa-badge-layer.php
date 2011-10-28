@@ -99,6 +99,35 @@
 				qa_badge_award_check($badges, $user['points'], $userid,null,2);	
 			}
 		}
+	
+	// init before start
+
+	function doctype() {
+		if($this->template == 'user') {
+			if(!isset($this->content['navigation']['sub'])) {
+				$this->content['navigation']['sub'] = array(
+					'profile' => array(
+						'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
+						'label' => $this->_user_handle(),
+						'selected' => !qa_get('tab')?true:false
+					),
+					'badges' => array(
+						'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+						'label' => qa_badge_lang('badges/badges'),
+						'selected' => qa_get('tab')=='badges'?true:false
+					),
+				);
+			}
+			else {
+				$this->content['navigation']['sub']['badges'] = array(
+					'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+					'label' => qa_badge_lang('badges/badges'),
+					'selected' => qa_get('tab')=='badges'?true:false
+				);
+			}
+		}
+		qa_html_theme_base::doctype();
+	}
 		
 	// theme replacement functions
 
@@ -153,33 +182,9 @@
 
 		function main_parts($content)
 		{
-			if (qa_opt('badge_active')) {
-			
-				if($this->template == 'user') {
-
-					if((bool)qa_opt('badge_admin_user_field')) { 
-
-					// add user badge list
-
-						if($content['q_list']) {  // paranoia
-						
-							$keys = array_keys($content);
-							$vals = array_values($content);
-
-							$insertBefore = array_search('q_list', $keys);
-
-							$keys2 = array_splice($keys, $insertBefore);
-							$vals2 = array_splice($vals, $insertBefore);
-
-							$keys[] = 'form-badges-list';
-							$vals[] = $this->user_badge_form();
-
-							$content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
-						}
-						else $content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
-					}
-				}
-					
+			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && qa_get('tab')=='badges') { 
+					$content = array();
+					$content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
 			}
 
 			qa_html_theme_base::main_parts($content);
