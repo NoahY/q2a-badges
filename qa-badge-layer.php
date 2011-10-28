@@ -538,6 +538,11 @@
 			if (!isset($userid)) return;
 			return $userid;
 		}
-		
+		// grab the handle of the profile you're looking at
+		function _user_handle()
+		{
+			preg_match( '#user/([^/]+)#', $this->request, $matches );
+			return !empty($matches[1]) ? $matches[1] : null;
+		}		
 	}
 	
