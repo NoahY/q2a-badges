@@ -258,6 +258,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
 
 						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget_q_item'));
 						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 
 						qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
@@ -354,6 +355,13 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					'label' => qa_badge_lang('badges/badge_admin_user_widget'),
 					'tags' => 'NAME="badge_admin_user_widget"',
 					'value' => (bool)qa_opt('badge_admin_user_widget'),
+					'type' => 'checkbox',
+				);
+
+				$fields[] = array(
+					'label' => qa_badge_lang('badges/badge_admin_user_widget_q_item'),
+					'tags' => 'NAME="badge_admin_user_widget_q_item"',
+					'value' => (bool)qa_opt('badge_admin_user_widget_q_item'),
 					'type' => 'checkbox',
 				);
 
