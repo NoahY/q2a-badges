@@ -194,7 +194,7 @@
 		function post_meta_who($post, $class)
 		{
 			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_user_widget') && isset($post['who'])) {
-				$handle = preg_replace('/<[^>]+>/','',$post['who']['data']); // this gets the 'who', not necessarily the post userid!
+				$handle = preg_replace('|.+user/([^"]+)".+|','$1',$post['who']['data']);
 				$post['who']['suffix'] = (@$post['who']['suffix']).'&nbsp;'.$this->user_badge_widget($handle);
 			}
 			
