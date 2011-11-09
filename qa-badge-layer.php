@@ -131,8 +131,8 @@
 		
 	// theme replacement functions
 
-		function head_script() {
-			qa_html_theme_base::head_script();
+		function head_custom() {
+			qa_html_theme_base::head_custom();
 
 			if (qa_opt('badge_active')) {
 				$this->output("
@@ -150,6 +150,8 @@
 						jQuery('#badge_'+slug+'_edit').focus();
 					}
 				</script>");
+				$this->output('
+				<style>',qa_opt('badges_css'),'</style>');
 			}
 		}
 		function head_css()
