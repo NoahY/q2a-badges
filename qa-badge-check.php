@@ -556,7 +556,7 @@
 			$medals = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT user_id FROM ^userbadges WHERE user_id=#',
-					$user_id
+					$uid
 				)
 			);
 
@@ -589,8 +589,8 @@
 			
 			qa_db_query_sub(
 				'INSERT INTO ^userbadges (awarded_at, notify, object_id, user_id, badge_slug, id) '.
-				'VALUES (NOW(), #, #, #, #, 0)',
-				1, $object_id, $user_id, $badge_slug
+				'VALUES (NOW(), 1, #, #, $, 0)',
+				$object_id, $user_id, $badge_slug
 			);
 			qa_badge_notification($user_id, $object_id, $badge_slug);		
 			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
