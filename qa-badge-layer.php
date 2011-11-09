@@ -20,14 +20,14 @@
 				
 				$user = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv FROM ^achievements WHERE ^achievements.user_id=# ',
+						'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv FROM ^achievements WHERE user_id=#',
 						$userid
 					),
 					true
 				);
 				$usera = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT points FROM ^userpoints WHERE userid=# ',
+						'SELECT points FROM ^userpoints WHERE userid=#',
 						$userid
 					),
 					true
@@ -150,14 +150,6 @@
 						jQuery('#badge_'+slug+'_edit').focus();
 					}
 				</script>");
-				$this->output('
-				<style>',qa_opt('badges_css'),'</style>');
-			}
-		}
-		function head_css()
-		{
-			qa_html_theme_base::head_css();
-			if (qa_opt('badge_active')) {
 				$this->output('
 				<style>',qa_opt('badges_css'),'</style>');
 			}
