@@ -193,7 +193,9 @@
 		'badges_total'=>'total badges',
 		
 		'badge_notify'=>'Congratulations!  You\'ve earned a badge ',
-		'badge_notify_profile_pre'=>'Check it out at ',
+		'badge_notify_multi_plural'=>'and # other badges!',
+		'badge_notify_multi_singular'=>'and 1 other badge!',
+		'badge_notify_profile_pre'=>'Check out ',
 		'badge_notify_profile'=>'your profile',
 		
 		'badge_names_reset'=>'Badge names reset.',

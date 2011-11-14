@@ -591,64 +591,65 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					'Q' => array('nice_question','good_question','great_question'),
 					'A' => array('nice_answer','good_answer','great_answer')
 				);
-
-				foreach($badges as $pt => $slugs) {
-					foreach($slugs as $badge_slug) {
-						if(!isset($data[$pt.'votes'])) continue;
-						foreach($data[$pt.'votes'] as $idv) {
-							
-							// poll plugin integration
-							
-							if($pt == 'A' && qa_opt('poll_enable')) {
-								$poll = qa_db_read_one_value(
-									qa_db_query_sub(
-										'SELECT meta_value FROM ^postmeta WHERE post_id=# AND meta_key=$',
-										$idv['id'], 'is_poll'
-									),
-									true
-								);
-								if($poll) continue;								
-							}
-							
-							if((int)$idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
-
-								$result = qa_db_read_one_value(
-									qa_db_query_sub(
-										'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-										$uid, $idv['id'], $badge_slug
-									),
-									true
-								);
-
-								if ($result == null) { // not already awarded this badge
-									$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
-									$awarded++;
+				if($this->badge_activated($badges)) {
+					foreach($badges as $pt => $slugs) {
+						foreach($slugs as $badge_slug) {
+							if(!isset($data[$pt.'votes'])) continue;
+							foreach($data[$pt.'votes'] as $idv) {
+								
+								// poll plugin integration
+								
+								if($pt == 'A' && qa_opt('poll_enable')) {
+									$poll = qa_db_read_one_value(
+										qa_db_query_sub(
+											'SELECT meta_value FROM ^postmeta WHERE post_id=# AND meta_key=$',
+											$idv['id'], 'is_poll'
+										),
+										true
+									);
+									if($poll) continue;								
 								}
+								
+								if((int)$idv['votes'] >= (int)qa_opt('badge_'.$badge_slug.'_var') && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
 
-							// old question answer vote checks
-								if($pt == 'A') {
-									$qid = $idv['parentid'];
-									$create = strtotime($idv['created']);
+									$result = qa_db_read_one_value(
+										qa_db_query_sub(
+											'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+											$uid, $idv['id'], $badge_slug
+										),
+										true
+									);
 
-									$parent = $this->get_post_data($qid);
-									$pcreate = strtotime($parent['created']);
+									if ($result == null) { // not already awarded this badge
+										$this->award_badge($idv['id'], $uid, $badge_slug,false,true);
+										$awarded++;
+									}
 
-									$diff = round(abs($pcreate-$create)/60/60/24);
+								// old question answer vote checks
+									if($pt == 'A') {
+										$qid = $idv['parentid'];
+										$create = strtotime($idv['created']);
+
+										$parent = $this->get_post_data($qid);
+										$pcreate = strtotime($parent['created']);
+
+										$diff = round(abs($pcreate-$create)/60/60/24);
 
 
-									$badge_slug2 = $badge_slug.'_old';
+										$badge_slug2 = $badge_slug.'_old';
 
-									if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var') && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
-										$result = qa_db_read_one_value(
-											qa_db_query_sub(
-												'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
-												$uid, $idv['id'], $badge_slug2
-											),
-											true
-										);
-										if ($result == null) { // not already awarded for this answer
-											$this->award_badge($idv['id'], $uid, $badge_slug2);
-											$awarded++;
+										if($diff  >= (int)qa_opt('badge_'.$badge_slug2.'_var') && qa_opt('badge_'.$badge_slug2.'_enabled') !== '0') {
+											$result = qa_db_read_one_value(
+												qa_db_query_sub(
+													'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND object_id=# AND badge_slug=$',
+													$uid, $idv['id'], $badge_slug2
+												),
+												true
+											);
+											if ($result == null) { // not already awarded for this answer
+												$this->award_badge($idv['id'], $uid, $badge_slug2);
+												$awarded++;
+											}
 										}
 									}
 								}
@@ -656,7 +657,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						}
 					}
 				}
-
+				
 				// votes per user badges
 
 				if(isset($data['votes'])) {
@@ -707,179 +708,201 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			}
 
 		// selects, selecteds
+			
+			$badges = array('gifted','wise','enlightened','grateful','respectful','reverential');
+			
+			if($this->badge_activated($badges)) {
+				$selects = qa_db_read_all_assoc(
+					qa_db_query_sub(
+						'SELECT aselects, aselecteds, userid FROM ^userpoints'
+					)
+				);
 
-			$selects = qa_db_read_all_assoc(
-				qa_db_query_sub(
-					'SELECT aselects, aselecteds, userid FROM ^userpoints'
-				)
-			);
+				foreach($selects as $idx => $s) {
 
-			foreach($selects as $idx => $s) {
+					$uid = $s['userid'];
 
-				$uid = $s['userid'];
+					if(isset($s['aselecteds'])) {
+						$count = $s['aselects'];
+						$badges = array('gifted','wise','enlightened');
 
+						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
 
-				if(isset($s['aselecteds'])) {
-					$count = $s['aselects'];
-					$badges = array('gifted','wise','enlightened');
+					}
+					if(isset($s['aselects'])) {
+						$count = $s['aselects'];
+						$badges = array('grateful','respectful','reverential');
 
-					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
 
+					}
+					unset($selects[$idx]);
 				}
-				if(isset($s['aselects'])) {
-					$count = $s['aselects'];
-					$badges = array('grateful','respectful','reverential');
-
-					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
-
-				}
-				unset($selects[$idx]);
 			}
 
 		// badges
 
-			$badgelist = qa_db_read_all_values(
-				qa_db_query_sub(
-					'SELECT user_id FROM ^userbadges'
-				)
-			);
+			$badges = array('medalist','champion','olympian');
+			
+			if($this->badge_activated($badges)) {
+				$badgelist = qa_db_read_all_values(
+					qa_db_query_sub(
+						'SELECT user_id FROM ^userbadges'
+					)
+				);
 
-			$users = array();
+				$users = array();
 
-			foreach ($badgelist as $idx => $medal) {
-				$user='user'.$medal;
+				foreach ($badgelist as $idx => $medal) {
+					$user='user'.$medal;
 
-				// get badge count
+					// get badge count
 
-				if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals']++;
-				else $users[$user]['medals'] = 1;
-				unset($badgelist[$idx]);
-			}
-			foreach($users as $user => $data) {
-				$uid = (int)substr($user,4);
-
-				// check badges
-
-				if(isset($data['medals'])) {
+					if(isset($users[$user]) && isset($users[$user]['medals'])) $users[$user]['medals']++;
+					else $users[$user]['medals'] = 1;
+					unset($badgelist[$idx]);
+				}
+				foreach($users as $user => $data) {
 					$uid = (int)substr($user,4);
 
-					$count = $data['medals'];
+					// check badges
 
-					$badges = array('medalist','champion','olympian');
+					if(isset($data['medals'])) {
+						$uid = (int)substr($user,4);
 
-					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+						$count = $data['medals'];
 
+						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+
+					}
+					unset($users[$user]);
 				}
-				unset($users[$user]);
 			}
 
 		// achievements
+			$badges = array('dedicated','devoted','zealous','visitor','trouper','veteran','regular','old_timer','ancestor','reader','avid_reader','devoted_reader');
 
+			if($this->badge_activated($badges)) {
+				$userq = qa_db_query_sub(
+					'SELECT user_id AS uid,questions_read AS qr,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv,posts_edited AS pe FROM ^achievements'
+				);
 
-			$userq = qa_db_query_sub(
-				'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv,posts_edited AS pe FROM ^achievements'
-			);
+				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
 
+					$uid = $user['uid'];
 
+				// edits
 
+					$count = $user['pe'];
+					$badges = array('editor','copy_editor','senior_editor');
 
-			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
 
-				$uid = $user['uid'];
+				// on-sign-in badges
 
-			// edits
+					// check lapse in days since last visit
+					// using julian days
 
-				$count = $user['pe'];
-				$badges = array('editor','copy_editor','senior_editor');
+					$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
 
-				$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+					$last_visit = strtotime($user['lv']);
+					$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+					$last_diff = $todayj-$lastj;
 
-			// on-sign-in badges
+					$first_visit = strtotime($user['fv']);
+					$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+					$first_visit_diff = $todayj-$first_visitj;
 
-				// check lapse in days since last visit
-				// using julian days
+					$badges = array('dedicated','devoted','zealous');
+					$awarded += qa_badge_award_check($badges, $user['lcv'], $uid, null, 0);
 
-				$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
+					$badges = array('visitor','trouper','veteran');
+					$awarded += qa_badge_award_check($badges, $user['tdv'], $uid, null, 0);
 
-				$last_visit = strtotime($user['lv']);
-				$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
-				$last_diff = $todayj-$lastj;
-
-				$first_visit = strtotime($user['fv']);
-				$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
-				$first_visit_diff = $todayj-$first_visitj;
-
-				$badges = array('dedicated','devoted','zealous');
-				$awarded += qa_badge_award_check($badges, $user['lcv'], $uid, null, 0);
-
-				$badges = array('visitor','trouper','veteran');
-				$awarded += qa_badge_award_check($badges, $user['tdv'], $uid, null, 0);
-
-				$badges = array('regular','old_timer','ancestor');
-				$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0);
-			
+					$badges = array('regular','old_timer','ancestor');
+					$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0);
+				
+				// views
+				
+					$badges = array('reader','avid_reader','devoted_reader');
+					$awarded += qa_badge_award_check($badges, $user['qr'], $uid,null,2);				
+				}
 			}
 
 
 		// points
 		
-			$userq = qa_db_query_sub('SELECT userid, points FROM ^userpoints');
-			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-				$badges = array('100_club','1000_club','10000_club');
-				$awarded += qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0);
+			$badges = array('100_club','1000_club','10000_club');
+			if($this->badge_activated($badges)) {
+				$userq = qa_db_query_sub('SELECT userid, points FROM ^userpoints');
+				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+					$awarded += qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0);
+				}
 			}
-				
 
 			if(!QA_FINAL_EXTERNAL_USERS) {
 
 				// verified
 
-				$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
-				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-					$badges = array('verified');
-					$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
+				$badges = array('verified');
+				if($this->badge_activated($badges)) {
+					$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
+					while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+						$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
+					}
 				}
 
 				// profile stuff
 
-				$userq = qa_db_query_sub('SELECT userid FROM ^users');
+				$badges = array('avatar','profiler');
+				if($this->badge_activated($badges)) {
+					$userq = qa_db_query_sub('SELECT userid FROM ^users');
 
-				while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
-					
-					list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
-						qa_db_user_account_selectspec($userid, true),
-						qa_db_user_profile_selectspec($userid, true),
-						qa_db_userfields_selectspec()
-					);
+					while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
+						
+						list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
+							qa_db_user_account_selectspec($userid, true),
+							qa_db_user_profile_selectspec($userid, true),
+							qa_db_userfields_selectspec()
+						);
 
-					// avatar badge
-					
-					if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
-						$badges = array('avatar');
-						$awarded += qa_badge_award_check($badges, false, $userid, null, 0);				
-					}
-					
-					// profile completion
-					
-					$missing = false;
-					
-					foreach ($userfields as $userfield) {
-						if(!$userprofile[$userfield['title']]) {
-							$missing = true;
-							break;
+						// avatar badge
+						
+						if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
+							$badges = array('avatar');
+							$awarded += qa_badge_award_check($badges, false, $userid, null, 0);				
+						}
+						
+						// profile completion
+						
+						$missing = false;
+						
+						foreach ($userfields as $userfield) {
+							if(!$userprofile[$userfield['title']]) {
+								$missing = true;
+								break;
+							}
+						}
+						
+						if(!$missing) {
+							$badges = array('profiler');
+							$awarded += qa_badge_award_check($badges, false, $userid, null, 0);			
 						}
 					}
-					
-					if(!$missing) {
-						$badges = array('profiler');
-						$awarded += qa_badge_award_check($badges, false, $userid, null, 0);			
-					}
 				}
-
 			}
 			
 		// return ok text
 		
 			return $awarded.' badge'.($awarded != 1 ? 's':'').' awarded.';
+		}
+		
+		function badge_activated($badges) {
+			$c = 0;
+			foreach($badges as $slug) {
+				if(qa_opt('badge_'.$slug.'_enabled') !== '0')
+					$c++;
+			}
+			return $c;
 		}
 	}
