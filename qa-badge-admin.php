@@ -587,11 +587,13 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 				// nice Q&A
 
-				$badges = array(
-					'Q' => array('nice_question','good_question','great_question'),
-					'A' => array('nice_answer','good_answer','great_answer')
-				);
+				$badges = array('nice_question','good_question','great_question','nice_answer','good_answer','great_answer');
+				
 				if($this->badge_activated($badges)) {
+					$badges = array(
+						'Q' => array('nice_question','good_question','great_question'),
+						'A' => array('nice_answer','good_answer','great_answer')
+					);
 					foreach($badges as $pt => $slugs) {
 						foreach($slugs as $badge_slug) {
 							if(!isset($data[$pt.'votes'])) continue;
