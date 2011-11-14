@@ -825,7 +825,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				// views
 				
 					$badges = array('reader','avid_reader','devoted_reader');
-					$awarded += qa_badge_award_check($badges, $user['qr'], $uid,null,2);				
+					$awarded += qa_badge_award_check($badges, $user['qr'], $uid,null,0);				
 				}
 			}
 
