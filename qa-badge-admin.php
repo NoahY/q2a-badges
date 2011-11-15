@@ -86,31 +86,31 @@ You may cancel these notices at any time by visiting your profile at the link ab
 .badge-bronze {
 	background-color: #CB9114;
 
-	background-image: -webkit-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #7D693D, #CB9114); 
-	background-image:    -moz-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #7D693D, #CB9114);
-	background-image:     -ms-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #7D693D, #CB9114); 
-	background-image:      -o-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #7D693D, #CB9114); 
-	background-image:         linear-gradient(left center , #CB9114, #EDB336, #CB9114, #7D693D, #CB9114); /* standard, but currently unimplemented */
+	background-image: -webkit-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #A97002, #CB9114); 
+	background-image:    -moz-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #A97002, #CB9114);
+	background-image:     -ms-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #A97002, #CB9114); 
+	background-image:      -o-linear-gradient(left center , #CB9114, #EDB336, #CB9114, #A97002, #CB9114); 
+	background-image:         linear-gradient(left center , #CB9114, #EDB336, #CB9114, #A97002, #CB9114); /* standard, but currently unimplemented */
 
 	border:2px solid #6C582C;
 }				
 .badge-silver {
 	background-color: #CDCDCD;
-	background-image: -webkit-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #848484, #CDCDCD); 
-	background-image:    -moz-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #848484, #CDCDCD); 
-	background-image:     -ms-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #848484, #CDCDCD); 
-	background-image:      -o-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #848484, #CDCDCD); 
-	background-image:         linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #848484, #CDCDCD); /* standard, but currently unimplemented */
+	background-image: -webkit-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #ABABAB, #CDCDCD); 
+	background-image:    -moz-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #ABABAB, #CDCDCD); 
+	background-image:     -ms-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #ABABAB, #CDCDCD); 
+	background-image:      -o-linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #ABABAB, #CDCDCD); 
+	background-image:         linear-gradient(left center , #CDCDCD, #EFEFEF, #CDCDCD, #ABABAB, #CDCDCD); /* standard, but currently unimplemented */
 	border:2px solid #737373;
 }				
 .badge-gold {
 	background-color: #EEDD0F;
-	background-image: -webkit-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #6F6A19, #EEDD0F); 
-	background-image:    -moz-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #6F6A19, #EEDD0F); 
-	background-image:     -ms-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #6F6A19, #EEDD0F); 
-	background-image:      -o-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #6F6A19, #EEDD0F); 
-	background-image:         linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #6F6A19, #EEDD0F); /* standard, but currently unimplemented */
-	border:2px solid #5F5908;
+	background-image: -webkit-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #CCBB0D, #EEDD0F); 
+	background-image:    -moz-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #CCBB0D, #EEDD0F); 
+	background-image:     -ms-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #CCBB0D, #EEDD0F); 
+	background-image:      -o-linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #CCBB0D, #EEDD0F); 
+	background-image:         linear-gradient(left center , #EEDD0F, #FFFF2F, #EEDD0F, #CCBB0D, #EEDD0F); /* standard, but currently unimplemented */
+	border:2px solid #7E7B2A;
 }				
 .badge-bronze-medal, .badge-silver-medal, .badge-gold-medal  {
 	font-size: 14px;
