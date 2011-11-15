@@ -2,12 +2,9 @@
 
 	class qa_html_theme_layer extends qa_html_theme_base {
 
-	// init function, after page loads
-		
-		function finish() {
-			qa_html_theme_base::finish();
-			
-			// process per visit events 
+	// init before start
+
+	function doctype() {
 			
 			if (qa_opt('badge_active')) {
 				
@@ -97,33 +94,30 @@
 				
 				$badges = array('100_club','1000_club','10000_club');
 				qa_badge_award_check($badges, $user['points'], $userid,null,2);	
-			}
-		}
 	
-	// init before start
 
-	function doctype() {
-		if($this->template == 'user') {
-			if(!isset($this->content['navigation']['sub'])) {
-				$this->content['navigation']['sub'] = array(
-					'profile' => array(
-						'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
-						'label' => $this->_user_handle(),
-						'selected' => !qa_get('tab')?true:false
-					),
-					'badges' => array(
+			if($this->template == 'user') {
+				if(!isset($this->content['navigation']['sub'])) {
+					$this->content['navigation']['sub'] = array(
+						'profile' => array(
+							'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
+							'label' => $this->_user_handle(),
+							'selected' => !qa_get('tab')?true:false
+						),
+						'badges' => array(
+							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+							'label' => qa_badge_lang('badges/badges'),
+							'selected' => qa_get('tab')=='badges'?true:false
+						),
+					);
+				}
+				else {
+					$this->content['navigation']['sub']['badges'] = array(
 						'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
 						'label' => qa_badge_lang('badges/badges'),
 						'selected' => qa_get('tab')=='badges'?true:false
-					),
-				);
-			}
-			else {
-				$this->content['navigation']['sub']['badges'] = array(
-					'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-					'label' => qa_badge_lang('badges/badges'),
-					'selected' => qa_get('tab')=='badges'?true:false
-				);
+					);
+				}
 			}
 		}
 		qa_html_theme_base::doctype();
@@ -476,7 +470,6 @@
 					$userid
 				)
 			);
-			
 			if(count($result) > 0) {
 				$notice = '<div class="notify-container">';
 				
@@ -489,7 +482,7 @@
 					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent().hide(\'slow\')">x</div></div>';
 				}
 				else {
-					$number_text = count($results)>2?str_replace('#', count($result)-1, qa_badge_lang('badges/badge_notify_multi_plural')):qa_badge_lang('badges/badge_notify_multi_singular');
+					$number_text = count($result)>2?str_replace('#', count($result)-1, qa_badge_lang('badges/badge_notify_multi_plural')):qa_badge_lang('badges/badge_notify_multi_singular');
 					$slug = $result[0];
 					$badge_name=qa_badge_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
