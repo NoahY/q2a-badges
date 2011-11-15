@@ -157,7 +157,6 @@
 
 		function body_prefix()
 		{
-			error_log('test');
 			qa_html_theme_base::body_prefix();
 			
 			if (qa_opt('badge_active') && $this->template != 'admin') {
