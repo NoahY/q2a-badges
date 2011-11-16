@@ -742,7 +742,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$uid = $s['userid'];
 
 					if(isset($s['aselecteds'])) {
-						$count = $s['aselects'];
+						$count = $s['aselecteds'];
 						$badges = array('gifted','wise','enlightened');
 
 						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
