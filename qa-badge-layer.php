@@ -6,6 +6,7 @@
 
 	function doctype() {
 			
+		qa_html_theme_base::doctype();
 			if (qa_opt('badge_active')) {
 				
 				require_once QA_INCLUDE_DIR.'qa-app-users.php';
@@ -120,7 +121,6 @@
 				}
 			}
 		}
-		qa_html_theme_base::doctype();
 	}
 		
 	// theme replacement functions
