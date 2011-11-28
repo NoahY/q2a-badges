@@ -21,6 +21,9 @@
                 )
             );
             
+            if(empty($badges))
+				return;
+            
             $themeobject->output('<h2>'.qa_badge_lang('badges/badge_widget_title').'</h2>');
 
             foreach ($badges as $badge) {
@@ -44,7 +47,6 @@
 				$desc = qa_badge_desc_replace($slug,$var,$name);
 				
 				$string = '<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'<br/>- '.$badge['handle'].' -</span>';
-                
                 
                 $themeobject->output('<div class="badge-widget-entry" style="padding-top:8px;">',$string,'</div>');
             }
