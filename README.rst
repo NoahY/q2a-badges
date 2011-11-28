@@ -1,5 +1,5 @@
 ==============================
-Question2Answer Badges v 1.0b2
+Question2Answer Badges v 1.1
 ==============================
 -----------
 Description
@@ -19,6 +19,8 @@ Features
 - badge names and requirements are modifiable via admin page
 - badge system may be deactivated via admin page
 - badges may be individually deactivated via admin page
+- logs badge awarding if event logging is enabled (integrates with history plugin)
+- recent badges widget (requires event logging to database)
 - full translation table available (see `Translation`_ below)
 - all css fully customizable
 
