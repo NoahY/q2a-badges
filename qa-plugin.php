@@ -175,6 +175,10 @@
 		return $badges;
 	}
 	
+	function qa_get_badge_type_by_slug($slug) {
+		$badges = qa_get_badge_list();
+		return qa_get_badge_type($badges[$slug]['type']);
+	}
 	function qa_get_badge_type($id) {
 		
 		// badge categories, e.g. bronze, silver, gold
@@ -224,6 +228,17 @@
 					);
 					
 					if(qa_opt('badge_email_notify') && $notify == 1) qa_badge_notification($uid, $oid, $badge_slug);
+					
+					if(qa_opt('event_logger_to_database') && $notify > 0 ) { // add event
+						
+						$handle = qa_getHandleFromId($uid);
+						
+						qa_db_query_sub(
+							'INSERT INTO ^eventlog (datetime, ipaddress, userid, handle, cookieid, event, params) '.
+							'VALUES (NOW(), $, $, $, #, $, $)',
+							qa_remote_ip_address(), $uid, $handle, qa_cookie_get_create(), 'badge_awarded', 'badge_slug='.$badge_slug.($oid?"\t".'postid='.$oid:'')
+						);
+					}
 					
 					$awarded++;
 				}
@@ -318,6 +333,24 @@
 			$desc = str_replace($other[0],$name,$desc);
 		}
 		return $desc;
+	}
+	
+	if(!function_exists('qa_getHandleFromId')) {
+		
+		function qa_getHandleFromId($userid) {
+			require_once QA_INCLUDE_DIR.'qa-app-users.php';
+			
+			if (QA_FINAL_EXTERNAL_USERS) {
+				$publictohandle=qa_get_public_from_userids(array($userid));
+				$handle=@$publictohandle[$userid];
+				
+			} 
+			else {
+				$user = qa_db_single_select(qa_db_user_account_selectspec($userid, true));
+				$handle = @$user['handle'];
+			}
+			return $handle;
+		}
 	}
 
 	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
