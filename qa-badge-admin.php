@@ -84,7 +84,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 	text-align:center;
 	border-radius:4px;
 	width:120px;
-	padding: 0 10px;
+	padding: 5px 10px;
 	display: inline-block;
 }
 .badge-bronze {
