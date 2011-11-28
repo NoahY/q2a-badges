@@ -4,9 +4,9 @@
 
 	// init before start
 
-	function doctype() {
-			
-		qa_html_theme_base::doctype();
+		function doctype() {
+				
+			qa_html_theme_base::doctype();
 			if (qa_opt('badge_active')) {
 				
 				require_once QA_INCLUDE_DIR.'qa-app-users.php';
@@ -18,20 +18,11 @@
 				
 				$user = @qa_db_read_one_assoc(
 					qa_db_query_sub(
-						'SELECT user_id AS uid,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv FROM ^achievements WHERE user_id=#',
-						$userid
+						'SELECT ^achievements.user_id AS uid,^achievements.oldest_consec_visit AS ocv,^achievements.longest_consec_visit AS lcv,^achievements.total_days_visited AS tdv,^achievements.last_visit AS lv,^achievements.first_visit AS fv, ^userpoints.points as points FROM ^achievements, ^userpoints WHERE ^achievements.user_id=# AND ^userpoints.userid=#',
+						$userid,$userid
 					),
 					true
 				);
-				$usera = @qa_db_read_one_assoc(
-					qa_db_query_sub(
-						'SELECT points FROM ^userpoints WHERE userid=#',
-						$userid
-					),
-					true
-				);
-				
-				if($usera) $user = array_merge($user, $usera);
 
 				if(!$user['uid']) {
 					qa_db_query_sub(
@@ -92,36 +83,37 @@
 				qa_badge_award_check($badges, $first_visit_diff, $userid,null,2);
 				
 				// check points
-				
-				$badges = array('100_club','1000_club','10000_club');
-				qa_badge_award_check($badges, $user['points'], $userid,null,2);	
+				if(isset($user['points'])) {
+					$badges = array('100_club','1000_club','10000_club');
+					qa_badge_award_check($badges, $user['points'], $userid,null,2);	
+				}
 	
 
-			if($this->template == 'user') {
-				if(!isset($this->content['navigation']['sub'])) {
-					$this->content['navigation']['sub'] = array(
-						'profile' => array(
-							'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
-							'label' => $this->_user_handle(),
-							'selected' => !qa_get('tab')?true:false
-						),
-						'badges' => array(
+				if($this->template == 'user') {
+					if(!isset($this->content['navigation']['sub'])) {
+						$this->content['navigation']['sub'] = array(
+							'profile' => array(
+								'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
+								'label' => $this->_user_handle(),
+								'selected' => !qa_get('tab')?true:false
+							),
+							'badges' => array(
+								'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+								'label' => qa_badge_lang('badges/badges'),
+								'selected' => qa_get('tab')=='badges'?true:false
+							),
+						);
+					}
+					else {
+						$this->content['navigation']['sub']['badges'] = array(
 							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
 							'label' => qa_badge_lang('badges/badges'),
 							'selected' => qa_get('tab')=='badges'?true:false
-						),
-					);
-				}
-				else {
-					$this->content['navigation']['sub']['badges'] = array(
-						'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-						'label' => qa_badge_lang('badges/badges'),
-						'selected' => qa_get('tab')=='badges'?true:false
-					);
+						);
+					}
 				}
 			}
 		}
-	}
 		
 	// theme replacement functions
 
