@@ -8,10 +8,37 @@
 				
 			qa_html_theme_base::doctype();
 			if (qa_opt('badge_active')) {
+
+				// tabs
+
+				if($this->template == 'user') {
+					if(!isset($this->content['navigation']['sub'])) {
+						$this->content['navigation']['sub'] = array(
+							'profile' => array(
+								'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
+								'label' => $this->_user_handle(),
+								'selected' => !qa_get('tab')?true:false
+							),
+							'badges' => array(
+								'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+								'label' => qa_badge_lang('badges/badges'),
+								'selected' => qa_get('tab')=='badges'?true:false
+							),
+						);
+					}
+					else {
+						$this->content['navigation']['sub']['badges'] = array(
+							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+							'label' => qa_badge_lang('badges/badges'),
+							'selected' => qa_get('tab')=='badges'?true:false
+						);
+					}
+				}
 				
 				require_once QA_INCLUDE_DIR.'qa-app-users.php';
 
 				$userid = qa_get_logged_in_userid();
+
 				if(!$userid) return; // not logged in?  die.
 				
 				// first visit check
@@ -86,31 +113,6 @@
 				if(isset($user['points'])) {
 					$badges = array('100_club','1000_club','10000_club');
 					qa_badge_award_check($badges, $user['points'], $userid,null,2);	
-				}
-	
-
-				if($this->template == 'user') {
-					if(!isset($this->content['navigation']['sub'])) {
-						$this->content['navigation']['sub'] = array(
-							'profile' => array(
-								'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
-								'label' => $this->_user_handle(),
-								'selected' => !qa_get('tab')?true:false
-							),
-							'badges' => array(
-								'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-								'label' => qa_badge_lang('badges/badges'),
-								'selected' => qa_get('tab')=='badges'?true:false
-							),
-						);
-					}
-					else {
-						$this->content['navigation']['sub']['badges'] = array(
-							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-							'label' => qa_badge_lang('badges/badges'),
-							'selected' => qa_get('tab')=='badges'?true:false
-						);
-					}
 				}
 			}
 		}
