@@ -25,6 +25,10 @@
 					return '0';
 				case 'badge_notify_time':
 					return 0;
+				case 'badge_widget_list_max':
+					return 5;
+				case 'badge_widget_date_max':
+					return 30;
 				case 'badge_email_subject':
 					return '[^site_title] ';
 				case 'badge_email_body':
@@ -141,7 +145,11 @@ You may cancel these notices at any time by visiting your profile at the link ab
 .badge-source {
 	text-align:center;
 	padding:0;
-}';
+}
+.badge-widget-entry {
+	white-space:nowrap;
+}
+';
 				default:
 					return null;
 			}
@@ -277,6 +285,9 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
 						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget_q_item'));
 						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+						
+						qa_opt('badge_widget_date_max',(int)qa_post_text('badge_widget_date_max'));
+						qa_opt('badge_widget_list_max',(int)qa_post_text('badge_widget_list_max'));
 
 						qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
 						qa_opt('badge_email_notify_on',(bool)qa_post_text('badge_email_notify_on'));
@@ -400,6 +411,23 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					'type' => 'textarea',
 				);
 				
+				$fields[] = array(
+					'type' => 'blank',
+				);
+				
+				$fields[] = array(
+						'label' => qa_badge_lang('badges/widget_list_max').':',
+						'type' => 'number',
+						'value' => qa_opt('badge_widget_list_max'),
+						'tags' => 'NAME="badge_widget_list_max"',
+				);
+				
+				$fields[] = array(
+						'label' => qa_badge_lang('badges/widget_date_max').':',
+						'type' => 'number',
+						'value' => qa_opt('badge_widget_date_max'),
+						'tags' => 'NAME="badge_widget_date_max"',
+				);				
 				$fields[] = array(
 					'type' => 'blank',
 				);
