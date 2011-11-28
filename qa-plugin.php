@@ -359,7 +359,10 @@
 
 	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
 
+	qa_register_plugin_module('widget', 'qa-badge-widget.php', 'qa_badge_widget', 'Recent Badge Widget');
+
 	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
+
 
 /*
 	Omit PHP closing tag to help avoid accidental output

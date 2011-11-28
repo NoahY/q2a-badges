@@ -236,6 +236,10 @@
 		'badge_email_body'=>'Message body',
 		'badge_notify_email_me'=>'Notify of new badges by email?',
 		'badge_notified_email_me'=>'Notification settings saved.',
+		
+		'badge_widget_title' => 'Recent Badges',
+		'widget_list_max' => 'Maximum number of recent badges in widget',
+		'widget_date_max' => 'Maximum age of badges in widget',
 
 		'save_settings'=>'Save',
 		'save_settings_desc'=>'save above settings'
