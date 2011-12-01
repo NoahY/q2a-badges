@@ -71,7 +71,7 @@ Custom Badges
 Custom badges may be implemented in any plugin module in a similar way as option_default.  Steps are as follows:
 
 #. create a function in your module class called **custom_badges()**.  It should return an array of badges with the badge slugs as indexes for nested arrays with *var* (default requirement) and *type* (bronze=0,silver=1,gold=2) indexes.  Here is an example from the bookmarks plugin:
-
+::
 		function custom_badges() {
 			return array(
 				'bookmarker' => array('var'=>1, 'type'=>0),
@@ -81,7 +81,7 @@ Custom badges may be implemented in any plugin module in a similar way as option
 		}
 		
 #. create a function in your module class called **custom_badges_rebuild()** that will award badges when rebuilding via admin/plugins and return the number of badges awarded.  Here is an example from the bookmarks plugin:
-		
+::
 		function custom_badges_rebuild() {
 			$awarded = 0;
 			
@@ -98,6 +98,7 @@ Custom badges may be implemented in any plugin module in a similar way as option
 
 #. in your module class's **option_default()** function, return two default variables for each badge: *badges/<slug>* and *badges/<slug>_desc*.  Here is an example from the bookmarks plugin:
 
+::
 		function option_default($option) {
 			
 			switch($option) {
