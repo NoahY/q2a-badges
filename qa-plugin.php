@@ -49,6 +49,25 @@
 		
 		if (isset($qa_badge_lang_default[$group][$label]))
 			return $qa_badge_lang_default[$group][$label];
+		
+		// check custom badges
+
+		$moduletypes=qa_list_module_types();
+		
+		foreach ($moduletypes as $moduletype) {
+			$modulenames=qa_list_modules($moduletype);
+			
+			foreach ($modulenames as $modulename) {
+				$module=qa_load_module($moduletype, $modulename);
+				
+				if (method_exists($module, 'custom_badges') && method_exists($module, 'option_default')) {
+					$name = $module->option_default($identifier);
+					error_log($identifier);
+					if($name)
+						return $name;
+				}
+			}
+		}
 			
 		return '['.$identifier.']'; // as a last resort, return the identifier to help in development
 	}
@@ -171,6 +190,20 @@
 		$badges['champion'] = array('var'=>30, 'type'=>1);
 		$badges['olympian'] = array('var'=>100, 'type'=>2);
 
+		// get badges from other plugins - experimental!
+
+		$moduletypes=qa_list_module_types();
+		
+		foreach ($moduletypes as $moduletype) {
+			$modulenames=qa_list_modules($moduletype);
+			
+			foreach ($modulenames as $modulename) {
+				$module=qa_load_module($moduletype, $modulename);
+				
+				if (method_exists($module, 'custom_badges'))
+					$badges=array_merge($badges,$module->custom_badges());
+			}
+		}
 
 		return $badges;
 	}
@@ -195,9 +228,9 @@
 		
 	}
 	
-	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {
+	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {  // oid is the postid (if), notify = 1 for email and popup, 2 for just popup.
 		
-		$awarded = 0;
+		$awarded = array();
 		foreach($badges as $badge_slug) {
 			
 			if(($var === false || (int)$var >= (int)qa_opt('badge_'.$badge_slug.'_var')) && qa_opt('badge_'.$badge_slug.'_enabled') !== '0') {
@@ -240,7 +273,7 @@
 						);
 					}
 					
-					$awarded++;
+					array_push($awarded,$badge_slug);
 				}
 			}
 		}
@@ -314,11 +347,14 @@
 	
 	function qa_badge_desc_replace($slug,$var=null) {
 		
-		$desc = qa_badge_lang('badges/'.$slug.'_desc');
-		
+		$desc = qa_opt('badge_'.$slug.'_desc')?qa_opt('badge_'.$slug.'_desc'):qa_badge_lang('badges/'.$slug.'_desc');
+
 		// var replace
 		
-		if($var) $desc = str_replace('#',$var,$desc);
+		if($var) {
+			$desc = str_replace('#',$var,$desc);
+			$desc = preg_replace('/\^([^^]+)\^(\S+)/',($var == 1?"$1":"$2"),$desc);
+		}
 		
 		// other badge reference replace
 		

@@ -206,95 +206,90 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				$qa_content['test-notify'] = 1;
 			}
 			else if(qa_clicked('badge_save_settings')) {
-				$was_active = qa_opt('badge_active');
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));
 
 				if (qa_opt('badge_active')) {
 
-					if(!$was_active) {
-						// check databases
+					$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
 
-						$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
+					if(!$badges_exists) {
 
-						if(!$badges_exists) {
+						qa_import_badge_list();
+					}
 
-							qa_import_badge_list();
+					qa_db_query_sub(
+						'CREATE TABLE IF NOT EXISTS ^userbadges ('.
+							'awarded_at DATETIME NOT NULL,'.
+							'user_id INT(11) NOT NULL,'.
+							'notify TINYINT DEFAULT 0 NOT NULL,'.
+							'object_id INT(10),'.
+							'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
+							'id INT(11) NOT NULL AUTO_INCREMENT,'.
+							'PRIMARY KEY (id)'.
+						') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+					);
+
+
+					qa_db_query_sub(
+						'CREATE TABLE IF NOT EXISTS ^achievements ('.
+							'user_id INT(11) UNIQUE NOT NULL,'.
+							'first_visit DATETIME,'.
+							'oldest_consec_visit DATETIME,'.
+							'longest_consec_visit INT(10),'.
+							'last_visit DATETIME,'.
+							'total_days_visited INT(10),'.
+							'questions_read INT(10),'.
+							'posts_edited INT(10)'.
+						') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+					);
+
+					qa_import_badge_list();
+
+					// set badge names, vars and states
+
+					foreach ($badges as $slug => $info) {
+
+						// update var
+
+						if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
+							qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
 						}
 
-						qa_db_query_sub(
-							'CREATE TABLE IF NOT EXISTS ^userbadges ('.
-								'awarded_at DATETIME NOT NULL,'.
-								'user_id INT(11) NOT NULL,'.
-								'notify TINYINT DEFAULT 0 NOT NULL,'.
-								'object_id INT(10),'.
-								'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
-								'id INT(11) NOT NULL AUTO_INCREMENT,'.
-								'PRIMARY KEY (id)'.
-							') ENGINE=MyISAM DEFAULT CHARSET=utf8'
-						);
+						// toggle activation
 
+						if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
+							qa_opt('badge_'.$slug.'_enabled','0');
+						}
+						else qa_opt('badge_'.$slug.'_enabled','1');
 
-						qa_db_query_sub(
-							'CREATE TABLE IF NOT EXISTS ^achievements ('.
-								'user_id INT(11) UNIQUE NOT NULL,'.
-								'first_visit DATETIME,'.
-								'oldest_consec_visit DATETIME,'.
-								'longest_consec_visit INT(10),'.
-								'last_visit DATETIME,'.
-								'total_days_visited INT(10),'.
-								'questions_read INT(10),'.
-								'posts_edited INT(10)'.
-							') ENGINE=MyISAM DEFAULT CHARSET=utf8'
-						);
+						// set custom names
 
-					}
-					else {
-						// set badge names, vars and states
-
-						foreach ($badges as $slug => $info) {
-
-							// update var
-
-							if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
-								qa_opt('badge_'.$slug.'_var',qa_post_text('badge_'.$slug.'_var'));
-							}
-
-							// toggle activation
-
-							if((bool)qa_post_text('badge_'.$slug.'_enabled') === false) {
-								qa_opt('badge_'.$slug.'_enabled','0');
-							}
-							else qa_opt('badge_'.$slug.'_enabled','1');
-
-							// set custom names
-
-							if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
-								qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
-								$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
-							}
-
+						if (qa_post_text('badge_'.$slug.'_edit') != qa_opt('badge_'.$slug.'_name')) {
+							qa_opt('badge_'.$slug.'_name',qa_post_text('badge_'.$slug.'_edit'));
+							$qa_badge_lang_default['badges'][$slug] = qa_opt('badge_'.$slug.'_name');
 						}
 
-						// options
-
-						qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));
-						qa_opt('badge_show_users_badges',(bool)qa_post_text('badge_show_users_badges'));
-						qa_opt('badge_show_source_posts',(bool)qa_post_text('badge_show_source_posts'));
-						qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
-
-						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
-						qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget_q_item'));
-						qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
-						
-						qa_opt('badge_widget_date_max',(int)qa_post_text('badge_widget_date_max'));
-						qa_opt('badge_widget_list_max',(int)qa_post_text('badge_widget_list_max'));
-
-						qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
-						qa_opt('badge_email_notify_on',(bool)qa_post_text('badge_email_notify_on'));
-						qa_opt('badge_email_subject',qa_post_text('badge_email_subject'));
-						qa_opt('badge_email_body',qa_post_text('badge_email_body'));
-						qa_opt('badges_css',qa_post_text('badges_css'));
 					}
+
+					// options
+
+					qa_opt('badge_notify_time', (int)qa_post_text('badge_notify_time'));
+					qa_opt('badge_show_users_badges',(bool)qa_post_text('badge_show_users_badges'));
+					qa_opt('badge_show_source_posts',(bool)qa_post_text('badge_show_source_posts'));
+					qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
+
+					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
+					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget_q_item'));
+					qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
+					
+					qa_opt('badge_widget_date_max',(int)qa_post_text('badge_widget_date_max'));
+					qa_opt('badge_widget_list_max',(int)qa_post_text('badge_widget_list_max'));
+
+					qa_opt('badge_email_notify',(bool)qa_post_text('badge_email_notify'));
+					qa_opt('badge_email_notify_on',(bool)qa_post_text('badge_email_notify_on'));
+					qa_opt('badge_email_subject',qa_post_text('badge_email_subject'));
+					qa_opt('badge_email_body',qa_post_text('badge_email_body'));
+					qa_opt('badges_css',qa_post_text('badges_css'));
 				}
 				$ok = qa_badge_lang('badges/badge_admin_saved');
 			}
@@ -326,12 +321,13 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				);
 
 				foreach ($badges as $slug => $info) {
-					$badge_name=qa_badge_lang('badges/'.$slug);
-					$badge_desc=qa_badge_desc_replace($slug);
-					if(isset($info['var'])) $badge_desc = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$badge_desc);
 					
+					$badge_name=qa_badge_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
+
+					$badge_desc=qa_badge_desc_replace($slug);
+					if(isset($info['var'])) $badge_desc = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$badge_desc);
 
 					$type = qa_get_badge_type($info['type']);
 					$types = $type['slug'];
@@ -626,7 +622,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 				foreach($badges as $pt => $slugs) {
 					if(!isset($data[$pt])) continue;
 
-					$awarded += qa_badge_award_check($slugs, $data[$pt], $uid, null, 0);
+					$awarded += count(qa_badge_award_check($slugs, $data[$pt], $uid, null, 0));
 
 				}
 
@@ -713,7 +709,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 					$badges = array('voter','avid_voter','devoted_voter');
 
-					$awarded += qa_badge_award_check($badges, $votes, $uid, null, 0);
+					$awarded += count(qa_badge_award_check($badges, $votes, $uid, null, 0));
 
 				}
 
@@ -726,7 +722,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 					$badges = array('liked','loved','revered');
 
-					$awarded += qa_badge_award_check($badges, $votes, $uid, null, 0);
+					$awarded += count(qa_badge_award_check($badges, $votes, $uid, null, 0));
 
 				}
 
@@ -738,7 +734,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					$badges = array('notable_question','popular_question','famous_question');
 
 					foreach($data['views'] as $idv) {
-						$awarded += qa_badge_award_check($badges, $idv['views'], $uid, $idv['id'], 0);
+						$awarded += count(qa_badge_award_check($badges, $idv['views'], $uid, $idv['id'], 0));
 					}
 				}
 
@@ -748,7 +744,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 					$badges = array('watchdog','bloodhound','pitbull');
 
-					$awarded += qa_badge_award_check($badges, $flags, $uid, null, 0);
+					$awarded += count(qa_badge_award_check($badges, $flags, $uid, null, 0));
 
 				}
 				unset($users[$user]);
@@ -773,17 +769,146 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						$count = $s['aselecteds'];
 						$badges = array('gifted','wise','enlightened');
 
-						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+						$awarded += count(qa_badge_award_check($badges, $count, $uid, null, 0));
 
 					}
 					if(isset($s['aselects'])) {
 						$count = $s['aselects'];
 						$badges = array('grateful','respectful','reverential');
 
-						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+						$awarded += count(qa_badge_award_check($badges, $count, $uid, null, 0));
 
 					}
 					unset($selects[$idx]);
+				}
+			}
+
+		// achievements
+			$badges = array('dedicated','devoted','zealous','visitor','trouper','veteran','regular','old_timer','ancestor','reader','avid_reader','devoted_reader');
+
+			if($this->badge_activated($badges)) {
+				$userq = qa_db_query_sub(
+					'SELECT user_id AS uid,questions_read AS qr,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv,posts_edited AS pe FROM ^achievements'
+				);
+
+				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+
+					$uid = $user['uid'];
+
+				// edits
+
+					$count = $user['pe'];
+					$badges = array('editor','copy_editor','senior_editor');
+
+					$awarded += count(qa_badge_award_check($badges, $count, $uid, null, 0));
+
+				// on-sign-in badges
+
+					// check lapse in days since last visit
+					// using julian days
+
+					$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
+
+					$last_visit = strtotime($user['lv']);
+					$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
+					$last_diff = $todayj-$lastj;
+
+					$first_visit = strtotime($user['fv']);
+					$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
+					$first_visit_diff = $todayj-$first_visitj;
+
+					$badges = array('dedicated','devoted','zealous');
+					$awarded += count(qa_badge_award_check($badges, $user['lcv'], $uid, null, 0));
+
+					$badges = array('visitor','trouper','veteran');
+					$awarded += count(qa_badge_award_check($badges, $user['tdv'], $uid, null, 0));
+
+					$badges = array('regular','old_timer','ancestor');
+					$awarded += count(qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0));
+				
+				// views
+				
+					$badges = array('reader','avid_reader','devoted_reader');
+					$awarded += count(qa_badge_award_check($badges, $user['qr'], $uid,null,0));				
+				}
+			}
+
+
+		// points
+		
+			$badges = array('100_club','1000_club','10000_club');
+			if($this->badge_activated($badges)) {
+				$userq = qa_db_query_sub('SELECT userid, points FROM ^userpoints');
+				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+					$awarded += count(qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0));
+				}
+			}
+
+			if(!QA_FINAL_EXTERNAL_USERS) {
+
+				// verified
+
+				$badges = array('verified');
+				if($this->badge_activated($badges)) {
+					$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
+					while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+						$awarded += count(qa_badge_award_check($badges, false, $user['userid'], null, 0));				
+					}
+				}
+
+				// profile stuff
+
+				$badges = array('avatar','profiler');
+				if($this->badge_activated($badges)) {
+					$userq = qa_db_query_sub('SELECT userid FROM ^users');
+
+					while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
+						
+						list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
+							qa_db_user_account_selectspec($userid, true),
+							qa_db_user_profile_selectspec($userid, true),
+							qa_db_userfields_selectspec()
+						);
+
+						// avatar badge
+						
+						if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
+							$badges = array('avatar');
+							$awarded += count(qa_badge_award_check($badges, false, $userid, null, 0));				
+						}
+						
+						// profile completion
+						
+						$missing = false;
+						
+						foreach ($userfields as $userfield) {
+							if(!isset($userprofile[$userfield['title']])) {
+								$missing = true;
+								break;
+							}
+						}
+						
+						if(!$missing) {
+							$badges = array('profiler');
+							$awarded += count(qa_badge_award_check($badges, false, $userid, null, 0));			
+						}
+					}
+				}
+			}
+			
+			// rebuild badges from other plugins - experimental! - $module->custom_badges_rebuild() returns number of badges awarded.
+
+			$moduletypes=qa_list_module_types();
+			
+			foreach ($moduletypes as $moduletype) {
+				$modulenames=qa_list_modules($moduletype);
+				
+				foreach ($modulenames as $modulename) {
+					$module=qa_load_module($moduletype, $modulename);
+					
+					if (method_exists($module, 'custom_badges_rebuild')) {
+						$awarded += $module->custom_badges_rebuild();
+					}
 				}
 			}
 
@@ -819,125 +944,12 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 						$count = $data['medals'];
 
-						$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
+						$awarded += count(qa_badge_award_check($badges, $count, $uid, null, 0));
 
 					}
 					unset($users[$user]);
 				}
-			}
-
-		// achievements
-			$badges = array('dedicated','devoted','zealous','visitor','trouper','veteran','regular','old_timer','ancestor','reader','avid_reader','devoted_reader');
-
-			if($this->badge_activated($badges)) {
-				$userq = qa_db_query_sub(
-					'SELECT user_id AS uid,questions_read AS qr,oldest_consec_visit AS ocv,longest_consec_visit AS lcv,total_days_visited AS tdv,last_visit AS lv,first_visit AS fv,posts_edited AS pe FROM ^achievements'
-				);
-
-				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-
-					$uid = $user['uid'];
-
-				// edits
-
-					$count = $user['pe'];
-					$badges = array('editor','copy_editor','senior_editor');
-
-					$awarded += qa_badge_award_check($badges, $count, $uid, null, 0);
-
-				// on-sign-in badges
-
-					// check lapse in days since last visit
-					// using julian days
-
-					$todayj = GregorianToJD(date('n'),date('j'),date('Y'));
-
-					$last_visit = strtotime($user['lv']);
-					$lastj = GregorianToJD(date('n',$last_visit),date('j',$last_visit),date('Y',$last_visit));
-					$last_diff = $todayj-$lastj;
-
-					$first_visit = strtotime($user['fv']);
-					$first_visitj = GregorianToJD(date('n',$first_visit),date('j',$first_visit),date('Y',$first_visit));
-					$first_visit_diff = $todayj-$first_visitj;
-
-					$badges = array('dedicated','devoted','zealous');
-					$awarded += qa_badge_award_check($badges, $user['lcv'], $uid, null, 0);
-
-					$badges = array('visitor','trouper','veteran');
-					$awarded += qa_badge_award_check($badges, $user['tdv'], $uid, null, 0);
-
-					$badges = array('regular','old_timer','ancestor');
-					$awarded += qa_badge_award_check($badges, $first_visit_diff, $uid, null, 0);
-				
-				// views
-				
-					$badges = array('reader','avid_reader','devoted_reader');
-					$awarded += qa_badge_award_check($badges, $user['qr'], $uid,null,0);				
-				}
-			}
-
-
-		// points
-		
-			$badges = array('100_club','1000_club','10000_club');
-			if($this->badge_activated($badges)) {
-				$userq = qa_db_query_sub('SELECT userid, points FROM ^userpoints');
-				while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-					$awarded += qa_badge_award_check($badges, $user['points'], $user['userid'], null, 0);
-				}
-			}
-
-			if(!QA_FINAL_EXTERNAL_USERS) {
-
-				// verified
-
-				$badges = array('verified');
-				if($this->badge_activated($badges)) {
-					$userq = qa_db_query_sub('SELECT userid, flags FROM ^users WHERE flags&#', QA_USER_FLAGS_EMAIL_CONFIRMED);
-					while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-						$awarded += qa_badge_award_check($badges, false, $user['userid'], null, 0);				
-					}
-				}
-
-				// profile stuff
-
-				$badges = array('avatar','profiler');
-				if($this->badge_activated($badges)) {
-					$userq = qa_db_query_sub('SELECT userid FROM ^users');
-
-					while ( ($userid=qa_db_read_one_value($userq,true)) !== null ) {
-						
-						list($useraccount, $userprofile, $userfields)=qa_db_select_with_pending(
-							qa_db_user_account_selectspec($userid, true),
-							qa_db_user_profile_selectspec($userid, true),
-							qa_db_userfields_selectspec()
-						);
-
-						// avatar badge
-						
-						if (qa_opt('avatar_allow_upload') && isset($useraccount['avatarblobid'])) {
-							$badges = array('avatar');
-							$awarded += qa_badge_award_check($badges, false, $userid, null, 0);				
-						}
-						
-						// profile completion
-						
-						$missing = false;
-						
-						foreach ($userfields as $userfield) {
-							if(!isset($userprofile[$userfield['title']])) {
-								$missing = true;
-								break;
-							}
-						}
-						
-						if(!$missing) {
-							$badges = array('profiler');
-							$awarded += qa_badge_award_check($badges, false, $userid, null, 0);			
-						}
-					}
-				}
-			}
+			}			
 			
 		// return ok text
 		
