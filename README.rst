@@ -127,6 +127,10 @@ Custom badges may be implemented in any plugin module in a similar way as option
 			
 		}
 
+4. Create your own mechanism for awarding badges - see some examples in the badges plugin code, or the bookmark plugin.  Use the following function to check for badges:
+::
+    qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {  // oid is the postid (if), notify = 1 for email and popup, 2 for just popup.
+    
 ----------
 Disclaimer
 ----------
