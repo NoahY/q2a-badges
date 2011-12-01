@@ -1,5 +1,5 @@
 ==============================
-Question2Answer Badges v 1.1
+Question2Answer Badges v 1.2
 ==============================
 -----------
 Description
@@ -23,6 +23,7 @@ Features
 - recent badges widget (requires event logging to database)
 - full translation table available (see `Translation`_ below)
 - all css fully customizable
+- ability to add custom badges via plugin (see `Custom Badges`_ below)
 
 ------------
 Installation
@@ -60,6 +61,71 @@ to
 for Swahili.  Don't edit the string on the left-hand side or bad things will happen.
 
 Once you've completed the translation, don't forget to set the site language in the admin control panel... to Swahili.  
+
+.. _Custom Badges:
+
+-------------
+Custom Badges
+-------------
+
+Custom badges may be implemented in any plugin module in a similar way as option_default.  Steps are as follows:
+
+#. create a function in your module class called **custom_badges()**.  It should return an array of badges with the badge slugs as indexes for nested arrays with *var* (default requirement) and *type* (bronze=0,silver=1,gold=2) indexes.  Here is an example from the bookmarks plugin:
+
+		function custom_badges() {
+			return array(
+				'bookmarker' => array('var'=>1, 'type'=>0),
+				'bookkeeper' => array('var'=>8, 'type'=>1),
+				'bookworm' => array('var'=>20, 'type'=>2)
+			);
+		}
+		
+#. create a function in your module class called **custom_badges_rebuild()** that will award badges when rebuilding via admin/plugins and return the number of badges awarded.  Here is an example from the bookmarks plugin:
+		
+		function custom_badges_rebuild() {
+			$awarded = 0;
+			
+			$userq = qa_db_query_sub(
+				'SELECT user_id, meta_value FROM ^usermeta WHERE meta_key=$',
+				'max_bookmarks'
+			);
+			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
+				$badges = array('bookmarker','bookkeeper','bookworm');
+				$awarded += count(qa_badge_award_check($badges,(int)$user['meta_value'],$user['user_id'],null,2));
+			}
+			return $awarded;
+		}
+
+#. in your module class's **option_default()** function, return two default variables for each badge: *badges/<slug>* and *badges/<slug>_desc*.  Here is an example from the bookmarks plugin:
+
+		function option_default($option) {
+			
+			switch($option) {
+				case 'bookmarks_plugin_title':
+					return 'Bookmarks';
+				case 'bookmarks_plugin_bookmark':
+					return 'Bookmark this question';
+				case 'bookmarks_plugin_unbookmark':
+					return 'Unbookmark this question';
+				case 'ajax_bookmark_popup_notice_text':
+					return 'Question bookmarked.&nbsp; Visit your profile to see bookmarked questions.';
+				case 'ajax_bookmark_popup_un_notice_text':
+					return 'Bookmark removed.';
+				case 'badges/bookmarker':
+					return 'Bookmarker';
+				case 'badges/bookkeeper':
+					return 'Bookkeeper';
+				case 'badges/bookworm':
+					return 'Bookworm';
+				case 'badges/bookmarker_desc':
+				case 'badges/bookkeeper_desc':
+				case 'badges/bookworm_desc':
+					return 'Bookmarked # ^post^posts';
+				default:
+					return null;				
+			}
+			
+		}
 
 ----------
 Disclaimer
