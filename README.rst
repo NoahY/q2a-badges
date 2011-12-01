@@ -97,7 +97,6 @@ Custom badges may be implemented in any plugin module in a similar way as option
 		}
 
 3. in your module class's **option_default()** function, return two default variables for each badge: *badges/<slug>* and *badges/<slug>_desc*.  Here is an example from the bookmarks plugin:
-
 ::
 		function option_default($option) {
 			
