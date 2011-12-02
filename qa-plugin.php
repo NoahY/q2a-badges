@@ -193,7 +193,6 @@
 		// get badges from other plugins - experimental!
 
 		$moduletypes=qa_list_module_types();
-		
 		foreach ($moduletypes as $moduletype) {
 			$modulenames=qa_list_modules($moduletype);
 			
@@ -279,8 +278,10 @@
 		}
 		return $awarded;
 	}
-	
 	function qa_badge_notification($uid, $oid, $badge_slug) {
+
+		if(!qa_opt('badge_email_notify_id_'.$userid))
+			return;
 		
 		require_once QA_INCLUDE_DIR.'qa-app-users.php';
 		require_once QA_INCLUDE_DIR.'qa-app-emails.php';
