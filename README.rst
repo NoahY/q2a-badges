@@ -127,9 +127,9 @@ Custom badges may be implemented in any plugin module in a similar way as option
 			
 		}
 
-4. Create your own mechanism for awarding badges - see some examples in the badges plugin code, or the bookmark plugin.  Make sure to test for both ``qa_opt('badge_active')``, which makes sure the badge plugin is active, and ``qa_opt('badge_custom_badges')`` to make sure the badge plugin version supports custom badges.   Use the function ``qa_badge_award_check()`` to check for badges, where $badges is an array of badge slugs, $var is the number to test against the badges, $oid is the postid (if any), $notify = 0 for no notification, 1 for email and popup, 2 for just popup.  Here is an example from the bookmarks plugin:
+4. Create your own mechanism for awarding badges - see some examples in the badges plugin code, or the bookmark plugin.  Make sure to test for both ``qa_opt('badge_active')``, which makes sure the badge plugin is active, and ``qa_opt('badge_custom_badges')`` to make sure the badge plugin version supports custom badges.   Use the function ``qa_badge_award_check()`` to check for badges, where $badges is an array of badge slugs, $var is the number to test against the badges, $oid is the postid (if any), $notify = 0 for no notification, 1 for email and popup, 2 for just popup.  You should probably check if this function exists as well, in case the badge plugin has been deleted while active.  Here is an example from the bookmarks plugin:
 ::
-	if(qa_opt('badge_active') && qa_opt('badge_custom_badges'))
+	if(function_exists('qa_badge_award_check') && qa_opt('badge_active') && qa_opt('badge_custom_badges'))
 		$awarded = count(qa_badge_award_check(array('bookmarker','bookworm','bookkeeper'), $var, $uid, NULL, 2)); 
     
 ----------

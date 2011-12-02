@@ -80,6 +80,12 @@
 					case 'a_vote_down':
 						$this->answer_vote_down($event,$userid,$params);
 						break;
+					case 'c_vote_up':
+						$this->comment_vote_up($event,$userid,$params);
+						break;
+					case 'c_vote_down':
+						$this->check_voter($userid);
+						break;
 					case 'q_vote_nil':
 					case 'a_vote_nil':
 						break;
@@ -247,8 +253,7 @@
 			// post owner upvotes check
 
 			$badges = array('nice_question','good_question','great_question');
-			qa_badge_award_check($badges, $votes, $uid, $oid)	;		
-		
+			qa_badge_award_check($badges, $votes, $uid, $oid);		
 		}
 		
 		// check number of votes on answer
@@ -315,6 +320,26 @@
 					}
 				}
 			}
+		}
+
+		function comment_vote_up($event,$event_user,$params) {
+			$oid = $params['postid'];
+			$post = $this->get_post_data($oid);
+			$votes = $post['netvotes'];
+			$uid = $post['userid'];
+
+			// voted volume check
+
+			$this->check_voted($uid);
+			
+			// vote volume check
+			
+			if($event_user) $this->check_voter($event_user);
+
+			// post owner upvotes check
+
+			$badges = array('nice_comment','good_comment','great_comment');
+			qa_badge_award_check($badges, $votes, $uid, $oid);		
 		}
 
 		function question_vote_down($event,$event_user,$params) {
@@ -592,7 +617,20 @@
 				'VALUES (NOW(), 1, #, #, $, 0)',
 				$object_id, $user_id, $badge_slug
 			);
-			qa_badge_notification($user_id, $object_id, $badge_slug);		
+			
+			if(qa_opt('event_logger_to_database')) { // add event
+				
+				$handle = qa_getHandleFromId($user_id);
+				
+				qa_db_query_sub(
+					'INSERT INTO ^eventlog (datetime, ipaddress, userid, handle, cookieid, event, params) '.
+					'VALUES (NOW(), $, $, $, #, $, $)',
+					qa_remote_ip_address(), $user_id, $handle, qa_cookie_get_create(), 'badge_awarded', 'badge_slug='.$badge_slug.($object_id?"\t".'postid='.$object_id:'')
+				);
+			}
+			
+			if(qa_opt('badge_email_notify')) qa_badge_notification($user_id, $object_id, $badge_slug);	
+			
 			// check for sheer number of badges, unless this badge was for number of badges (avoid recursion!)
 			if(!$badge_badge) $this->check_badges($user_id);
 		}
