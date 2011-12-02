@@ -23,6 +23,8 @@
 					return $badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '0';
+				case 'badge_custom_badges':
+					return true;
 				case 'badge_notify_time':
 					return 0;
 				case 'badge_widget_list_max':
