@@ -62,7 +62,6 @@
 				
 				if (method_exists($module, 'custom_badges') && method_exists($module, 'option_default')) {
 					$name = $module->option_default($identifier);
-					error_log($identifier);
 					if($name)
 						return $name;
 				}
