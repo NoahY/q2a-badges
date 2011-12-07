@@ -279,7 +279,7 @@
 	}
 	function qa_badge_notification($uid, $oid, $badge_slug) {
 
-		if(!qa_opt('badge_email_notify_id_'.$userid))
+		if(!qa_opt('badge_email_notify_id_'.$uid))
 			return;
 		
 		require_once QA_INCLUDE_DIR.'qa-app-users.php';
