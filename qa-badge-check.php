@@ -359,8 +359,7 @@
 		}
 
 		function check_voted($uid) {
-			
-			// upvotes received
+						// upvotes received
 			
 			$votes = qa_db_read_one_assoc(
 				qa_db_query_sub(
@@ -609,6 +608,7 @@
 
 		
 		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false) {
+			if!$user_id) return;
 			
 			// add badge to userbadges
 			
