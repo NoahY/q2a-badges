@@ -227,7 +227,7 @@
 	}
 	
 	function qa_badge_award_check($badges, $var, $uid, $oid = NULL, $notify = 1) {  // oid is the postid (if), notify = 1 for email and popup, 2 for just popup.
-		if!$uid) return;
+		if(!$uid) return;
 		$awarded = array();
 		foreach($badges as $badge_slug) {
 			
