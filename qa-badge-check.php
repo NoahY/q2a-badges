@@ -608,7 +608,7 @@
 
 		
 		function award_badge($object_id, $user_id, $badge_slug, $badge_badge = false) {
-			if!$user_id) return;
+			if(!$user_id) return;
 			
 			// add badge to userbadges
 			
