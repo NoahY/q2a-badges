@@ -167,11 +167,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 			$badges = qa_get_badge_list();
 
-			if (qa_clicked('badge_rebuild_button')) {
-				qa_import_badge_list();
-				$ok = qa_badge_lang('badges/badge_list_rebuilt');
-			}
-			else if (qa_clicked('badge_award_button')) {
+			if (qa_clicked('badge_award_button')) {
 				if((bool)qa_post_text('badge_award_delete')) {
 					qa_db_query_sub(
 						'DROP TABLE IF EXISTS ^userbadges'
@@ -212,13 +208,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 
 				if (qa_opt('badge_active')) {
 
-					$badges_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^badges'"),true);
-
-					if(!$badges_exists) {
-
-						qa_import_badge_list();
-					}
-
 					qa_db_query_sub(
 						'CREATE TABLE IF NOT EXISTS ^userbadges ('.
 							'awarded_at DATETIME NOT NULL,'.
@@ -244,8 +233,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 							'posts_edited INT(10)'.
 						') ENGINE=MyISAM DEFAULT CHARSET=utf8'
 					);
-
-					qa_import_badge_list();
 
 					// set badge names, vars and states
 
@@ -487,11 +474,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						'label' => qa_badge_lang('badges/badge_reset_values'),
 						'tags' => 'NAME="badge_reset_values"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_reset_values_desc').'</em><br/>',
-					),
-					array(
-						'label' => qa_badge_lang('badges/badge_recreate'),
-						'tags' => 'NAME="badge_rebuild_button"',
-						'note' => '<br/><em>'.qa_badge_lang('badges/badge_recreate_desc').'</em><br/>',
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_award_button'),

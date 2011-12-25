@@ -257,20 +257,23 @@
 			
 			if(!$userid) return;
 
-			$result = qa_db_read_all_assoc(
+			$result = qa_db_read_all_values(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_type,COUNT(^userbadges.id) FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=# GROUP BY ^badges.badge_type ORDER BY ^badges.badge_type',
+					'SELECT badge_slug FROM ^userbadges WHERE user_id=#',
 					$userid
 				)
 			);
 
 			if(count($result) == 0) return;
-
+			
+			$badges = qa_get_badge_list();
+			foreach($result as $slug) {
+				$bcount[$badges[$slug]['type']] = isset($bcount[$badges[$slug]['type']])?$bcount[$badges[$slug]['type']]+1:1; 
+			}
 			$output='<span id="badge-medals-widget">';
 			for($x = 2; $x >= 0; $x--) {
-				if(!isset($result[$x])) continue;
-				$a = $result[$x];
-				$count = $a['COUNT('.QA_MYSQL_TABLE_PREFIX.'userbadges.id)'];
+				if(!isset($bcount[$x])) continue;
+				$count = $bcount[$x];
 				if($count == 0) continue;
 
 				$type = qa_get_badge_type($x);
@@ -297,7 +300,7 @@
 
 			$result = qa_db_read_all_assoc(
 				qa_db_query_sub(
-					'SELECT ^badges.badge_slug AS slug, ^badges.badge_type AS type, ^userbadges.object_id AS oid FROM ^badges,^userbadges WHERE ^badges.badge_slug=^userbadges.badge_slug AND ^userbadges.user_id=#',
+					'SELECT badge_slug as slug, object_id AS oid FROM ^userbadges WHERE user_id=#',
 					$userid
 				)
 			);
@@ -307,12 +310,13 @@
 			if(count($result) > 0) {
 				
 				// count badges
+				$bin = qa_get_badge_list();
 				
 				$badges = array();
 				
 				foreach($result as $info) {
-					$type = $info['type'];
 					$slug = $info['slug'];
+					$type = $bin[$slug]['type'];
 					if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
 					else $badges[$type][$slug]['count'] = 1;
 					if($info['oid']) $badges[$type][$slug]['oid'][] = $info['oid'];
