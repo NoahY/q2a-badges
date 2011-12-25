@@ -72,28 +72,6 @@
 	}
 	
 	function qa_import_badge_list() {
-
-		// import our list of badge types 
-		
-		qa_db_query_sub('DROP TABLE IF EXISTS ^badges');
-		qa_db_query_sub(
-				'CREATE TABLE ^badges ('.
-						'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
-						'badge_type INT(10),'.
-						'PRIMARY KEY (badge_slug)'.
-				') ENGINE=MyISAM DEFAULT CHARSET=utf8'
-		);		
-
-		$badges = qa_get_badge_list();
-		
-		foreach ($badges as $slug => $info) {
-			
-				qa_db_query_sub(
-					'INSERT INTO ^badges (badge_slug, badge_type) '.
-					'VALUES ($, #)',
-					$slug, $info['type']
-				);
-		}
 	}
 	
 	function qa_get_badge_list() {
@@ -204,6 +182,18 @@
 		}
 
 		return $badges;
+	}
+	
+	
+	function qa_get_badges_by_type() {
+		$bin = qa_get_badge_list();
+		foreach($bin as $slug => $info) {
+			$bout[$info['type']][] = array(
+				'slug'=>$slug,
+				'var'=>@$info['var']
+			);
+		}
+		return $bout;
 	}
 	
 	function qa_get_badge_type_by_slug($slug) {
