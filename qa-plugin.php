@@ -304,13 +304,23 @@
 				),
 				true
 			);
-			if($post['parentid']) $parent = qa_db_read_one_assoc(
-				qa_db_query_sub(
-					'SELECT * FROM ^posts WHERE postid=#',
-					$post['parentid']
-				),
-				true
-			);
+			if($post['parentid']) 
+				$parent = qa_db_read_one_assoc(
+					qa_db_query_sub(
+						'SELECT * FROM ^posts WHERE postid=#',
+						$post['parentid']
+					),
+					true
+				);
+			if(isset($parent) && $parent['type'] == 'A') {
+				$parent = qa_db_read_one_assoc(
+					qa_db_query_sub(
+						'SELECT * FROM ^posts WHERE postid=#',
+						$parent['parentid']
+					),
+					true
+				);
+			}
 			if(isset($parent)) {
 				$anchor = urlencode(qa_anchor($post['basetype'], $oid));
 
