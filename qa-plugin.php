@@ -312,7 +312,7 @@
 					),
 					true
 				);
-			if(isset($parent) && $parent['type'] == 'A') {
+			if(isset($parent) && $parent['basetype'] == 'A') {
 				$parent = qa_db_read_one_assoc(
 					qa_db_query_sub(
 						'SELECT * FROM ^posts WHERE postid=#',
