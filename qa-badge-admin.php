@@ -20,7 +20,7 @@
 				case 'badge_'.$slug.'_name':
 					return qa_badge_lang('badges/'.$slug);
 				case 'badge_'.$slug.'_var':
-					return $badges[$slug]['var'];
+					return @$badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
 					return '0';
 				case 'badge_custom_badges':
@@ -268,7 +268,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					qa_opt('badge_show_source_users',(bool)qa_post_text('badge_show_source_users'));
 
 					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget'));
-					qa_opt('badge_admin_user_widget',(bool)qa_post_text('badge_admin_user_widget_q_item'));
+					qa_opt('badge_admin_user_widget_q_item',(bool)qa_post_text('badge_admin_user_widget_q_item'));
 					qa_opt('badge_admin_user_field',(bool)qa_post_text('badge_admin_user_field'));
 					
 					qa_opt('badge_widget_date_max',(int)qa_post_text('badge_widget_date_max'));

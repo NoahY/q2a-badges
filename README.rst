@@ -1,5 +1,5 @@
 ==============================
-Question2Answer Badges v 2
+Question2Answer Badges
 ==============================
 -----------
 Description
