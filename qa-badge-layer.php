@@ -8,10 +8,10 @@
 				
 			qa_html_theme_base::doctype();
 			if (qa_opt('badge_active')) {
-
+				
 				// tabs
 
-				if($this->template == 'user') {
+				if($this->template == 'user' && !qa_opt('badge_admin_user_field_no_tab')) {
 					if(!isset($this->content['navigation']['sub'])) {
 						$this->content['navigation']['sub'] = array(
 							'profile' => array(
@@ -125,7 +125,7 @@
 			if (qa_opt('badge_active')) {
 				$this->output("
 				<script>".(qa_opt('badge_notify_time') != '0'?"
-					jQuery('document').ready(function() { jQuery('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").fadeOut(); });":"")."
+					jQuery('document').ready(function() { jQuery('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").slideUp('fast'); });":"")."
 					function badgeEdit(slug,end) {
 						if(end) {
 							jQuery('#badge_'+slug+'_edit').hide();
@@ -164,8 +164,9 @@
 
 		function main_parts($content)
 		{
-			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && qa_get('tab')=='badges') { 
-					$content = array();
+			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && (qa_get('tab')=='badges' || qa_opt('badge_admin_user_field_no_tab'))) { 
+					if(!qa_opt('badge_admin_user_field_no_tab')) 
+						$content = array();
 					$content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
 			}
 
