@@ -224,6 +224,7 @@
 		'badge_trigger_notify'=>'Test Notify',
 		'badge_trigger_notify_desc'=>'show a sample notification box',
 		'badge_admin_user_field'=>'Add badges to profile pages',
+		'badge_admin_user_field_no_tab'=>'Show badges on main profile field (not badges tab)',
 		'badge_show_source_posts'=>'Show list of source posts for each badge on user profile',
 		'badge_show_source_users'=>'Show list of rewarded users for each badge on badge page',
 		'badge_admin_user_widget'=>'Show badge widget beside points in user meta',

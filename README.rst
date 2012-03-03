@@ -45,11 +45,12 @@ Installation
 .. _github:
 .. _project page: https://github.com/NoahY/q2a-badges
 
-.. _Translation:
-
 -----------
 Translation
 -----------
+
+.. _Translation:
+
 The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad2, notepad++, etc. (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
 
 **'good_question'=>'Good Question',**
@@ -62,11 +63,11 @@ for Swahili.  Don't edit the string on the left-hand side or bad things will hap
 
 Once you've completed the translation, don't forget to set the site language in the admin control panel... to Swahili.  
 
-.. _Custom Badges:
-
 -------------
 Custom Badges
 -------------
+
+.. _Custom Badges:
 
 Custom badges may be implemented in any plugin module in a similar way as option_default.  Steps are as follows:
 
@@ -151,12 +152,10 @@ Question2Answer is a free and open source platform for Q&A sites. For more infor
 
 http://www.question2answer.org/
 
-.. _Badge List:
-
 ----------
 Badge List
 ----------
-
+.. _Badge List:
 ==========   =================      ========================================
 Level [#]_   Title                  Description
 ==========   =================      ========================================
