@@ -333,7 +333,7 @@
 							<table>
 								<tr>
 									<td class="qa-form-wide-label">
-										<h3 class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</span>
+										<span class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</span>
 									</td>
 								</tr>';				
 					foreach($badge as $slug => $info) {
