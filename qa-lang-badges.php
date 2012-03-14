@@ -214,6 +214,7 @@
 		'badge_admin_click_edit'=>'Click to edit badge name',
 		'badge_admin_select_all'=>'Select all/none',
 
+		'badge_reset_css'=>'Reset CSS',
 		'badge_reset_values'=>'Reset Values',
 		'badge_reset_values_desc'=>'Reset variable badge data as input above',
 		'badge_reset_names'=>'Reset Names',
