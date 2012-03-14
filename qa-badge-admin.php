@@ -54,6 +54,9 @@ You may cancel these notices at any time by visiting your profile at the link ab
 	width: 100%;
 	z-index: 10000;
 }
+.badge-container-badge {
+	white-space: nowrap;
+}
 .badge-notify {
 	background-color: #F6DF30;
 	color: #444444;
@@ -202,6 +205,10 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			}
 			else if (qa_clicked('badge_trigger_notify')) {
 				$qa_content['test-notify'] = 1;
+			}
+			else if (qa_clicked('badge_reset_css')) {
+				qa_opt('badges_css', $this->option_default('badges_css'));
+				$ok = 'CSS Reset';
 			}
 			else if(qa_clicked('badge_save_settings')) {
 				qa_opt('badge_active', (bool)qa_post_text('badge_active_check'));
@@ -481,6 +488,10 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						'label' => qa_badge_lang('badges/badge_reset_names'),
 						'tags' => 'NAME="badge_reset_names"',
 						'note' => '<br/><em>'.qa_badge_lang('badges/badge_reset_names_desc').'</em><br/>',
+					),
+					array(
+						'label' => qa_badge_lang('badges/badge_reset_css'),
+						'tags' => 'NAME="badge_reset_css"',
 					),
 					array(
 						'label' => qa_badge_lang('badges/badge_reset_values'),
