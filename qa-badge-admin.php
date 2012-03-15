@@ -889,7 +889,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 						$missing = false;
 						
 						foreach ($userfields as $userfield) {
-							if(!isset($userprofile[$userfield['title']])) {
+							if(!($userprofile[$userfield['title']])) {
 								$missing = true;
 								break;
 							}
