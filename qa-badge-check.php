@@ -559,7 +559,6 @@
 			// profile completion
 			
 			$missing = false;
-			
 			foreach ($userfields as $userfield) {
 				if(!$userprofile[$userfield['title']]) {
 					$missing = true;

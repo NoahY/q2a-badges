@@ -464,6 +464,18 @@
 		function badge_notify() {
 			$userid = qa_get_logged_in_userid();
 			
+			qa_db_query_sub(
+				'CREATE TABLE IF NOT EXISTS ^userbadges ('.
+					'awarded_at DATETIME NOT NULL,'.
+					'user_id INT(11) NOT NULL,'.
+					'notify TINYINT DEFAULT 0 NOT NULL,'.
+					'object_id INT(10),'.
+					'badge_slug VARCHAR (64) CHARACTER SET ascii DEFAULT \'\','.
+					'id INT(11) NOT NULL AUTO_INCREMENT,'.
+					'PRIMARY KEY (id)'.
+				') ENGINE=MyISAM DEFAULT CHARSET=utf8'
+			);			
+			
 			$result = qa_db_read_all_values(
 				qa_db_query_sub(
 					'SELECT badge_slug FROM ^userbadges WHERE user_id=# AND notify>=1',
