@@ -21,7 +21,7 @@
 							),
 							'badges' => array(
 								'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-								'label' => qa_badge_lang('badges/badges'),
+								'label' => qa_lang('badges/badges'),
 								'selected' => qa_get('tab')=='badges'?true:false
 							),
 						);
@@ -29,7 +29,7 @@
 					else {
 						$this->content['navigation']['sub']['badges'] = array(
 							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
-							'label' => qa_badge_lang('badges/badges'),
+							'label' => qa_lang('badges/badges'),
 							'selected' => qa_get('tab')=='badges'?true:false
 						);
 					}
@@ -335,12 +335,12 @@
 							<table>
 								<tr>
 									<td class="qa-form-wide-label">
-										<h3 class="badge-title" title="'.qa_badge_lang('badges/'.$types.'_desc').'">'.$typed.'</h3>
+										<h3 class="badge-title" title="'.qa_lang('badges/'.$types.'_desc').'">'.$typed.'</h3>
 									</td>
 								</tr>';				
 					foreach($badge as $slug => $info) {
 						
-						$badge_name=qa_badge_lang('badges/'.$slug);
+						$badge_name=qa_lang('badges/'.$slug);
 						if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 						$name = qa_opt('badge_'.$slug.'_name');
 						
@@ -360,7 +360,7 @@
 								<tr>
 									<td class="badge-container">
 										<div class="badge-container-badge">
-											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'</span>&nbsp;<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_badge_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
+											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'</span>&nbsp;<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
 										</div>';
 						
 						// source row(s) if any	
@@ -422,7 +422,7 @@
 				
 				if(qa_clicked('badge_email_notify_save')) {
 					qa_opt('badge_email_notify_id_'.$userid, (bool)qa_post_text('badge_notify_email_me'));
-					$ok = qa_badge_lang('badges/badge_notified_email_me');
+					$ok = qa_lang('badges/badge_notified_email_me');
 				}
 
 				$select = (bool)qa_opt('badge_email_notify_id_'.$userid);
@@ -434,7 +434,7 @@
 				);
 				
 				$fields[] = array(
-					'label' => qa_badge_lang('badges/badge_notify_email_me'),
+					'label' => qa_lang('badges/badge_notify_email_me'),
 					'type' => 'checkbox',
 					'tags' => 'NAME="badge_notify_email_me"',
 					'value' => $select,
@@ -452,7 +452,7 @@
 				'ok' => ($ok && !isset($error)) ? $ok : null,
 				'style' => 'tall',
 				'tags' => $tags,
-				'title' => qa_badge_lang('badges/badges'),
+				'title' => qa_lang('badges/badges'),
 				'fields'=>$fields,
 				'buttons'=>$buttons,
 			);
@@ -487,19 +487,19 @@
 				
 				if(count($result) == 1) {
 					$slug = $result[0];
-					$badge_name=qa_badge_lang('badges/'.$slug);
+					$badge_name=qa_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 					
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent().slideUp(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent().slideUp(\'slow\')">x</div></div>';
 				}
 				else {
-					$number_text = count($result)>2?str_replace('#', count($result)-1, qa_badge_lang('badges/badge_notify_multi_plural')):qa_badge_lang('badges/badge_notify_multi_singular');
+					$number_text = count($result)>2?str_replace('#', count($result)-1, qa_lang('badges/badge_notify_multi_plural')):qa_lang('badges/badge_notify_multi_singular');
 					$slug = $result[0];
-					$badge_name=qa_badge_lang('badges/'.$slug);
+					$badge_name=qa_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
-					$notice .= '<div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$name.'\'&nbsp;'.$number_text.'&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'&nbsp;'.$number_text.'&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
@@ -517,7 +517,7 @@
 	// etc
 		
 		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_badge_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_badge_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_badge_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp()">x</div></div></div>';
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp()">x</div></div></div>';
 			$this->output($notice);
 		}
 		

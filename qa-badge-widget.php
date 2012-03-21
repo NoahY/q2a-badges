@@ -26,7 +26,7 @@
 			if(empty($badges))
 				return;
 			
-			$themeobject->output('<h2>'.qa_badge_lang('badges/badge_widget_title').'</h2>');
+			$themeobject->output('<h2>'.qa_lang('badges/badge_widget_title').'</h2>');
 
 			foreach ($badges as $badge) {
 				$params = array();
@@ -42,7 +42,7 @@
 				$types = $typea['slug'];
 				$typed = $typea['name'];
 				
-				$badge_name=qa_badge_lang('badges/'.$slug);
+				$badge_name=qa_lang('badges/'.$slug);
 				if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 				$var = qa_opt('badge_'.$slug.'_var');
 				$name = qa_opt('badge_'.$slug.'_name');
