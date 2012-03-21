@@ -4,12 +4,12 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 2.3
+        Plugin Version: 3.0
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
         Plugin License: GPLv2
-        Plugin Minimum Question2Answer Version: 1.4
+        Plugin Minimum Question2Answer Version: 1.5
 		Plugin Update Check URI: https://github.com/NoahY/q2a-badges/raw/master/qa-plugin.php
 */
 
@@ -18,62 +18,19 @@
 			header('Location: ../../');
 			exit;
 	}
+
+	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
+
+	qa_register_plugin_module('module', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
+
+	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
+
+	qa_register_plugin_module('widget', 'qa-badge-widget.php', 'qa_badge_widget', 'Recent Badge Widget');
+
+	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
+
+	qa_register_plugin_phrases('qa-badge-lang-*.php', 'badges');
 	
-	//	Language support ala qa-base.php
-
-	function qa_badge_lang($identifier) {
-		
-		$languagecode=qa_opt('site_language');
-		
-		list($group, $label)=explode('/', $identifier, 2);
-		
-		if (strlen($languagecode)) {
-			global $qa_badge_lang_custom;
-		
-			if (!isset($qa_badge_lang_custom[$group])) { // only load each language file once
-				
-				$directory=QA_LANG_DIR.$languagecode.'/';
-				
-				$phrases=@include $directory.'qa-lang-'.$group.'.php'; // can tolerate missing file or directory
-
-				$qa_badge_lang_custom[$group]=is_array($phrases) ? $phrases : array();
-			}
-			
-			if (isset($qa_badge_lang_custom[$group][$label]))
-				return $qa_badge_lang_custom[$group][$label];
-		}
-		
-		global $qa_badge_lang_default;
-		
-		if (!isset($qa_badge_lang_default[$group])) // only load each default language file once
-			$qa_badge_lang_default[$group]=require 'qa-lang-badges.php';
-		
-		if (isset($qa_badge_lang_default[$group][$label]))
-			return $qa_badge_lang_default[$group][$label];
-		
-		// check custom badges
-
-		$moduletypes=qa_list_module_types();
-		
-		foreach ($moduletypes as $moduletype) {
-			$modulenames=qa_list_modules($moduletype);
-			
-			foreach ($modulenames as $modulename) {
-				$module=qa_load_module($moduletype, $modulename);
-				
-				if (method_exists($module, 'custom_badges') && method_exists($module, 'option_default')) {
-					$name = $module->option_default($identifier);
-					if($name)
-						return $name;
-				}
-			}
-		}
-			
-		return '['.$identifier.']'; // as a last resort, return the identifier to help in development
-	}
-	
-	function qa_import_badge_list() {
-	}
 	
 	function qa_get_badge_list() {
 		
@@ -207,9 +164,9 @@
 		
 		$badge_types = array();
 		
-		$badge_types[] = array('slug'=>'bronze','name'=>qa_badge_lang('badges/bronze'));
-		$badge_types[] = array('slug'=>'silver','name'=>qa_badge_lang('badges/silver'));
-		$badge_types[] = array('slug'=>'gold','name'=>qa_badge_lang('badges/gold'));
+		$badge_types[] = array('slug'=>'bronze','name'=>qa_lang('badges/bronze'));
+		$badge_types[] = array('slug'=>'silver','name'=>qa_lang('badges/silver'));
+		$badge_types[] = array('slug'=>'gold','name'=>qa_lang('badges/gold'));
 		
 		$id = (int)$id;
 		
@@ -348,7 +305,7 @@
 	
 	function qa_badge_desc_replace($slug,$var=null) {
 		
-		$desc = qa_opt('badge_'.$slug.'_desc')?qa_opt('badge_'.$slug.'_desc'):qa_badge_lang('badges/'.$slug.'_desc');
+		$desc = qa_opt('badge_'.$slug.'_desc')?qa_opt('badge_'.$slug.'_desc'):qa_lang('badges/'.$slug.'_desc');
 
 		// var replace
 		
@@ -364,7 +321,7 @@
 		if(!$others) return $desc;
 		
 		foreach($others as $other) {
-			if(!qa_opt('badge_'.$other[1].'_name')) qa_opt('badge_'.$other[1].'_name',qa_badge_lang('badges/'.$other[1]));
+			if(!qa_opt('badge_'.$other[1].'_name')) qa_opt('badge_'.$other[1].'_name',qa_lang('badges/'.$other[1]));
 			$name = qa_opt('badge_'.$other[1].'_name');
 
 			$desc = str_replace($other[0],$name,$desc);
@@ -389,18 +346,6 @@
 			return $handle;
 		}
 	}
-
-	qa_register_plugin_module('event', 'qa-badge-check.php','badge_check','Badge Check');
-
-	qa_register_plugin_module('module', 'qa-badge-admin.php', 'qa_badge_admin', 'Badge Admin');
-
-	qa_register_plugin_module('page', 'qa-badge-page.php', 'qa_badge_page', 'Badges');
-
-	qa_register_plugin_module('widget', 'qa-badge-widget.php', 'qa_badge_widget', 'Recent Badge Widget');
-
-	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
-
-
 /*
 	Omit PHP closing tag to help avoid accidental output
 */
