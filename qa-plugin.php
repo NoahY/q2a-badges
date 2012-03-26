@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.0
+        Plugin Version: 3.1
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -30,6 +30,10 @@
 	qa_register_plugin_layer('qa-badge-layer.php', 'Badge Notification Layer');	
 
 	qa_register_plugin_phrases('qa-badge-lang-*.php', 'badges');
+	
+	function qa_badge_lang($string) {
+		return qa_lang($string);
+	}
 	
 	
 	function qa_get_badge_list() {
