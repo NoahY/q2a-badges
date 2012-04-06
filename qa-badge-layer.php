@@ -167,9 +167,12 @@
 		function main_parts($content)
 		{
 			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && (qa_get('tab')=='badges' || qa_opt('badge_admin_user_field_no_tab'))) { 
-					if(!qa_opt('badge_admin_user_field_no_tab')) 
-						$content = array();
-					$content['form-badges-list'] = $this->user_badge_form();  // this shouldn't happen
+					$userid = $content['raw']['userid'];
+					if(!qa_opt('badge_admin_user_field_no_tab'))
+						foreach($content as $i => $v)
+							if(strpos($i,'form') === 0)
+								unset($content[$i]);
+					$content['form-badges-list'] = qa_badge_plugin_user_form($userid);
 			}
 
 			qa_html_theme_base::main_parts($content);
@@ -180,7 +183,7 @@
 		{
 			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_user_widget') && isset($post['who']) && ($class != 'qa-q-item' || qa_opt('badge_admin_user_widget_q_item')) ) {
 				$handle = preg_replace('|.+user/([^"]+)".+|','$1',$post['who']['data']);
-				$post['who']['suffix'] = (@$post['who']['suffix']).'&nbsp;'.$this->user_badge_widget($handle);
+				$post['who']['suffix'] = (@$post['who']['suffix']).'&nbsp;'.qa_badge_plugin_user_widget($handle);
 			}
 			
 			qa_html_theme_base::post_meta_who($post, $class);
@@ -241,222 +244,10 @@
 				foreach($ranking['items'] as $idx => $item) {
 					$handle = preg_replace('/ *<[^>]+> */', '', $item['label']);
 					
-					if(isset($ranking['items'][$idx]['score'])) $ranking['items'][$idx]['score'] .= '</td><td class="qa-top-users-score">'.$this->user_badge_widget($handle);
+					if(isset($ranking['items'][$idx]['score'])) $ranking['items'][$idx]['score'] .= '</td><td class="qa-top-users-score">'.qa_badge_plugin_user_widget($handle);
 				}
 			}
 			qa_html_theme_base::ranking($ranking);
-		}
-
-
-// worker functions
-
-	// layout
-		
-		function user_badge_widget($handle) {
-			
-			// displays small badge widget, suitable for meta
-			
-			$userid = $this->getuserfromhandle($handle);
-			
-			if(!$userid) return;
-
-			$result = qa_db_read_all_values(
-				qa_db_query_sub(
-					'SELECT badge_slug FROM ^userbadges WHERE user_id=#',
-					$userid
-				)
-			);
-
-			if(count($result) == 0) return;
-			
-			$badges = qa_get_badge_list();
-			foreach($result as $slug) {
-				$bcount[$badges[$slug]['type']] = isset($bcount[$badges[$slug]['type']])?$bcount[$badges[$slug]['type']]+1:1; 
-			}
-			$output='<span id="badge-medals-widget">';
-			for($x = 2; $x >= 0; $x--) {
-				if(!isset($bcount[$x])) continue;
-				$count = $bcount[$x];
-				if($count == 0) continue;
-
-				$type = qa_get_badge_type($x);
-				$types = $type['slug'];
-				$typed = $type['name'];
-
-				$output.='<span class="badge-pointer badge-'.$types.'-medal" title="'.$count.' '.$typed.'">●</span><span class="badge-pointer badge-'.$types.'-count" title="'.$count.' '.$typed.'"> '.$count.'</span> ';
-			}
-			$output = substr($output,0,-1);  // lazy remove space
-			$output.='</span>';
-			return($output);
-		}
-
-		function user_badge_form() {
-			// displays badge list in user profile
-			
-			global $qa_request;
-			
-			$handle = preg_replace('/^[^\/]+\/([^\/]+).*/',"$1",$qa_request);
-			
-			$userid = $this->getuserfromhandle($handle);
-			
-			if(!$userid) return;
-
-			$result = qa_db_read_all_assoc(
-				qa_db_query_sub(
-					'SELECT badge_slug as slug, object_id AS oid FROM ^userbadges WHERE user_id=#',
-					$userid
-				)
-			);
-			
-			$fields = array();
-			
-			if(count($result) > 0) {
-				
-				// count badges
-				$bin = qa_get_badge_list();
-				
-				$badges = array();
-				
-				foreach($result as $info) {
-					$slug = $info['slug'];
-					$type = $bin[$slug]['type'];
-					if(isset($badges[$type][$slug])) $badges[$type][$slug]['count']++;
-					else $badges[$type][$slug]['count'] = 1;
-					if($info['oid']) $badges[$type][$slug]['oid'][] = $info['oid'];
-				}
-				
-				foreach($badges as $type => $badge) {
-
-					$typea = qa_get_badge_type($type);
-					$types = $typea['slug'];
-					$typed = $typea['name'];
-
-					$output = '
-							<table>
-								<tr>
-									<td class="qa-form-wide-label">
-										<h3 class="badge-title" title="'.qa_lang('badges/'.$types.'_desc').'">'.$typed.'</h3>
-									</td>
-								</tr>';				
-					foreach($badge as $slug => $info) {
-						
-						$badge_name=qa_lang('badges/'.$slug);
-						if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
-						$name = qa_opt('badge_'.$slug.'_name');
-						
-						$count = $info['count'];
-						
-						if(qa_opt('badge_show_source_posts')) {
-							$oids = @$info['oid'];
-						}
-						else $oids = null;
-						
-						$var = qa_opt('badge_'.$slug.'_var');
-						$desc = qa_badge_desc_replace($slug,$var,$name);
-						
-						// badge row
-						
-						$output .= '
-								<tr>
-									<td class="badge-container">
-										<div class="badge-container-badge">
-											<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'</span>&nbsp;<span onclick="jQuery(\'.badge-container-sources-'.$slug.'\').slideToggle()" class="badge-count'.(is_array($oids)?' badge-count-link" title="'.qa_lang('badges/badge_count_click'):'').'">x&nbsp;'.$count.'</span>
-										</div>';
-						
-						// source row(s) if any	
-						if(is_array($oids)) {
-							$output .= '
-										<div class="badge-container-sources-'.$slug.'" style="display:none">';
-							foreach($oids as $oid) {
-								$post = qa_db_select_with_pending(
-									qa_db_full_post_selectspec(null, $oid)
-								);								
-								$title=$post['title'];
-								
-								$anchor = '';
-								
-								if($post['parentid']) {
-									$anchor = urlencode(qa_anchor($post['type'],$oid));
-									$oid = $post['parentid'];
-									$title = qa_db_read_one_value(
-										qa_db_query_sub(
-											'SELECT BINARY title as title FROM ^posts WHERE postid=#',
-											$oid
-										),
-										true
-									);	
-								}
-								
-								$length = 30;
-								
-								$text = (qa_strlen($title) > $length ? qa_substr($title,0,$length).'...' : $title);
-								
-								$output .= '
-											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.qa_html($text).'</a></div>';
-							}
-							
-						}
-						$output .= '
-									</td>
-								</tr>';
-					}
-					$output .= '
-							</table>';
-					
-					$outa[] = $output;
-				}
-
-				$fields[] = array(
-						'value' => '<table class="badge-user-tables"><tr><td class="badge-user-table">'.implode('</td><td class="badge-user-table">',$outa).'</td></tr></table>',
-						'type' => 'static',
-				);
-			}
-
-			$ok = null;
-			$tags = null;
-			$buttons = array();
-			
-			if((bool)qa_opt('badge_email_notify') && qa_get_logged_in_handle() == $handle) {
-			// add badge notify checkbox
-
-				
-				if(qa_clicked('badge_email_notify_save')) {
-					qa_opt('badge_email_notify_id_'.$userid, (bool)qa_post_text('badge_notify_email_me'));
-					$ok = qa_lang('badges/badge_notified_email_me');
-				}
-
-				$select = (bool)qa_opt('badge_email_notify_id_'.$userid);
-				
-				$tags = 'id="badge-form" action="'.qa_self_html().'#signature_text" method="POST"';
-				
-				$fields[] = array(
-					'type' => 'blank',
-				);
-				
-				$fields[] = array(
-					'label' => qa_lang('badges/badge_notify_email_me'),
-					'type' => 'checkbox',
-					'tags' => 'NAME="badge_notify_email_me"',
-					'value' => $select,
-				);
-									
-				$buttons[] = array(
-					'label' => qa_lang_html('main/save_button'),
-					'tags' => 'NAME="badge_email_notify_save"',
-				);
-			}
-
-
-
-			return array(				
-				'ok' => ($ok && !isset($error)) ? $ok : null,
-				'style' => 'tall',
-				'tags' => $tags,
-				'title' => qa_lang('badges/badges'),
-				'fields'=>$fields,
-				'buttons'=>$buttons,
-			);
-			
 		}
 
 	// badge popup notification
