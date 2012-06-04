@@ -166,7 +166,7 @@
 
 		function main_parts($content)
 		{
-			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && (qa_get('tab')=='badges' || qa_opt('badge_admin_user_field_no_tab'))) { 
+			if (qa_opt('badge_active') && $this->template == 'user' && qa_opt('badge_admin_user_field') && (qa_get('tab')=='badges' || qa_opt('badge_admin_user_field_no_tab')) && isset($content['raw']['userid'])) { 
 					$userid = $content['raw']['userid'];
 					if(!qa_opt('badge_admin_user_field_no_tab'))
 						foreach($content as $i => $v)
@@ -290,7 +290,7 @@
 					$badge_name=qa_lang('badges/'.$slug);
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
-					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'&nbsp;'.$number_text.'&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp(\'slow\')">x</div></div>';
+					$notice .= '<div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$name.'\'&nbsp;'.$number_text.'&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="'.qa_path_html('user/'.qa_get_logged_in_handle(),array('tab'=>'badges'),qa_opt('site_url')).'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent().slideUp(\'slow\')">x</div></div>';
 				}
 
 				$notice .= '</div>';
