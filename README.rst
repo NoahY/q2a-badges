@@ -71,67 +71,45 @@ Custom Badges
 
 Custom badges may be implemented in any plugin module in a similar way as option_default.  Steps are as follows:
 
-1. create a function in your module class called **custom_badges()**.  It should return an array of badges with the badge slugs as indexes for nested arrays with *var* (default requirement) and *type* (bronze=0,silver=1,gold=2) indexes.  Here is an example from the bookmarks plugin:
+1. create a function in your module class called **custom_badges()**.  It should return an array of badges with the badge slugs as indexes for nested arrays with *var* (default requirement) and *type* (bronze=0,silver=1,gold=2) indexes.  Here is an example from the comment-voting plugin:
 ::
 		function custom_badges() {
 			return array(
-				'bookmarker' => array('var'=>1, 'type'=>0),
-				'bookkeeper' => array('var'=>8, 'type'=>1),
-				'bookworm' => array('var'=>20, 'type'=>2)
+				'nice_comment' => array('var'=>2, 'type'=>0),
+				'good_comment' => array('var'=>5, 'type'=>1),
+				'great_comment' => array('var'=>10, 'type'=>2)
 			);
 		}
 		
-2. create a function in your module class called **custom_badges_rebuild()** that will award badges when rebuilding via admin/plugins and return the number of badges awarded.  Here is an example from the bookmarks plugin:
+2. create a function in your module class called **custom_badges_rebuild()** that will award badges when rebuilding via admin/plugins and return the number of badges awarded.  Here is an example from the comment-voting plugin:
 ::
 		function custom_badges_rebuild() {
 			$awarded = 0;
 			
-			$userq = qa_db_query_sub(
-				'SELECT user_id, meta_value FROM ^usermeta WHERE meta_key=$',
-				'max_bookmarks'
+			$posts = qa_db_query_sub(
+				'SELECT userid, postid, netvotes FROM ^posts WHERE type=$ AND netvotes>0',
+				'C'
 			);
-			while ( ($user=qa_db_read_one_assoc($userq,true)) !== null ) {
-				$badges = array('bookmarker','bookkeeper','bookworm');
-				$awarded += count(qa_badge_award_check($badges,(int)$user['meta_value'],$user['user_id'],null,2));
+			while ( ($post=qa_db_read_one_assoc($posts,true)) !== null ) {
+				$badges = array('nice_comment','good_comment','excellent_comment');
+				$awarded += count(qa_badge_award_check($badges,(int)$post['netvotes'],$post['userid'],$post['postid'],2));
 			}
 			return $awarded;
 		}
 
-3. in your module class's **option_default()** function, return two default variables for each badge: *badges/<slug>* and *badges/<slug>_desc*.  Here is an example from the bookmarks plugin:
+3. impliment **qa_register_plugin_phrases()** via your qa-plugin.php, including two entries for each badge: *badge_<slug>* and *badge_<slug>_desc*.  Here is an example from the comment-voting plugin:
 ::
-		function option_default($option) {
-			
-			switch($option) {
-				case 'bookmarks_plugin_title':
-					return 'Bookmarks';
-				case 'bookmarks_plugin_bookmark':
-					return 'Bookmark this question';
-				case 'bookmarks_plugin_unbookmark':
-					return 'Unbookmark this question';
-				case 'ajax_bookmark_popup_notice_text':
-					return 'Question bookmarked.&nbsp; Visit your profile to see bookmarked questions.';
-				case 'ajax_bookmark_popup_un_notice_text':
-					return 'Bookmark removed.';
-				case 'badges/bookmarker':
-					return 'Bookmarker';
-				case 'badges/bookkeeper':
-					return 'Bookkeeper';
-				case 'badges/bookworm':
-					return 'Bookworm';
-				case 'badges/bookmarker_desc':
-				case 'badges/bookkeeper_desc':
-				case 'badges/bookworm_desc':
-					return 'Bookmarked # ^post^posts';
-				default:
-					return null;				
-			}
-			
-		}
+	return array(
+		'permit_vote_c' => 'Vote on comments',
+		'badge_nice_comment' => 'Nice Comment',
+		'badge_good_comment' => 'Good Comment',
+		'badge_great_comment' => 'Great Comment',
+		'badge_nice_comment_desc' => 'Comment received +# upvote',
+		'badge_good_comment_desc' => 'Comment received +# upvote',
+		'badge_great_comment_desc' => 'Comment received +# upvote',
+	);
 
-4. Create your own mechanism for awarding badges - see some examples in the badges plugin code, or the bookmark plugin.  Make sure to test for both ``qa_opt('badge_active')``, which makes sure the badge plugin is active, and ``qa_opt('badge_custom_badges')`` to make sure the badge plugin version supports custom badges.   Use the function ``qa_badge_award_check()`` to check for badges, where $badges is an array of badge slugs, $var is the number to test against the badges, $oid is the postid (if any), $notify = 0 for no notification, 1 for email and popup, 2 for just popup.  You should probably check if this function exists as well, in case the badge plugin has been deleted while active.  Here is an example from the bookmarks plugin:
-::
-	if(function_exists('qa_badge_award_check') && qa_opt('badge_active') && qa_opt('badge_custom_badges'))
-		$awarded = count(qa_badge_award_check(array('bookmarker','bookworm','bookkeeper'), $var, $uid, NULL, 2)); 
+4. Create your own mechanism for awarding badges - see some examples in the badges plugin code, or the bookmark plugin.  Make sure to test for both ``qa_opt('badge_active')``, which makes sure the badge plugin is active, and ``qa_opt('badge_custom_badges')`` to make sure the badge plugin version supports custom badges.   Use the function ``qa_badge_award_check()`` to check for badges, where $badges is an array of badge slugs, $var is the number to test against the badges, $oid is the postid (if any), $notify = 0 for no notification, 1 for email and popup, 2 for just popup.  You should probably check if this function exists as well, in case the badge plugin has been deleted while active.  
     
 ----------
 Disclaimer
