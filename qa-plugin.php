@@ -311,6 +311,25 @@
 		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
+	function qa_badge_name($slug) {
+		$name = qa_opt('badge_'.$slug)?qa_opt('badge_'.$slug):qa_lang('badges/'.$slug);
+		
+		// plugins
+		
+		if($name == '[badges/'.$slug.']') {
+			global $qa_lang_file_pattern;
+			foreach($qa_lang_file_pattern as $name => $files) {
+				$lang = qa_lang($name.'/badge_'.$slug);
+				if($lang != '['.$name.'/badge_'.$slug.']') {
+					return $lang;
+				}
+			}
+			return $slug;
+		}
+		return $name;
+	}
+
+
 	function qa_badge_desc_replace($slug,$var=null,$admin=false) {
 		$desc = qa_opt('badge_'.$slug.'_desc')?qa_opt('badge_'.$slug.'_desc'):qa_lang('badges/'.$slug.'_desc');
 		
