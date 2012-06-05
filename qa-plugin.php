@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.3
+        Plugin Version: 3.4
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -311,14 +311,26 @@
 		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
-	function qa_badge_desc_replace($slug,$var=null) {
-		
+	function qa_badge_desc_replace($slug,$var=null,$admin=false) {
 		$desc = qa_opt('badge_'.$slug.'_desc')?qa_opt('badge_'.$slug.'_desc'):qa_lang('badges/'.$slug.'_desc');
+		
+		// plugins
+		
+		if($desc == '[badges/'.$slug.'_desc]') {
+			global $qa_lang_file_pattern;
+			foreach($qa_lang_file_pattern as $name => $files) {
+				$lang = qa_lang($name.'/badge_'.$slug.'_desc');
+				if($lang != '['.$name.'/badge_'.$slug.'_desc]') {
+					$desc = $lang;
+					break;
+				}
+			}
+		}
 
 		// var replace
 		
 		if($var) {
-			$desc = str_replace('#',$var,$desc);
+			$desc = $admin?str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.$var.'">',$desc):str_replace('#',$var,$desc);
 			$desc = preg_replace('/\^([^^]+)\^(\S+)/',($var == 1?"$1":"$2"),$desc);
 		}
 		

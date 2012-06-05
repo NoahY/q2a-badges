@@ -323,8 +323,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 
-					$badge_desc=qa_badge_desc_replace($slug);
-					if(isset($info['var'])) $badge_desc = str_replace('#','<input type="text" name="badge_'.$slug.'_var" size="4" value="'.qa_opt('badge_'.$slug.'_var').'">',$badge_desc);
+					$badge_desc=qa_badge_desc_replace($slug,@$info['var'],true);
 
 					$type = qa_get_badge_type($info['type']);
 					$types = $type['slug'];
