@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.4
+        Plugin Version: 3.5
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -475,7 +475,7 @@
 								</tr>';				
 					foreach($badge as $slug => $info) {
 						
-						$badge_name=qa_lang('badges/'.$slug);
+						$badge_name=qa_badge_name($slug);
 						if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 						$name = qa_opt('badge_'.$slug.'_name');
 						
@@ -487,7 +487,7 @@
 						else $oids = null;
 						
 						$var = qa_opt('badge_'.$slug.'_var');
-						$desc = qa_badge_desc_replace($slug,$var,$name);
+						$desc = qa_badge_desc_replace($slug,$var,false);
 						
 						// badge row
 						
