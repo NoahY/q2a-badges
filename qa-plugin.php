@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.5
+        Plugin Version: 3.6
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -160,7 +160,7 @@
 	
 	function qa_get_badge_type_by_slug($slug) {
 		$badges = qa_get_badge_list();
-		return qa_get_badge_type($badges[$slug]['type']);
+		return qa_get_badge_type(@$badges[$slug]['type']);
 	}
 	function qa_get_badge_type($id) {
 		
