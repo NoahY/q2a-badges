@@ -39,6 +39,8 @@
 				
 				$slug = $params['badge_slug'];
 				$typea = qa_get_badge_type_by_slug($slug);
+				if(!$typea)
+					continue;
 				$types = $typea['slug'];
 				$typed = $typea['name'];
 				
