@@ -97,7 +97,7 @@ Custom badges may be implemented in any plugin module in a similar way as option
 			return $awarded;
 		}
 
-3. impliment **qa_register_plugin_phrases()** via your qa-plugin.php, including two entries for each badge: *badge_<slug>* and *badge_<slug>_desc*.  Here is an example from the comment-voting plugin:
+3. implement **qa_register_plugin_phrases()** via your qa-plugin.php, including two entries for each badge: *badge_<slug>* and *badge_<slug>_desc*.  Here is an example from the comment-voting plugin:
 ::
 	return array(
 		'permit_vote_c' => 'Vote on comments',
