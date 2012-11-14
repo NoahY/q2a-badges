@@ -4,11 +4,11 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.9
+        Plugin Version: 3.10
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
-        Plugin License: GPLv2
+        Plugin License: GPLv3+
         Plugin Minimum Question2Answer Version: 1.5
 		Plugin Update Check URI: https://github.com/NoahY/q2a-badges/raw/master/qa-plugin.php
 */
