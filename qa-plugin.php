@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 3.10
+        Plugin Version: 4.0
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
