@@ -312,7 +312,7 @@
 	}
 	
 	function qa_badge_name($slug) {
-		$name = qa_opt('badge_'.$slug)?qa_opt('badge_'.$slug):qa_lang('badges/'.$slug);
+		$name = qa_opt('badge_'.$slug.'_name')?qa_opt('badge_'.$slug.'_name'):qa_lang('badges/'.$slug);
 		
 		// plugins
 		
