@@ -121,8 +121,10 @@
 
 		function head_custom() {
 			qa_html_theme_base::head_custom();
+			if(!qa_opt('badge_active'))
+				return;
 
-			if ($this->request == 'admin/plugins' && qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN && qa_opt('badge_active')) {
+			if ($this->request == 'admin/plugins' && qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) {
 				$this->output("
 				<script>".(qa_opt('badge_notify_time') != '0'?"
 					jQuery('document').ready(function() { jQuery('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").slideUp('fast'); });":"")."
@@ -138,9 +140,8 @@
 						jQuery('#badge_'+slug+'_edit').focus();
 					}
 				</script>");
-				$this->output('
-				<style>',qa_opt('badges_css'),'</style>');
 			}
+			$this->output('<style>',qa_opt('badges_css'),'</style>');
 		}
 
 		function body_prefix()

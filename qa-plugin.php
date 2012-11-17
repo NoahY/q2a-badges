@@ -412,7 +412,7 @@
 			foreach($result as $slug) {
 				$bcount[$badges[$slug]['type']] = isset($bcount[$badges[$slug]['type']])?$bcount[$badges[$slug]['type']]+1:1; 
 			}
-			$output='<span class="badge-medals-widget">';
+			$output='<span id="badge-medals-widget">';
 			for($x = 2; $x >= 0; $x--) {
 				if(!isset($bcount[$x])) continue;
 				$count = $bcount[$x];
