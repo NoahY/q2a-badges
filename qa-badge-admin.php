@@ -244,7 +244,6 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					// set badge names, vars and states
 
 					foreach ($badges as $slug => $info) {
-
 						// update var
 
 						if(isset($info['var']) && qa_post_text('badge_'.$slug.'_var')) {
@@ -323,7 +322,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 					if(!qa_opt('badge_'.$slug.'_name')) qa_opt('badge_'.$slug.'_name',$badge_name);
 					$name = qa_opt('badge_'.$slug.'_name');
 
-					$badge_desc=qa_badge_desc_replace($slug,@$info['var'],true);
+					$badge_desc=qa_badge_desc_replace($slug,qa_opt('badge_'.$slug.'_var'),true);
 
 					$type = qa_get_badge_type($info['type']);
 					$types = $type['slug'];
