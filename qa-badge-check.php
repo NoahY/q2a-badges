@@ -560,7 +560,7 @@
 			
 			$missing = false;
 			foreach ($userfields as $userfield) {
-				if(!$userprofile[$userfield['title']]) {
+				if(!isset($userprofile[$userfield['title']]) || @$userprofile[$userfield['title']] === '') {
 					$missing = true;
 					break;
 				}
