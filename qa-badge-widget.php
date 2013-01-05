@@ -16,19 +16,14 @@
 		{
 			if(!qa_opt('event_logger_to_database'))
 				return;
-			$badges = qa_db_read_all_assoc(
-				qa_db_query_sub(
-					'SELECT event,handle,params, UNIX_TIMESTAMP(datetime) AS datetime FROM ^eventlog WHERE event=$'.(qa_opt('badge_widget_date_max')?' AND DATE_SUB(CURDATE(),INTERVAL '.(int)qa_opt('badge_widget_date_max').' DAY) <= datetime':'').' ORDER BY datetime DESC'.(qa_opt('badge_widget_list_max')?' LIMIT '.(int)qa_opt('badge_widget_list_max'):''),
-					'badge_awarded'
-				)
+			$badges = qa_db_query_sub(
+				'SELECT event,handle,params, UNIX_TIMESTAMP(datetime) AS datetime FROM ^eventlog WHERE event=$'.(qa_opt('badge_widget_date_max')?' AND DATE_SUB(CURDATE(),INTERVAL '.(int)qa_opt('badge_widget_date_max').' DAY) <= datetime':'').' ORDER BY datetime DESC'.(qa_opt('badge_widget_list_max')?' LIMIT '.(int)qa_opt('badge_widget_list_max'):''),
+				'badge_awarded'
 			);
 			
-			if(empty($badges))
-				return;
+			$first = true;
 			
-			$themeobject->output('<h2>'.qa_lang('badges/badge_widget_title').'</h2>');
-
-			foreach ($badges as $badge) {
+			while ( ($badge=qa_db_read_one_assoc($badge,true)) !== null ) {
 				$params = array();
 				
 				$paramsa = explode("\t",$badge['params']);
@@ -52,6 +47,10 @@
 				
 				$string = '<span class="badge-'.$types.'" title="'.$desc.' ('.$typed.')">'.qa_html($name).'<br/>- '.$badge['handle'].' -</span>';
 				
+				if($first) {
+					$themeobject->output('<h2>'.qa_lang('badges/badge_widget_title').'</h2>');
+					$first = false;
+				}
 				$themeobject->output('<div class="badge-widget-entry" style="padding-top:8px;">',$string,'</div>');
 			}
 		}
