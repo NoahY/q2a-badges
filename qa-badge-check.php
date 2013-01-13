@@ -624,7 +624,7 @@
 				qa_db_query_sub(
 					'INSERT INTO ^eventlog (datetime, ipaddress, userid, handle, cookieid, event, params) '.
 					'VALUES (NOW(), $, $, $, #, $, $)',
-					qa_remote_ip_address(), $user_id, $handle, qa_cookie_get_create(), 'badge_awarded', 'badge_slug='.$badge_slug.($object_id?"\t".'postid='.$object_id:'')
+					qa_remote_ip_address(), $user_id, $handle, qa_cookie_get(), 'badge_awarded', 'badge_slug='.$badge_slug.($object_id?"\t".'postid='.$object_id:'')
 				);
 			}
 			

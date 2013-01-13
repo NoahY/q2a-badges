@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 4.1
+        Plugin Version: 4.2
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -222,7 +222,7 @@
 							qa_db_query_sub(
 								'INSERT INTO ^eventlog (datetime, ipaddress, userid, handle, cookieid, event, params) '.
 								'VALUES (NOW(), $, $, $, #, $, $)',
-								qa_remote_ip_address(), $uid, $handle, qa_cookie_get_create(), 'badge_awarded', 'badge_slug='.$badge_slug.($oid?"\t".'postid='.$oid:'')
+								qa_remote_ip_address(), $uid, $handle, qa_cookie_get(), 'badge_awarded', 'badge_slug='.$badge_slug.($oid?"\t".'postid='.$oid:'')
 							);
 						}
 					}
