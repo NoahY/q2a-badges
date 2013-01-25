@@ -18,7 +18,8 @@
 
 			switch($option) {
 				case 'badge_'.$slug.'_name':
-					return qa_badge_name('badges/'.$slug);
+					//return qa_badge_name('badges/'.$slug);
+					return qa_lang('badges/'.$slug);
 				case 'badge_'.$slug.'_var':
 					return @$badges[$slug]['var'];
 				case 'badge_'.$slug.'_enabled':
