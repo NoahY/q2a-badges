@@ -28,7 +28,7 @@
 					}
 					else {
 						$this->content['navigation']['sub']['badges'] = array(
-							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
+							'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
 							'label' => qa_lang('badges/badges'),
 							'selected' => qa_get('tab')=='badges'?true:false
 						);
@@ -309,7 +309,7 @@
 	// etc
 		
 		function trigger_notify($message) {
-			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent()..slideUp()">x</div></div></div>';
+			$notice = '<div class="notify-container"><div class="badge-notify notify">'.qa_lang('badges/badge_notify')."'".$message.'\'!&nbsp;&nbsp;'.qa_lang('badges/badge_notify_profile_pre').'<a href="/user/'.qa_get_logged_in_handle().'">'.qa_lang('badges/badge_notify_profile').'</a><div class="notify-close" onclick="jQuery(this).parent().parent().slideUp()">x</div></div></div>';
 			$this->output($notice);
 		}
 		

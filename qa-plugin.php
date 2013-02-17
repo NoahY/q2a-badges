@@ -4,7 +4,7 @@
         Plugin Name: Badges
         Plugin URI: https://github.com/NoahY/q2a-badges
         Plugin Description: Awards Badges
-        Plugin Version: 4.3
+        Plugin Version: 4.4
         Plugin Date: 2011-07-30
         Plugin Author: NoahY
         Plugin Author URI: 
@@ -532,7 +532,7 @@
 								$output .= '
 											<div class="badge-source"><a href="'.qa_path_html(qa_q_request($oid,$title),NULL,qa_opt('site_url')).($anchor?'#'.$anchor:'').'">'.qa_html($text).'</a></div>';
 							}
-							
+							$output .= '</div>';
 						}
 						$output .= '
 									</td>

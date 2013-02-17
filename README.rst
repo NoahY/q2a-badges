@@ -37,7 +37,6 @@ Installation
      at the command prompt (on Linux, Windows is a bit different)
    - To download directly, go to the `project page`_ and click **Download**
 
-#. navigate to your site and check your database to make sure the ^userbadges table was created
 #. Go to **Admin -> Plugins** on your q2a install and select the '**Activate badges**' option, then '**Save Changes**'.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
