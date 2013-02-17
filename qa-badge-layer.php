@@ -194,7 +194,6 @@
 		{
 			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_loggedin_widget') && @$this->content['loggedin']['data'] != null) {
 				$handle = preg_replace('|.+qa-user-link" title="@([^"]+)".+|','$1',$this->content['loggedin']['data']);
-				error_log($handle);
 				$this->content['loggedin']['data'] = $this->content['loggedin']['data'].'&nbsp;'.qa_badge_plugin_user_widget($handle);
 			}
 			qa_html_theme_base::logged_in();
