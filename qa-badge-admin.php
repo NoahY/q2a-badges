@@ -192,7 +192,7 @@ You may cancel these notices at any time by visiting your profile at the link ab
 			}
 			else if (qa_clicked('badge_reset_names')) {
 				foreach ($badges as $slug => $info) {
-					qa_opt('badge_'.$slug.'_name',qa_badge_name($slug));
+					qa_opt('badge_'.$slug.'_name',qa_badge_name($slug,true));
 				}
 				$ok = qa_lang('badges/badge_names_reset');
 			}

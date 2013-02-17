@@ -10,7 +10,7 @@
         Plugin Author URI: 
         Plugin License: GPLv3+
         Plugin Minimum Question2Answer Version: 1.5
-		Plugin Update Check URI: https://github.com/NoahY/q2a-badges/raw/master/qa-plugin.php
+		Plugin Update Check URI: https://raw.github.com/NoahY/q2a-badges/master/qa-plugin.php
 */
 
 
@@ -311,8 +311,11 @@
 		qa_send_notification($uid, '@', $handle, $subject, $body, $subs);
 	}
 	
-	function qa_badge_name($slug) {
-		$name = qa_opt('badge_'.$slug.'_name')?qa_opt('badge_'.$slug.'_name'):qa_lang('badges/'.$slug);
+	function qa_badge_name($slug,$reset=false) {
+		if($reset)
+			$name = qa_lang('badges/'.$slug);
+		else
+			$name = qa_opt('badge_'.$slug.'_name')?qa_opt('badge_'.$slug.'_name'):qa_lang('badges/'.$slug);
 		
 		// plugins
 		
