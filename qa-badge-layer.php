@@ -183,11 +183,21 @@
 		function post_meta_who($post, $class)
 		{
 			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_user_widget') && ($class != 'qa-q-item' || qa_opt('badge_admin_user_widget_q_item')) ) {
-				$handle = strip_tags($post['who']['data']);
+				$handle = preg_replace('|.+qa-user-link" title="@([^"]+)".+|','$1',$post['who']['data']);
 				$post['who']['suffix'] = (@$post['who']['suffix']).'&nbsp;'.qa_badge_plugin_user_widget($handle);
 			}
 			
 			qa_html_theme_base::post_meta_who($post, $class);
+		}
+
+		function logged_in()
+		{
+			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_loggedin_widget') && @$this->content['loggedin']['data'] != null) {
+				$handle = preg_replace('|.+qa-user-link" title="@([^"]+)".+|','$1',$this->content['loggedin']['data']);
+				error_log($handle);
+				$this->content['loggedin']['data'] = $this->content['loggedin']['data'].'&nbsp;'.qa_badge_plugin_user_widget($handle);
+			}
+			qa_html_theme_base::logged_in();
 		}
 		
 		function q_view_main($q_view) {

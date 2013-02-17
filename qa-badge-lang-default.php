@@ -230,6 +230,7 @@
 		'badge_show_source_users'=>'Show list of rewarded users for each badge on badge page',
 		'badge_admin_user_widget'=>'Show badge widget beside points in user meta',
 		'badge_admin_user_widget_q_item'=>'Show badge widget beside points in question list',
+		'badge_admin_loggedin_widget'=>'Show badge widget beside points for logged in user',
 		'badge_show_users_badges'=>'Show badge widget beside user name on users list page',
 
 		'badge_email_notify'=>'Notify users of awarded badges by email',
