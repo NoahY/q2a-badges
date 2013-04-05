@@ -182,7 +182,7 @@
 
 		function post_meta_who($post, $class)
 		{
-			if (qa_opt('badge_active') && (bool)qa_opt('badge_admin_user_widget') && ($class != 'qa-q-item' || qa_opt('badge_admin_user_widget_q_item')) ) {
+			if (@$post['who'] && @$post['who']['data'] && qa_opt('badge_active') && (bool)qa_opt('badge_admin_user_widget') && ($class != 'qa-q-item' || qa_opt('badge_admin_user_widget_q_item')) ) {
 				$handle = preg_replace('|.+qa-user-link" title="@([^"]+)".+|','$1',$post['who']['data']);
 				$post['who']['suffix'] = (@$post['who']['suffix']).'&nbsp;'.qa_badge_plugin_user_widget($handle);
 			}
