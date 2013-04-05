@@ -28,7 +28,7 @@
 					}
 					else {
 						$this->content['navigation']['sub']['badges'] = array(
-							'url' => qa_path_html('user/'.$this->_user_handle(), null, qa_opt('site_url')),
+							'url' => qa_path_html('user/'.$this->_user_handle(), array('tab'=>'badges'), qa_opt('site_url')),
 							'label' => qa_lang('badges/badges'),
 							'selected' => qa_get('tab')=='badges'?true:false
 						);
