@@ -124,6 +124,9 @@
 			if(!qa_opt('badge_active'))
 				return;
 
+			if (qa_opt('badge_active') && $this->template != 'admin')
+				$this->badge_notify();
+
 			if ($this->request == 'admin/plugins' && qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) {
 				$this->output("
 				<script>".(qa_opt('badge_notify_time') != '0'?"
@@ -141,17 +144,20 @@
 					}
 				</script>");
 			}
+			else if (isset($this->badge_notice)) {
+				$this->output("
+				<script>".(qa_opt('badge_notify_time') != '0'?"
+					jQuery('document').ready(function() { jQuery('.notify-container').delay(".((int)qa_opt('badge_notify_time')*1000).").slideUp('fast'); });":"")."
+				</script>");
+			}
 			$this->output('<style>',qa_opt('badges_css'),'</style>');
 		}
 
 		function body_prefix()
 		{
 			qa_html_theme_base::body_prefix();
-			
-			if (qa_opt('badge_active') && $this->template != 'admin') {
-				$this->badge_notify();
-			}
-			
+			if(isset($this->badge_notice))
+				$this->output($this->badge_notice);
 		}
 
 		function body_suffix()
@@ -311,7 +317,7 @@
 					'UPDATE ^userbadges SET notify=0 WHERE user_id=# AND notify>=1',
 					$userid
 				);
-				$this->output($notice);
+				$this->badge_notice = $notice;
 			}
 		}
 
