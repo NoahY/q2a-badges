@@ -37,6 +37,7 @@ Installation
      at the command prompt (on Linux, Windows is a bit different)
    - To download directly, go to the `project page`_ and click **Download**
 
+#. Copy the downloaded q2a-badges directory in the qa-plugin directory of your Question2Answer
 #. Go to **Admin -> Plugins** on your q2a install and select the '**Activate badges**' option, then '**Save Changes**'.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
