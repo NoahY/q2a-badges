@@ -50,7 +50,7 @@ Translation
 
 .. _Translation:
 
-The translation file is **qa-lang-badges.php**.  Copy this file to the **qa-lang/<your-language>/** directory.  Edit the right-hand side strings in this file with notepad2, notepad++, etc. (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
+The translation file is **qa-badge-lang-default.php**.  Copy this file to **qa-badge-lang-<your-language>.php** in the same directory.  Edit the right-hand side strings in this file with notepad2, notepad++, etc. (don't ever use Window's Notepad. For anything. Ever.), for example, changing:
 
 **'good_question'=>'Good Question',**
 
@@ -61,6 +61,10 @@ to
 for Swahili.  Don't edit the string on the left-hand side or bad things will happen.
 
 Once you've completed the translation, don't forget to set the site language in the admin control panel... to Swahili.  
+
+Here are some languages for which translations are available:
+
+* [French](https://github.com/gturri/q2a-badges-lang-fr/) 
 
 -------------
 Custom Badges
