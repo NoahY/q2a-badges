@@ -51,7 +51,7 @@
 					true
 				);
 
-				if(!$user['uid']) {
+				if(!isset($user['uid'])) {
 					qa_db_query_sub(
 						'INSERT INTO ^achievements (user_id, first_visit, oldest_consec_visit, longest_consec_visit, last_visit, total_days_visited, questions_read, posts_edited) VALUES (#, NOW(), NOW(), #, NOW(), #, #, #) ON DUPLICATE KEY UPDATE first_visit=NOW(), oldest_consec_visit=NOW(), longest_consec_visit=#, last_visit=NOW(), total_days_visited=#, questions_read=#, posts_edited=#',
 						$userid, 1, 1, 0, 0, 1, 1, 0, 0
